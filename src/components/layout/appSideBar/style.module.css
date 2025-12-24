@@ -1,0 +1,15 @@
+.appSideBar {
+  border-right: 1px solid var(--app-header-boder-color);
+  background-color: white !important;
+}
+.sideNavArrow {
+  background-color: var(--sidebar-arrow-color);
+  border: 1px solid var(--app-header-boder-color);
+  width: fit-content;
+  padding: 10px;
+  color: var(--login-info-color);
+}
+
+.arrowBoder {
+  border-bottom: 1px solid var(--app-header-boder-color);
+}

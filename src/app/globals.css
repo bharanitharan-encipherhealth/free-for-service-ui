@@ -1,0 +1,659 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  --app-header-color: #ffffff;
+  --login-info-color: #3d5262;
+  --application-base-color: #0561fc;
+  --app-header-boder-color: #a8b3bd;
+  --text-white-color: #ffff;
+
+  --sidebar-arrow-color: #c8d8e5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+.dark body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.ant-layout-header {
+  background-color: #e0ecf7;
+}
+
+.ant-layout-sider,
+.ant-menu {
+  height: 90vh;
+  background-color: var(--background);
+}
+
+.select-divider .ant-select-selector {
+  border: 1px solid black !important;
+}
+.select-divider .ant-select-selector {
+  height: auto !important;
+  border-radius: 10px !important;
+}
+
+.login-input .text-dark {
+  margin-bottom: 0.5rem;
+  font-size: 14px !important;
+}
+
+.title {
+  font-size: 2rem;
+}
+
+.login-account {
+  padding: 1rem 2.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background-image: url("../../public/images/auth/back_6.webp");
+  min-height: 100dvh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-account .account-info-area {
+  border-radius: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: luminosity;
+  margin-left: 0px;
+  max-height: 15rem;
+}
+
+img.login-logo {
+  width: 100%;
+  height: 100%;
+  max-height: 12rem;
+  object-fit: contain;
+}
+
+.login-account .account-info-area:after {
+  content: "";
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.9;
+}
+
+.login-account .account-info-area .login-bg {
+  transform: scale(1.3) translateX(-5%);
+}
+
+.login-account .account-info-area .text {
+  max-width: 420px;
+  margin: 0 auto;
+  color: #fff;
+  opacity: 0.8;
+}
+
+.login-account .account-info-area .login-content {
+  text-align: center;
+  /* padding: 120px 10px; */
+  padding: 1rem 0.5rem;
+  z-index: 9;
+  position: relative;
+  max-width: 100%;
+  /* margin-left: 126px; */
+}
+
+.login-account .account-info-area .login-content .logo {
+  margin-bottom: 15px;
+}
+
+.login-account .account-info-area .login-content .title {
+  font-size: 65px;
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 1.4rem;
+  margin-top: 0;
+  color: #fff;
+}
+
+.login-account .account-info-area .login-content .title span {
+  text-decoration: underline;
+}
+
+.login-account .account-info-area .login-content .sub-title {
+  font-size: 28px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+  padding: 0 4px;
+  color: #fff;
+}
+
+.login-account .social-btn {
+  padding: 10px 10px;
+}
+.login-account .account-info-area .login-content .title {
+  font-size: 45px;
+}
+
+.login-account .apple:hover svg path {
+  fill: #fff;
+}
+
+.login-account .login-form {
+  padding: 1.25rem 2rem;
+  width: 34rem;
+  max-width: 90%;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 0.9375rem;
+  min-height: auto;
+  box-shadow: 0px 2px 6px 0px #00000029;
+}
+
+.login-account .login-input {
+  margin-bottom: 1.45rem;
+}
+.login-account .login-btn {
+  margin-top: 2.55rem;
+  margin-left: 0px !important;
+}
+.login-account .ant-select-selector {
+  height: 40px !important;
+}
+
+.login-account .ant-select-arrow {
+  top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-account .project-loding {
+  min-height: 20rem;
+  max-width: 28rem;
+}
+
+.login-account .login-with {
+  margin-bottom: 15px;
+}
+.social-login .login-option {
+  font-size: 0.825rem;
+}
+.form-selected {
+  margin-bottom: 1.8rem !important;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #888888;
+  background-color: #fff !important;
+  background-clip: padding-box;
+  border: 1px solid #e6e6e6;
+  appearance: none;
+  border-radius: 0.75rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  /* height: 42px !important; */
+  border-radius: 8px !important;
+}
+
+@media screen and (min-width: 200px) and (max-width: 1080px) {
+  .login-account .project-loding {
+    min-height: 15rem;
+    max-width: 28rem;
+  }
+  .login-account .login-form {
+    width: 19.75rem;
+    min-height: auto;
+    padding: 0.625rem 1.25rem;
+  }
+  .login-account .title {
+    font-size: 0.9375rem;
+  }
+  .account-info-area img.login-logo {
+    width: 50% !important;
+    height: auto !important;
+  }
+  .login-account .login-form input {
+    height: 1.375rem !important;
+    font-size: 0.55rem;
+  }
+  .login-account .ant-select-selector {
+    height: 1.55rem !important;
+    font-size: 0.75rem;
+  }
+  .login-account .login-input {
+    margin-bottom: 0.2125rem;
+  }
+  .login-account .ant-form-item-vertical .ant-form-item-label {
+    padding: 0px 0px !important;
+  }
+  .login-account .login-input label {
+    font-size: 0.625rem !important;
+  }
+  .login-account .btnColor {
+    font-size: 0.625rem !important;
+  }
+  .social-login img.login-logo {
+    width: 1.2625rem !important;
+    height: 1.2625rem !important;
+  }
+  .social-login .login-option {
+    font-size: 0.455rem;
+  }
+  .login-account .login-btn {
+    margin-top: 0.75rem;
+  }
+  .login-account .login-btn button {
+    font-size: 0.625rem !important;
+    padding: 0.35rem !important;
+  }
+  .form-selected {
+    margin-bottom: 0rem !important;
+  }
+  .login-account .ant-select-arrow {
+    top: 0.7375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.625rem;
+  }
+  .login-footer {
+    margin-left: 15px !important;
+  }
+  .login-footer p {
+    font-size: 10px !important;
+    padding-left: 20px !important;
+  }
+  .login-footer img {
+    width: 55px !important;
+    height: 55px !important;
+  }
+  /* Dropdown options for mobile */
+  .responsive-dropdown .ant-select-item-option {
+    font-size: 0.625rem !important;
+    padding: 0.2rem 0.5rem !important;
+    line-height: 1.2 !important;
+    min-height: 1.5rem !important;
+  }
+  .responsive-dropdown .ant-select-item-option-content {
+    font-size: 0.625rem !important;
+    line-height: 1.2 !important;
+  }
+  .login-account .login-with {
+    margin-bottom: 5px;
+    font-size: 0.35rem;
+  }
+  .login-account .login-with .login-option {
+    font-size: 0.55rem;
+    margin-right: 2px !important;
+  }
+}
+
+@media screen and (min-width: 1440px) and (max-width: 1699px) {
+  .login-account .project-loding {
+    min-height: 22rem;
+    max-width: 28rem;
+  }
+  .login-account .login-form {
+    max-width: 28rem;
+    min-height: auto;
+    padding: 1.25rem 1.7875rem;
+  }
+  .login-account .login-form input {
+    height: 2.1875rem !important;
+  }
+  .login-account .title {
+    font-size: 1.8125rem;
+  }
+  .account-info-area img.login-logo {
+    width: 70% !important;
+    height: auto !important;
+  }
+  .social-login img.login-logo {
+    width: 2.1875rem !important;
+    height: 2.1875rem !important;
+  }
+  .login-account .btnColor {
+    font-size: 0.75rem !important;
+  }
+  .login-account .login-input {
+    margin-bottom: 1.25rem;
+  }
+  .login-account .login-input label {
+    font-size: 0.85rem !important;
+  }
+  .form-selected {
+    margin: 0.625rem 0 !important;
+  }
+  .login-account .ant-select-selector {
+    height: 2.35rem !important;
+    font-size: 0.95rem;
+  }
+  .form-selected {
+    margin-bottom: 1.25rem !important;
+  }
+  .login-account .login-btn button {
+    font-size: 0.75rem !important;
+    padding: 0.75rem !important;
+  }
+  /* Dropdown options for 1440-1699px */
+  .responsive-dropdown .ant-select-item-option {
+    font-size: 0.95rem !important;
+    padding: 0.375rem 0.75rem !important;
+    line-height: 1.3 !important;
+    min-height: 2rem !important;
+  }
+  .responsive-dropdown .ant-select-item-option-content {
+    font-size: 0.95rem !important;
+    line-height: 1.3 !important;
+  }
+  .login-account .login-btn {
+    margin-top: 2.15rem;
+    margin-left: 0px !important;
+  }
+  .login-account .login-with {
+    margin-bottom: 10px;
+  }
+  .login-account .login-with .login-option {
+    margin-right: 2px !important;
+  }
+}
+@media screen and (min-width: 1200px) and (max-width: 1440px) {
+  .login-account .project-loding {
+    min-height: 20rem;
+    max-width: 28rem;
+  }
+  .login-account .login-form {
+    width: 27rem;
+    min-height: auto;
+    padding: 1.25rem 1.375rem;
+  }
+  .login-account .title {
+    font-size: 1.5625rem;
+  }
+  .account-info-area img.login-logo {
+    width: 70% !important;
+    height: auto !important;
+  }
+  .login-account .login-form input {
+    height: 1.875rem !important;
+    font-size: 0.75rem;
+  }
+  .login-account .login-input {
+    margin-bottom: 0.625rem;
+  }
+  .login-account .ant-form-item-vertical .ant-form-item-label {
+    padding: 2px 3px !important;
+  }
+  .login-account .login-input label {
+    font-size: 0.75rem !important;
+  }
+  .form-selected label {
+    font-size: 0.75rem !important;
+  }
+  .login-account .ant-select-selector {
+    height: 2.2875rem !important;
+    font-size: 0.75rem;
+  }
+
+  .login-account .btnColor {
+    font-size: 0.625rem !important;
+  }
+  .social-login img.login-logo {
+    width: 1.875rem !important;
+    height: 1.875rem !important;
+  }
+  .social-login .login-option {
+    font-size: 0.75rem;
+  }
+  .login-account .login-btn button {
+    font-size: 0.75rem !important;
+    padding: 0.75rem !important;
+  }
+  .form-selected {
+    margin-bottom: 1.05rem !important;
+  }
+  .login-account .ant-select-arrow {
+    top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .responsive-dropdown .ant-select-item-option {
+    font-size: 0.75rem !important;
+    padding: 0.3rem 0.625rem !important;
+    line-height: 1.25 !important;
+    min-height: 1.75rem !important;
+  }
+  .responsive-dropdown .ant-select-item-option-content {
+    font-size: 0.75rem !important;
+    line-height: 1.25 !important;
+  }
+  .login-account .login-with {
+    margin-bottom: 10px;
+  }
+  .login-account .login-btn {
+    margin-top: 1.85rem;
+    margin-left: 0px !important;
+  }
+}
+@media screen and (min-width: 1080px) and (max-width: 1200px) {
+  .login-account .project-loding {
+    min-height: 17rem;
+    max-width: 28rem;
+  }
+  .login-account .login-form {
+    width: 22.625rem;
+    min-height: auto;
+    padding: 0.9375rem 1.3225rem;
+  }
+  .login-account .title {
+    font-size: 1.25rem;
+  }
+  .account-info-area img.login-logo {
+    width: 60% !important;
+    height: auto !important;
+  }
+
+  .login-account .login-form input {
+    height: 1.575rem !important;
+    font-size: 0.65rem;
+  }
+  .login-account .ant-select-selector {
+    height: 1.75rem !important;
+    font-size: 0.55rem;
+  }
+  .login-account .login-input {
+    margin-bottom: 0.625rem;
+  }
+  .login-account .login-input label {
+    font-size: 0.65rem !important;
+  }
+  .login-account .ant-form-item-vertical .ant-form-item-label {
+    padding: 2px 3px !important;
+  }
+  .login-account .btnColor {
+    font-size: 0.625rem !important;
+  }
+  .social-login img.login-logo {
+    width: 1.3625rem !important;
+    height: 1.3625rem !important;
+  }
+  .social-login .login-option {
+    font-size: 0.55rem;
+  }
+  .login-account .login-btn {
+    margin-top: 1.25rem;
+  }
+  .login-account .login-btn button {
+    font-size: 0.75rem !important;
+    padding: 0.375rem !important;
+  }
+  .form-selected {
+    margin-bottom: 0.125rem !important;
+  }
+  .login-account .ant-select-arrow {
+    top: 0.9375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .login-footer p {
+    font-size: 12px !important;
+    padding-left: 15px !important;
+  }
+  .login-footer img {
+    width: 75px !important;
+    height: 75px !important;
+  }
+  .responsive-dropdown .ant-select-item-option {
+    font-size: 0.65rem !important;
+    padding: 0.25rem 0.5rem !important;
+    line-height: 1.2 !important;
+    min-height: 1.625rem !important;
+  }
+  .responsive-dropdown .ant-select-item-option-content {
+    font-size: 0.65rem !important;
+    line-height: 1.2 !important;
+  }
+  .login-account .login-with {
+    margin-bottom: 5px;
+    font-size: 0.45rem;
+  }
+  .login-account .login-with .login-option {
+    font-size: 0.55rem;
+    margin-right: 2px !important;
+  }
+  .login-account .login-btn {
+    margin-top: 1.05rem;
+    margin-left: 0px !important;
+  }
+}
+
+.login-account .login-form .login-head {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.login-account .login-form .login-head .title {
+  font-size: 2.0625rem;
+  font-weight: 600;
+  padding: 0.25rem;
+  margin-bottom: 0;
+}
+
+.login-account .login-form .login-title {
+  text-align: center;
+  position: relative;
+  /* margin-bottom: 31px; */
+  z-index: 1;
+  display: flex;
+  align-items: center;
+}
+
+.login-account .login-form .login-title:before,
+.login-account .login-form .login-title:after {
+  content: "";
+  height: 1px;
+  flex: 1 1;
+  left: 0;
+  background-color: #e1e1f0;
+  top: 50%;
+  z-index: -1;
+  margin: 0;
+  padding: 0;
+}
+
+.login-account .login-form .login-title span {
+  padding: 0 18px;
+}
+
+.login-account .login-form .secure-input {
+  position: relative;
+}
+
+.login-account .login-form .secure-input .show-pass {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  height: auto;
+  width: 40px;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.login-account .login-form .secure-input .show-pass:after {
+  content: "";
+  height: 2px;
+  width: 24px;
+  background-color: #777777;
+  position: absolute;
+  border-radius: 5px;
+  transform: rotate(15deg);
+  opacity: 0;
+}
+
+.login-account .login-form .secure-input .show-pass.active:after {
+  opacity: 1;
+}
+
+.input-group .search-area .form-control {
+  height: 3rem;
+}
+
+.input-group .search-area .form-control::placeholder {
+  color: var(--bs-card-color);
+}
+
+.ant-menu-light .ant-menu-item-selected {
+  color: #fff !important;
+  background-color: var(--application-base-color);
+
+}
+
+.ant-menu-inline-collapsed > .ant-menu-item .ant-menu-item-icon {
+  font-size: 20px !important;
+}

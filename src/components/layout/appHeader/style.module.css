@@ -1,0 +1,21 @@
+.appheader {
+  background-color: var(--app-header-color);
+  padding: 5px 20px;
+  border-bottom: 1px solid var(--app-header-boder-color);
+}
+
+.loginInfoContainer {
+  background-color: var(--login-info-color);
+  padding: 5px;
+}
+
+.loginInfo {
+  background-color: var(--application-base-color);
+  color: var(--text-white-color);
+  border-color: var(--application-base-color);
+  padding: 2px 4px;
+}
+
+.loginArrow{
+    color: var(--text-white-color);
+}

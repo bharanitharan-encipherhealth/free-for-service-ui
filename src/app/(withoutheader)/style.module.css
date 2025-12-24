@@ -1,0 +1,17 @@
+.loginaccount {
+  padding: 1rem 2.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background-image: url("../../../public/images/auth/back_6.webp");
+  min-height: 100dvh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.logininput {
+  margin-bottom: 1.45rem;
+}
