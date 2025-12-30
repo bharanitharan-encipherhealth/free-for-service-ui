@@ -8,6 +8,8 @@ import {
 } from "redux";
 import type { ThunkMiddleware } from "redux-thunk";
 import { reducer as authReducer } from "./auth";
+import { reducer as tableReducer } from "./table";
+import { reducer as userReducer } from "./tenantadmin/users";
 
 // Import thunk middleware using require to handle module export issues
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -36,6 +38,8 @@ const promiseMiddleware =
 // ✅ Combine reducers
 const rootReducer = combineReducers({
   authReducer: authReducer,
+  tableView: tableReducer,
+  userReducer: userReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

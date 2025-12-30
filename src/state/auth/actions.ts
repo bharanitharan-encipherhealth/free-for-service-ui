@@ -1,3 +1,4 @@
+import { createAction } from "redux-actions";
 import { createActionThunk } from "../../util/redux";
 import * as network from "./network";
 
@@ -29,3 +30,5 @@ export const tinsDropdown = createActionThunk(
   "GET_ALL_TIN_DROPDOWNS",
   network.getAllTinDropdown
 );
+
+export const setRole = createAction("SET_USER_ROLE");

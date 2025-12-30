@@ -1,4 +1,4 @@
-import { notification } from "antd";
+import { notification, Tooltip } from "antd";
 
 import { companyDeatils } from "@/util/config";
 import { salt } from "@/util/config";
@@ -97,4 +97,84 @@ export const getheaderLogo = () => {
     default:
       break;
   }
+};
+
+export const checkWithIncludesKey = (list, key) => {
+  return list?.includes(key);
+};
+
+export const findItemWithTrueOrFalse = (design, key) => {
+  return design?.includes(key);
+};
+
+export const reusableEllipses = ({ str, count }) => {
+  if (Array.isArray(str)) {
+    return (
+      <div className="flex gap-2">
+        {str.map((item, index) => {
+          if (item?.length > count) {
+            return (
+              <Tooltip placement="top" title={item} key={index}>
+                {`${item?.substring(0, count)}...`}
+              </Tooltip>
+            );
+          } else {
+            return <div key={index}>{item}</div>;
+          }
+        })}
+      </div>
+    );
+  } else {
+    if (str?.length > count) {
+      return (
+        <Tooltip placement="top" title={str}>
+          {`${str?.substring(0, count)}...`}
+        </Tooltip>
+      );
+    } else {
+      return str;
+    }
+  }
+};
+
+export const convertToCustomParams = (obj) => {
+  const keys = Object.keys(obj);
+  if (keys.length === 0) return "";
+  const restParams = keys
+    .filter(
+      (key) => obj[key] !== undefined && obj[key] !== null && key != "clientId"
+    )
+    .map((key) => `&${key}=${obj[key]}`)
+    .join("");
+  return restParams;
+};
+
+export const convertToCustomParamsDatePicker = (obj) => {
+  let params = "";
+
+  Object.entries(obj).forEach(([key, value]) => {
+    // let keyValue = key;
+    if (typeof value === "object" && value !== null) {
+      const { startDate, endDate } = value;
+      // if(keyValue == "computedDate"){
+      //   const userRole = getStorage("userRole");
+      //   keyValue = userRole.replace("_", "").toLowerCase()+"CompletedDate";
+      // }
+      if (startDate) {
+        params += `&${key}Start=${startDate}`;
+      }
+
+      if (endDate) {
+        params += `&${key}End=${endDate}`;
+      }
+    }
+  });
+
+  return params;
+};
+
+export const findMatchesByField = (arr1, arr2) => {
+  return arr1?.some((obj1) =>
+    arr2?.some((obj2) => JSON.stringify(obj1) === JSON.stringify(obj2))
+  );
 };

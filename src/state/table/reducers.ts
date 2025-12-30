@@ -1,15 +1,6 @@
 import { combineReducers } from "redux";
 import { handleActions } from "redux-actions";
-import {
-  allRoles,
-  clientDetails,
-  clientId,
-  CurrentUserInfoAction,
-  getMFAValidation,
-  projectDetails,
-  setRole,
-  tinsDropdown,
-} from "./actions";
+import { tabelViewCall } from "./actions";
 import { ReducerType } from "../storeModal";
 
 const initialState: ReducerType = {
@@ -41,7 +32,7 @@ const createReducer = (actionType: any) =>
 
     initialState
   );
-const getUsersDetailsLoading = (type: any) =>
+const getTableLoading = (type: any) =>
   handleActions(
     {
       [type.START]: () => true,
@@ -59,20 +50,10 @@ const localRedux = (action: any) =>
     ""
   );
 const authReducer = combineReducers({
-  allRolesData: createReducer(allRoles),
-  clientDetails: createReducer(clientId),
-  clientDropDown: createReducer(clientDetails),
-  projectDetails: createReducer(projectDetails),
-  CurrentUserInfo: createReducer(CurrentUserInfoAction),
-  tinDetails: createReducer(tinsDropdown),
-  selectedUserRole: localRedux(setRole),
-  // loaders
-  mfaLoader: getUsersDetailsLoading(getMFAValidation),
-  clientDetailsLoading: getUsersDetailsLoading(clientDetails),
-  projectDetailsLoading: getUsersDetailsLoading(projectDetails),
-  roleLoading: getUsersDetailsLoading(allRoles),
-  CurrentUserInfoLoading: getUsersDetailsLoading(CurrentUserInfoAction),
-  tinDetailsLoading: getUsersDetailsLoading(tinsDropdown),
+  tableView: createReducer(tabelViewCall),
+
+  //   loader
+  tableViewLoading: getTableLoading(tabelViewCall),
 });
 
 export default authReducer;

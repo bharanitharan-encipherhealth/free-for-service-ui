@@ -1,16 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f0f6fe;
   --foreground: #171717;
 
   --app-header-color: #ffffff;
   --login-info-color: #3d5262;
-  --application-base-color: #0561fc;
+  --application-base-color: #0942c4;
   --app-header-boder-color: #a8b3bd;
   --text-white-color: #ffff;
 
+  --app-table-secondary1: #5271fa;
+  --app-table-secondary2: #008fca;
+  --app-table-secondary3: #006ddc;
+
   --sidebar-arrow-color: #c8d8e5;
+  --defaultColor: #fff;
+  --tableBorder: #a0a0a0;
+  --opactiy-background : #F0F6FF;
 }
 
 @theme inline {
@@ -28,7 +35,7 @@
 }
 
 body {
-  background: var(--background);
+  /* background: var(--background); */
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -39,19 +46,37 @@ body {
   --foreground: #ededed;
 }
 
-.dark body {
+.dark .content {
   background: var(--background);
   color: var(--foreground);
+  padding: 10px;
+}
+
+.content {
+  background: var(--background);
+  color: var(--foreground);
+  padding: 10px;
 }
 
 .ant-layout-header {
   background-color: #e0ecf7;
 }
 
+.ant-layout-content {
+  background-color: var(--background);
+}
+
+.dark .ant-layout-content {
+  background-color: var(--foreground);
+}
+
 .ant-layout-sider,
 .ant-menu {
-  height: 90vh;
-  background-color: var(--background);
+  height: 90dvh;
+}
+
+.ant-layout-sider {
+  background-color: white;
 }
 
 .select-divider .ant-select-selector {
@@ -640,6 +665,20 @@ img.login-logo {
   opacity: 1;
 }
 
+.btnColor.ant-btn-variant-outlined {
+  background-color: var(--application-base-color);
+  color: var(--defaultColor);
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+
+.btnColor.ant-btn-variant-outlined:disabled {
+  background-color: var(--application-base-color);
+  color: var(--defaultColor);
+  padding: 10px 15px;
+  border-radius: 10px;
+  opacity: 0.5;
+}
 .input-group .search-area .form-control {
   height: 3rem;
 }
@@ -651,9 +690,157 @@ img.login-logo {
 .ant-menu-light .ant-menu-item-selected {
   color: #fff !important;
   background-color: var(--application-base-color);
-
 }
 
 .ant-menu-inline-collapsed > .ant-menu-item .ant-menu-item-icon {
   font-size: 20px !important;
+}
+
+.ant-table-wrapper .ant-table-thead > tr > th {
+  background: none !important;
+  color: white !important;
+}
+
+.ant-table-thead > tr {
+  background: linear-gradient(
+    to right,
+    var(--app-table-secondary1),
+    var(--app-table-secondary2),
+    var(--app-table-secondary3)
+  ) !important;
+  transition: none !important;
+  color: white !important;
+}
+
+.ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th:not(:last-child):not(.ant-table-selection-column):not(
+    .ant-table-row-expand-icon-cell
+  ):not([colspan])::before {
+  background-color: transparent !important;
+}
+
+.ant-drawer .ant-drawer-body {
+  padding: 15px;
+}
+
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+/* Base checkbox size */
+.custom-checkbox .ant-checkbox {
+  width: 15px;
+  height: 15px;
+  position: relative;
+}
+
+/* Remove default inner border and background */
+.custom-checkbox .ant-checkbox-inner {
+  border: none !important;
+  background: transparent !important;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Outer halo */
+.custom-checkbox .ant-checkbox-inner::before {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  background: #e5e7eb;
+  border: 4px solid var(--tableBorder);
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+/* Inner square (unchecked) */
+.custom-checkbox .ant-checkbox-inner::after {
+  content: "✓";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  border: 4px solid var(--app-table-secondary2);
+  background: transparent;
+  transition: all 0.3s ease;
+  z-index: 1;
+  background-color: var(--app-table-secondary2) !important;
+  color: var(--defaultColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+/* Remove default Ant tick icon completely */
+.custom-checkbox .ant-checkbox-inner-icon {
+  display: none;
+}
+
+/* Checked outer halo */
+.custom-checkbox
+  .ant-checkbox.ant-checkbox-checked
+  .ant-checkbox-inner::before {
+  background: var(--app-table-secondary2) !important;
+  border-color: var(--app-table-secondary2) !important;
+  opacity: 0.4;
+  height: 25px;
+  width: 25px;
+}
+
+.pagination-container {
+  margin: 20px 0px 20px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination-container > .p-paginator.p-component {
+  background: transparent !important;
+  margin-right: 20px;
+  gap: 10px;
+}
+.total-pages {
+  color: #999696;
+  font-family: Manrope;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.pagination-container .p-paginator-first,
+.pagination-container .p-paginator-last,
+.pagination-container .p-paginator-next,
+.pagination-container .p-paginator-prev {
+  background-color: var(--defaultColor) !important;
+  padding: 10px;
+  border: 1px solid var(--tableBorder);
+  border-radius: 10px;
+}
+
+.pagination-container .p-paginator-pages {
+  display: flex;
+  gap: 15px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.pagination-container .p-paginator-pages .p-highlight {
+  background-color: var(--application-base-color);
+  color: var(--defaultColor);
+  padding: 10px 15px;
+  border-radius: 10px;
 }

@@ -37,7 +37,7 @@ const LayoutPage = ({ role = "admin", children }: LayoutPageProps) => {
         <Layout>
           <AppSideBar />
 
-          <Content className="bg-white">{children}</Content>
+          <Content>{children}</Content>
         </Layout>
       </Layout>
     </ConfigProvider>

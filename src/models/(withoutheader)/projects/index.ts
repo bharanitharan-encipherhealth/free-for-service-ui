@@ -104,4 +104,6 @@ export interface projectTypes {
   getAllClientDetails: () => Promise<clinetDetailsDropDowntypes>;
   getAllProjects: () => Promise<projectDetailsDropDownTypes>;
   getAllTin: () => Promise<tinDropDownResponseType>;
+  handleRoleDropChange: () => void;
+  setRole: (value: string | undefined) => void;
 }

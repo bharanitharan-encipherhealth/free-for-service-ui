@@ -8,14 +8,15 @@ import { getStorage } from "@/util/storage";
 import { userRolesTypes } from "@/models/(withoutheader)/projects";
 import { PhysicanMenuList, ProviderMenuList } from "@/resuabelFunction/Menu";
 import { usePathname, useRouter } from "next/navigation";
+import { connect } from "react-redux";
+import { appSideBarType } from "@/models/layout/appSideBar";
 
 const { Sider } = Layout;
-function AppSideBar() {
+function AppSideBar({ selectedUserRole }: appSideBarType) {
   const pathName = usePathname();
   const router = useRouter();
   const [collapsed, setCollapsed] = useState<boolean>(true);
   const [menuList, setMenuList] = useState<any>([]);
-  const [userRole, setUserRole] = useState(getStorage("userRole"));
 
   const getRoleMenuList = ({ userRole }) => {
     const allRoles = JSON?.parse(getStorage("userAllRoles"));
@@ -43,16 +44,13 @@ function AppSideBar() {
   };
 
   useEffect(() => {
-    const loginCheck = getStorage("loginCheck");
     const userRoleAlias = getStorage("headerAliasName");
-    if (!userRole || !userRoleAlias) {
+    if (!selectedUserRole || !userRoleAlias) {
       return;
     }
-    const menu = getRoleMenuList({ userRole });
+    const menu = getRoleMenuList({ userRole: selectedUserRole });
     setMenuList(menu);
-  }, [userRole, pathName]);
-
-  console.log(menuList, "menuList");
+  }, [selectedUserRole, pathName]);
 
   return (
     <div className={`${style.appSideBar}`}>
@@ -80,4 +78,8 @@ function AppSideBar() {
   );
 }
 
-export default memo(AppSideBar);
+const connector = connect((state: {authReducer: appSideBarType}) => ({
+  selectedUserRole: state?.authReducer?.selectedUserRole,
+}));
+
+export default memo(connector(AppSideBar));

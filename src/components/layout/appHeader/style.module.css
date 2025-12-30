@@ -11,7 +11,6 @@
 
 .loginInfo {
   background-color: var(--application-base-color);
-  color: var(--text-white-color);
   border-color: var(--application-base-color);
   padding: 2px 4px;
 }
