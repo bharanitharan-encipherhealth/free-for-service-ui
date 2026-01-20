@@ -6,9 +6,9 @@ import { connect } from "react-redux";
 import { UserAssignModalType, UserListType } from "@/models/tenantadmin/users";
 import { actions as usersAction } from "@/state/tenantadmin/users";
 import styles from "../style.module.css";
-import tableViewType from "@/state/tenantadmin/users/model";
 import { getStorage } from "@/util/storage";
 import { getResponePopup } from "@/util/reusableFunction";
+import UserReducerType from "@/state/tenantadmin/users/model";
 
 function UserAssignModal({
   openSelectUser,
@@ -153,8 +153,7 @@ function UserAssignModal({
   }, [userAssignRoleModal]);
 
   useEffect(() => {
-    if (openSelectUser) 
-       getAlllUser();
+    if (openSelectUser) getAlllUser();
   }, [openSelectUser]);
   return (
     <>
@@ -336,7 +335,7 @@ function UserAssignModal({
 }
 
 const connector = connect(
-  (state: { userReducer: tableViewType }) => ({
+  (state: { userReducer: UserReducerType }) => ({
     allRoleData: state?.userReducer?.alluserRoleList?.data?.response?.content,
     allRoleDataLoading: state?.userReducer?.alluserRoleList?.loading,
     allUserListLoading: state?.userReducer?.allUserList?.loading,

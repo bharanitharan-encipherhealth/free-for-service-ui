@@ -3,17 +3,23 @@ import { IoIosArrowDown } from "react-icons/io";
 
 import style from "../style.module.css";
 import authTypes from "@/state/auth/model";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { projectTypes } from "@/models/(withoutheader)/projects";
 import { Dropdown, MenuProps } from "antd";
 import { getStorage } from "@/util/storage";
-function HeaderProfile({ allRolesData, handleRoleDropChange }: projectTypes) {
+
+type headerReduxtype = ConnectedProps<typeof connector>;
+type HeaderProfilePropsType = {
+  handleRoleDropChange: ({ key }: { key: string }) => void;
+} & headerReduxtype;
+function HeaderProfile({
+  allRolesData,
+  handleRoleDropChange,
+}: HeaderProfilePropsType) {
   const role = getStorage("aliasName");
   const roleId = getStorage("proxyRole");
   const firstNameInitial = allRolesData?.firstName?.charAt(0) || " ";
   const secondNameInitial = allRolesData?.lastName?.charAt(0) || " ";
-
-  console.log(allRolesData?.userRoles, "proxyRole");
 
   const setRollDropDown = () => {
     return allRolesData?.userRoles?.map((item) => ({

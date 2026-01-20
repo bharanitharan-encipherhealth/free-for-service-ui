@@ -1,3 +1,4 @@
+"use client";
 import { memo, useEffect, useState } from "react";
 
 import { Layout, Menu } from "antd";
@@ -6,7 +7,11 @@ import { FaAnglesRight } from "react-icons/fa6";
 import style from "./style.module.css";
 import { getStorage } from "@/util/storage";
 import { userRolesTypes } from "@/models/(withoutheader)/projects";
-import { PhysicanMenuList, ProviderMenuList } from "@/resuabelFunction/Menu";
+import {
+  MenuItem,
+  PhysicanMenuList,
+  ProviderMenuList,
+} from "@/resuabelFunction/Menu";
 import { usePathname, useRouter } from "next/navigation";
 import { connect } from "react-redux";
 import { appSideBarType } from "@/models/layout/appSideBar";
@@ -16,11 +21,10 @@ function AppSideBar({ selectedUserRole }: appSideBarType) {
   const pathName = usePathname();
   const router = useRouter();
   const [collapsed, setCollapsed] = useState<boolean>(true);
-  const [menuList, setMenuList] = useState<any>([]);
+  const [menuList, setMenuList] = useState<MenuItem[]>([]);
 
-  const getRoleMenuList = ({ userRole }) => {
+  const getRoleMenuList = ({ userRole }: { userRole: string }) => {
     const allRoles = JSON?.parse(getStorage("userAllRoles"));
-    console.log(allRoles, "allRoles");
     const selectedRoleObj = allRoles?.find(
       (res: userRolesTypes) => res.proxyRole === userRole
     );
@@ -78,7 +82,7 @@ function AppSideBar({ selectedUserRole }: appSideBarType) {
   );
 }
 
-const connector = connect((state: {authReducer: appSideBarType}) => ({
+const connector = connect((state: { authReducer: appSideBarType }) => ({
   selectedUserRole: state?.authReducer?.selectedUserRole,
 }));
 

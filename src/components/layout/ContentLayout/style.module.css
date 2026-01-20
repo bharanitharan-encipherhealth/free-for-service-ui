@@ -15,7 +15,14 @@
 }
 
 .tableCheckBox {
-  border: 1px solid #A8B3BD;
+  border: 1px solid #a8b3bd;
   padding: 8px 8px;
+  border-radius: 10px;
+}
+
+.leftArrow {
+  background-color: var(--application-base-color);
+  color: var(--defaultColor);
+  padding: 10px;
   border-radius: 10px;
 }

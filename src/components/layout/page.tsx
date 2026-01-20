@@ -1,6 +1,7 @@
 "use client";
 
-import {  useMemo } from "react";
+import type { ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Layout, ConfigProvider, theme as antdTheme } from "antd";
 import { useTheme } from "./theme-provider";
 import AppHeader from "./appHeader/page";
@@ -10,12 +11,17 @@ const { Content } = Layout;
 
 interface LayoutPageProps {
   role?: "admin" | "reviewer" | "owner";
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-const LayoutPage = ({ role = "admin", children }: LayoutPageProps) => {
+const LayoutPage = ({ children }: LayoutPageProps) => {
   const { theme } = useTheme();
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   // Memoize theme config to prevent recreation on every render
   const themeConfig = useMemo(
     () => ({
@@ -29,15 +35,16 @@ const LayoutPage = ({ role = "admin", children }: LayoutPageProps) => {
     [theme]
   );
 
+  if (!mounted) return null;
+
   return (
     <ConfigProvider theme={themeConfig}>
-      <Layout className="min-h-screen">
+      <Layout className="h-screen overflow-hidden">
         <AppHeader />
 
         <Layout>
           <AppSideBar />
-
-          <Content>{children}</Content>
+          <Content className="overflow-auto">{children}</Content>
         </Layout>
       </Layout>
     </ConfigProvider>

@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import { handleActions } from "redux-actions";
-import { getRole, getUsers } from "./actions";
+import { getRole, getUsers, userEditRoles } from "./actions";
 import { ReducerType } from "../../storeModal";
 
 const initialState: ReducerType = {
@@ -51,9 +51,10 @@ const localRedux = (action: any) =>
   );
 const userReducer = combineReducers({
   allUserList: createReducer(getUsers),
-  allUserLoading: localRedux(getUsers),
+  allUserLoading: getUserLoading(getUsers),
   alluserRoleList: createReducer(getRole),
-  alluserRoleLoading: localRedux(getRole),
+  alluserRoleLoading: getUserLoading(getRole),
+  userRoleEditLoading: getUserLoading(userEditRoles),
 });
 
 export default userReducer;

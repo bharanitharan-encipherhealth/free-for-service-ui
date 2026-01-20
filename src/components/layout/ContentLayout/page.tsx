@@ -1,12 +1,13 @@
 "use client";
 import { IoFilterSharp } from "react-icons/io5";
 import style from "./style.module.css";
-import { Button, Checkbox, Drawer, Input, Popover } from "antd";
-import { useCallback } from "react";
+import { Button, Checkbox, Drawer, Input, Popover, Tooltip } from "antd";
+import { useCallback, useMemo } from "react";
 import { metaDataType } from "@/state/table/model";
 import { CiSearch } from "react-icons/ci";
 import { connect } from "react-redux";
-import tableViewType from "@/state/tenantadmin/users/model";
+import { UserContentType } from "@/models/tenantadmin/users";
+import { allocationRolesType } from "@/models/tenantadmin/productivity/page";
 
 const Search = Input;
 
@@ -21,81 +22,101 @@ function ContentLayout({
   handleInsert,
   tabelData,
   setTableCustomization,
+  tabList,
 }: {
-  activeFilters: metaDataType[];
-  setActiveFilters: React.Dispatch<React.SetStateAction<metaDataType[]>>;
-  pageTitle: string;
-  layoutList: {
+  activeFilters?: metaDataType[];
+  setActiveFilters?: React.Dispatch<React.SetStateAction<metaDataType[]>>;
+  pageTitle?: string;
+  layoutList?: {
     isFilter?: boolean;
     data?: metaDataType[];
     isBtn?: boolean;
     btnTitle?: string;
     onClick?: () => void;
+    loading: boolean;
+    disable?: boolean;
+    toolTip?: string;
+    isToolTip?: boolean;
   }[];
-  tableCustomization: boolean;
-  tableCustomizationData: metaDataType[];
-  setSelectedColumns: React.Dispatch<React.SetStateAction<metaDataType[] | []>>;
-  handleInsert: ({ data }: { data: string[] }) => void;
+  tableCustomization?: boolean;
+  tableCustomizationData?: metaDataType[];
+  setSelectedColumns?: React.Dispatch<
+    React.SetStateAction<metaDataType[] | []>
+  >;
+  handleInsert?: ({ data }: { data: string[] }) => void;
   tabelData: metaDataType[];
-  setTableCustomization: React.Dispatch<React.SetStateAction<boolean>>;
+  setTableCustomization?: React.Dispatch<React.SetStateAction<boolean>>;
+  tabList?: {
+    isTab: boolean;
+    tabList: { lable: string; value: string }[];
+    loading?: boolean;
+    activeTab: string;
+    onClick: ({ item }: { item: { lable: string; value: string } }) => void;
+  };
 }) {
   const handleTabelCustomizationRest = useCallback(() => {
-    setSelectedColumns(tabelData);
+    if (setSelectedColumns) setSelectedColumns(tabelData);
   }, [tabelData, setSelectedColumns]);
 
   const onCLickInsert = useCallback(() => {
-    const data = tableCustomizationData
-      ?.filter((item) => item.active && item.columnActive)
-      .map((item) => item.actualField);
-    handleInsert({ data });
+    if (tableCustomizationData) {
+      const data = tableCustomizationData
+        ?.filter((item) => item.active && item.columnActive)
+        .map((item) => item.actualField);
+      if (handleInsert) handleInsert({ data });
+    }
   }, [tableCustomizationData, handleInsert]);
 
   const handleSelectClearAll = useCallback(
     ({ status }: { status: boolean }) => {
-      setSelectedColumns((prev) =>
-        prev.map((item) => ({
-          ...item,
-          active: status,
-        }))
-      );
+      if (setSelectedColumns)
+        setSelectedColumns((prev) =>
+          prev.map((item) => ({
+            ...item,
+            active: status,
+          }))
+        );
     },
     [setSelectedColumns]
   );
 
   const handleSelectedColumn = useCallback(
     ({ item }: { item: metaDataType }) => {
-      setSelectedColumns((prev: metaDataType[] | []) => {
-        const updated = prev.map((col) => {
-          if (col.actualField === item?.actualField) {
-            if (col.active) {
-              return { ...col, active: false, order: null };
+      if (setSelectedColumns)
+        setSelectedColumns((prev: metaDataType[] | []) => {
+          const updated = prev.map((col) => {
+            if (col.actualField === item?.actualField) {
+              if (col.active) {
+                return { ...col, active: false, order: null };
+              }
+              return { ...col, active: true };
             }
-            return { ...col, active: true };
-          }
-          return col;
-        });
-        const activeCols = updated
-          .filter((col) => col.active && col.actualField !== item?.actualField)
-          .sort((a, b) => a?.orderValue - b?.orderValue);
+            return col;
+          });
+          const activeCols = updated
+            .filter(
+              (col) => col.active && col.actualField !== item?.actualField
+            )
+            .sort((a, b) => a!.orderValue! - b!.orderValue!);
 
-        const clickedActive = updated.find(
-          (col) => col.actualField === item?.actualField && col.active
-        );
-        if (clickedActive) activeCols.push(clickedActive);
-
-        return updated.map((col) => {
-          if (!col.active) return { ...col, order: null };
-          const idx = activeCols.findIndex(
-            (c) => c.actualField === col.actualField
+          const clickedActive = updated.find(
+            (col) => col.actualField === item?.actualField && col.active
           );
-          return { ...col, orderValue: idx + 1 };
+          if (clickedActive) activeCols.push(clickedActive);
+
+          return updated.map((col) => {
+            if (!col.active) return { ...col, order: null };
+            const idx = activeCols.findIndex(
+              (c) => c.actualField === col.actualField
+            );
+            return { ...col, orderValue: idx + 1 };
+          });
         });
-      });
     },
     [setSelectedColumns]
   );
 
-  const handleTableCustomization = useCallback(() => {
+  const handleTableCustomization = useMemo(() => {
     if (tableCustomizationData) {
       return (
         <>
@@ -172,19 +193,21 @@ function ContentLayout({
 
   const handleFilterStatusChange = useCallback(
     ({ item }: { item: metaDataType }) => {
-      setActiveFilters((prev: metaDataType[]) =>
-        prev.map((x) =>
-          x.headerName === item.headerName ? { ...x, active: !x.active } : x
-        )
-      );
+      if (setActiveFilters)
+        setActiveFilters((prev: metaDataType[]) =>
+          prev.map((x) =>
+            x.headerName === item.headerName ? { ...x, active: !x.active } : x
+          )
+        );
     },
     [setActiveFilters]
   );
 
   const handleReset = useCallback(() => {
-    setActiveFilters((prev: metaDataType[]) =>
-      prev.map((item) => ({ ...item, active: true }))
-    );
+    if (setActiveFilters)
+      setActiveFilters((prev: metaDataType[]) =>
+        prev.map((item) => ({ ...item, active: true }))
+      );
   }, [setActiveFilters]);
 
   const filterPopupContent = useCallback(() => {
@@ -221,59 +244,99 @@ function ContentLayout({
   return (
     <>
       <div
-        className={`${style?.contentLayout} h-[53px] px-2 text-lg flex items-center justify-between`}
+        className={`${style?.contentLayout} h-[53px] px-2  flex items-center justify-between font-semibold`}
       >
-        <div className="flex items-center ">
-          <div className={`${style?.pageTitle} font-semibold`}>{pageTitle}</div>
+        <div className="flex items-center gap-3">
+          <div className={`${style?.pageTitle}  text-lg`}>{pageTitle}</div>
+
+          {tabList?.isTab && (
+            <div className="flex gap-4 contentTab text-xs items-center">
+              {tabList?.tabList?.map((item, index) => (
+                <div
+                  key={index}
+                  onClick={() => tabList?.onClick({ item: item })}
+                  className={
+                    tabList?.activeTab == item?.value
+                      ? "activeContentTab cursor-pointer"
+                      : "cursor-pointer"
+                  }
+                >
+                  {item?.lable}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex gap-2">
-          {layoutList.map((item, index) => {
-            if (item?.isFilter) {
-              return (
-                <Button key={index} className={style.headerBtnColor}>
-                  <Popover
-                    placement="bottom"
-                    content={filterPopupContent}
-                    trigger={"click"}
+          {layoutList &&
+            layoutList.map((item, index) => {
+              if (item?.isFilter) {
+                return (
+                  <Button
+                    key={index}
+                    className={`${style.headerBtnColor} no-loading-icon`}
+                    disabled={item?.loading}
                   >
-                    <IoFilterSharp className="font-bold text-lg" />
-                  </Popover>
-                </Button>
-              );
-            }
+                    <Popover
+                      placement="bottom"
+                      content={filterPopupContent()}
+                      trigger={["click"]}
+                    >
+                      <IoFilterSharp className="font-bold text-lg" />
+                    </Popover>
+                  </Button>
+                );
+              }
 
-            if (item?.isBtn) {
-              return (
-                <Button
-                  key={index}
-                  className={style.headerBtnColor}
-                  onClick={() => {
-                    if (item?.onClick) item?.onClick();
-                  }}
-                >
-                  {item.btnTitle}
-                </Button>
-              );
-            }
-          })}
+              if (item?.isToolTip) {
+                return (
+                  <Tooltip title={item?.toolTip || ""} key={index}>
+                    <Button
+                      className={`${style.headerBtnColor} no-loading-icon`}
+                      onClick={() => {
+                        if (item?.onClick) item?.onClick();
+                      }}
+                      disabled={item?.disable || item?.loading}
+                    >
+                      {item.btnTitle}
+                    </Button>
+                  </Tooltip>
+                );
+              }
+
+              if (item?.isBtn) {
+                return (
+                  <Button
+                    key={index}
+                    className={`${style.headerBtnColor}`}
+                    onClick={() => {
+                      if (item?.onClick) item?.onClick();
+                    }}
+                    disabled={item?.disable || item?.loading}
+                  >
+                    {item.btnTitle}
+                  </Button>
+                );
+              }
+            })}
         </div>
       </div>
 
       <Drawer
         open={tableCustomization}
-        onClose={() => setTableCustomization(false)}
+        onClose={() => setTableCustomization && setTableCustomization(false)}
         title="Table Customization"
       >
-        {handleTableCustomization()}
+        {handleTableCustomization}
       </Drawer>
     </>
   );
 }
 
 const connector = connect(
-  (state: { tableView: tableViewType }) => ({
-    tabelData: state?.tableView?.tableView?.data?.response?.metaDataDTO,
+  (state: { tableView: metaDataType[] }) => ({
+    tabelData: state?.tableView,
   }),
   {}
 );

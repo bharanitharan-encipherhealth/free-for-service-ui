@@ -1,15 +1,15 @@
+"use client";
 import { Select } from "antd";
 import { IoSettingsOutline } from "react-icons/io5";
 import { GoBell } from "react-icons/go";
 
 import { getheaderLogo, getResponePopup } from "@/util/reusableFunction";
 import style from "./style.module.css";
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import authTypes from "@/state/auth/model";
 import {
   projectTypes,
-  roleTypes,
   userRolesTypes,
 } from "@/models/(withoutheader)/projects";
 import { getStorage, setStorage } from "@/util/storage";
@@ -58,8 +58,6 @@ function AppHeader({
   const getRolesApi = async () => {
     try {
       const response = await getAllRoles();
-      console.log(response, "response");
-
       if (response?.status !== "SUCCESS") {
         getResponePopup(response);
       }
@@ -167,7 +165,7 @@ function AppHeader({
       const userRoles = res?.response?.userRoles;
       setStorage("userAllRoles", res?.response?.userRoles);
       if (isRolePreset({ userRoles })) {
-        handleSameRole({ key: userRole });
+        handleRoleDropChange({ key: userRole });
         return true;
       } else {
         return false;
@@ -175,7 +173,7 @@ function AppHeader({
     }
   };
 
-  const handleChangeClient = async ({ e }) => {
+  const handleChangeClient = async ({ e }: { e: string }) => {
     const previousClient = getStorage("client");
     setStorage("client", e);
     const res = await getAllProjects();
@@ -199,7 +197,7 @@ function AppHeader({
     }
   };
 
-  const handleChangeProject = async ({ e }) => {
+  const handleChangeProject = async ({ e }: { e: string }) => {
     setStorage("project", e);
     setSelectedProject(e);
     await handleRoleCheck();

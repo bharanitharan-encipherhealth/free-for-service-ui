@@ -1,14 +1,20 @@
-import { metaDTOType, tableApiParamsType } from "@/state/table/model";
+import {
+  metaDTOType,
+  OtherTableType,
+  pageableType,
+  tableApiParamsType,
+  tableCustomizationResposnetype,
+} from "@/state/table/model";
 
-export interface AuthorizedProject {
+export interface AuthorizedProjectType {
   projectId: string;
   roles: string[];
   active: boolean;
 }
 
-export interface AuthorizedDetail {
+export interface AuthorizedDetailType {
   clientId: string;
-  projects: AuthorizedProject[];
+  projects: AuthorizedProjectType[];
 }
 
 export interface roleWiseStatusCountType {
@@ -23,7 +29,7 @@ export interface roleWiseStatusCountType {
   queried: number;
 }
 
-export interface contentType {
+export interface UserContentType {
   createdDate: string;
   lastModifiedDate?: string | null;
   active: boolean;
@@ -60,7 +66,7 @@ export interface contentType {
   organizationDTO?: unknown | null;
   roleId?: string | null;
   roleWiseStatusCount?: roleWiseStatusCountType[];
-  authorizedDetails?: AuthorizedDetail[];
+  authorizedDetails?: AuthorizedDetailType[];
   orgBasedUserStrategy: boolean;
   ssoEnabled: boolean;
   roleNames?: string[] | null;
@@ -70,44 +76,18 @@ export interface contentType {
   mfaEnabled: boolean;
 }
 
-export interface sorType {
-  sorted: boolean;
-  empty: boolean;
-  unsorted: boolean;
-}
-export interface pageableType {
-  pageNumber: number;
-  pageSize: number;
-  sort: sorType;
-  offset: number;
-  paged: boolean;
-  unpaged: false;
-}
-
-export interface userOtherTableType {
-  last: boolean;
-  totalPages: number;
-  totalElements: number;
-  first: boolean;
-  size: number;
-  number: number;
-  sort: sorType;
-  numberOfElements: number;
-  empty: boolean;
-}
-
-export interface tableContentType extends userOtherTableType {
-  content: contentType[];
+export interface tableContentType extends OtherTableType {
+  content: UserContentType[];
   pageable: pageableType;
 }
 
-export interface pageResponseType extends metaDTOType {
+export interface UserPageResponseType extends metaDTOType {
   pageResponse: tableContentType;
 }
 export interface userTabelType {
   message: string;
   status: string;
-  response: pageResponseType;
+  response: UserPageResponseType;
 }
 
 export interface userEnableType {
@@ -119,13 +99,13 @@ export interface userEnableType {
 export interface userEnableResponseType {
   message: string;
   status: string;
-  response: contentType;
+  response: UserContentType;
 }
 
-export interface tableCustomizationResposnetype {
+export interface UserEditRolesResposneType {
   message: string;
   status: string;
-  response: string;
+  response: UserContentType;
 }
 
 export interface userPropsType {
@@ -137,13 +117,20 @@ export interface userPropsType {
   }: {
     data: userEnableType;
   }) => Promise<userEnableResponseType>;
-  tabelData: pageResponseType;
+  tabelData: UserPageResponseType;
   tableLoader: boolean;
   tableCustomizationCall: ({
     payload,
   }: {
     payload: { pageId: string; headerNames: string[] };
   }) => Promise<tableCustomizationResposnetype>;
+  allRoles: userContentType[];
+  getAllRole: () => Promise<getAllUserRoleListType>;
+  setUserEditRoles: (data: {
+    userName: string;
+    roles: string[] | null;
+  }) => Promise<UserEditRolesResposneType>;
+  editUsersLoader: boolean;
 }
 
 export interface UserListType {
@@ -158,7 +145,7 @@ export interface UserListType {
 export interface getAllUserType {
   message: string;
   status: string;
-  response: contentType[];
+  response: UserContentType[];
 }
 
 export interface userContentType {
@@ -169,7 +156,7 @@ export interface userContentType {
   accessList: null;
 }
 
-export interface getAllUserRoleContetType extends userOtherTableType {
+export interface getAllUserRoleContetType extends OtherTableType {
   content: userContentType[];
   pageable: pageableType;
 }
@@ -193,7 +180,7 @@ export interface assignUserPayloadType {
 export interface assignUserResponse {
   message: string;
   status: string;
-  response: contentType[];
+  response: UserContentType[];
 }
 export interface UserAssignModalType {
   openSelectUser: boolean;

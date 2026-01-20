@@ -55,3 +55,17 @@ export const usersAssignedList = async ({
   const res = await requestPortal(`${url}`, options);
   return res;
 };
+
+export const editRoles = async (data: {
+  userName: string;
+  roles: string[] | null;
+}) => {
+  const url = `dbservice/mci/user/edit-role`;
+  const options = {
+    method: "POST",
+    body: JSON.stringify(data),
+  };
+
+  const res = await requestPortal(`${url}`, options);
+  return res;
+};

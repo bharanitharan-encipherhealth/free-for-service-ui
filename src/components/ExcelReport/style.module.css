@@ -1,0 +1,182 @@
+/* VirtualizedExcel Component Styles */
+
+.excelContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+}
+
+.noDataContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: var(--excel-text-muted);
+}
+
+.dataContainer {
+  height: 100%;
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--excel-border-color);
+  border-top: none;
+}
+
+/* Header Row Styles */
+.excelHeaderRow {
+  display: flex;
+  border-bottom: 2px solid var(--excel-border-color);
+  border-top: 1px solid var(--excel-border-color);
+  background-color: var(--excel-header-bg);
+  align-items: stretch;
+  cursor: default;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  z-index: auto;
+  position: relative;
+  min-height: 35px;
+}
+
+.excelHeaderCell {
+  flex: 1;
+  padding: 6px 8px;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  border-right: 1px solid var(--excel-border-color);
+  border-left: 1px solid var(--excel-border-color);
+  font-size: 12px;
+  min-width: 100px;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  line-height: 1.4;
+  font-weight: bold;
+  background-color: var(--excel-header-bg);
+  transition: none;
+  transform: none;
+  z-index: auto;
+}
+
+/* Data Row Styles */
+.excelRow {
+  display: flex;
+  border-bottom: 1px solid var(--excel-border-color);
+  background-color: var(--excel-row-bg);
+  align-items: stretch;
+  cursor: default;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  z-index: auto;
+  position: relative;
+  min-height: 35px;
+}
+
+.excelCell {
+  flex: 1;
+  padding: 6px 8px;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  border-right: 1px solid var(--excel-border-color);
+  border-left: 1px solid var(--excel-border-color);
+  font-size: 12px;
+  min-width: 100px;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  line-height: 1.4;
+  font-weight: normal;
+  background-color: transparent;
+  transition: none;
+  transform: none;
+  z-index: auto;
+}
+
+/* Fallback Row Styles (for non-virtualized rendering) */
+.fallbackRow {
+  display: flex;
+  border-bottom: 1px solid var(--excel-border-color);
+  background-color: var(--excel-row-bg);
+  align-items: stretch;
+  min-height: 35px;
+  cursor: default;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.fallbackCell {
+  flex: 1;
+  padding: 6px 8px;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  border-right: 1px solid var(--excel-border-color);
+  border-left: 1px solid var(--excel-border-color);
+  font-size: 12px;
+  min-width: 100px;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  line-height: 1.4;
+  font-weight: normal;
+  background-color: transparent;
+  transition: none;
+  transform: none;
+  z-index: auto;
+}
+
+/* Pagination Styles */
+.paginationContainer {
+  padding: 16px;
+  border-top: 1px solid var(--excel-pagination-border);
+  background-color: var(--excel-pagination-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.paginationSelect {
+  width: 100px;
+  z-index: 1000;
+}
+
+/* Global Hover Effects Override */
+.excelContainer :global(.excel-cell:hover) {
+  transform: none !important;
+  z-index: auto !important;
+  box-shadow: none !important;
+  background-color: inherit !important;
+}
+
+.excelContainer :global(.excel-row:hover) {
+  transform: none !important;
+  z-index: auto !important;
+  box-shadow: none !important;
+}
+
+/* Ant Design Select Dropdown Override */
+.excelContainer :global(.ant-select-dropdown) {
+  z-index: 10000 !important;
+}
+
+.excelContainer :global(.ant-select-dropdown-menu) {
+  z-index: 10000 !important;
+}
+
+.excelContainer :global(.ant-select-dropdown-menu-item) {
+  z-index: 10000 !important;
+}

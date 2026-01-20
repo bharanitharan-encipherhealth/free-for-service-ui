@@ -17,7 +17,23 @@
   --sidebar-arrow-color: #c8d8e5;
   --defaultColor: #fff;
   --tableBorder: #a0a0a0;
-  --opactiy-background : #F0F6FF;
+  --opactiy-background: #f0f6ff;
+  --tab-background-color: #f3f3f4;
+
+  --excel-error-color: #ff4d4f;
+  --excel-text-muted: #999;
+  --excel-text-secondary: #666;
+  --excel-border-color: #d9d9d9;
+  --excel-header-bg: #f5f5f5;
+  --excel-row-bg: #ffffff;
+  --excel-pagination-bg: #fafafa;
+  --excel-pagination-border: #e8e8e8;
+  --excel-white: #ffffff;
+
+  --processed-bg-color: #00a2d6;
+  --processing-bg-color: #5271fa;
+  --not-processed-bg-color: #7e5cad;
+  --failed-bg-color: #7e5cad;
 }
 
 @theme inline {
@@ -800,6 +816,84 @@ img.login-logo {
   width: 25px;
 }
 
+.custom-table-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+/* Base checkbox size */
+.custom-table-checkbox .ant-checkbox {
+  width: 18px;
+  height: 18px;
+  position: relative;
+  background-color: var(--defaultColor);
+  border: 2px solid var(--tableBorder);
+}
+
+/* Remove default inner border and background */
+.custom-table-checkbox .ant-checkbox-inner {
+  border: none !important;
+  background: transparent !important;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Outer halo */
+.custom-table-checkbox .ant-checkbox-inner::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  background: #e5e7eb;
+  border: 0px solid var(--app-header-boder-color);
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+/* Inner square (unchecked) */
+.custom-table-checkbox .ant-checkbox-inner::after {
+  content: "✓";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  border: 4px solid var(--app-table-secondary3);
+  background: transparent;
+  transition: all 0.3s ease;
+  z-index: 1;
+  background-color: var(--app-table-secondary3) !important;
+  color: var(--defaultColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+/* Remove default Ant tick icon completely */
+.custom-table-checkbox .ant-checkbox-inner-icon {
+  display: none;
+}
+
+/* Checked outer halo */
+.custom-table-checkbox
+  .ant-checkbox.ant-checkbox-checked
+  .ant-checkbox-inner::before {
+  background: var(--defaultColor) !important;
+  border-color: var(--defaultColor) !important;
+  opacity: 0.4;
+  height: 25px;
+  width: 25px;
+}
+
 .pagination-container {
   margin: 20px 0px 20px 0px;
   display: flex;
@@ -843,4 +937,83 @@ img.login-logo {
   color: var(--defaultColor);
   padding: 10px 15px;
   border-radius: 10px;
+}
+
+.default-filter-size {
+  width: 220px;
+}
+
+.new-search {
+  height: 30px !important;
+  border-radius: 10px !important;
+}
+
+.custom-range-picker {
+  height: 30px !important;
+  border-radius: 10px !important;
+  margin: 12px 0px;
+}
+
+.custom-react-select-audit {
+  margin: 12px 0px !important;
+  height: 30px !important;
+  width: 100% !important;
+}
+
+.ant-select-single .ant-select-selector {
+  border-radius: 10px !important;
+}
+
+.editIcon {
+  background-color: var(--app-table-secondary3);
+  color: var(--defaultColor);
+  width: fit-content;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.ant-select-outlined.ant-select-multiple .ant-select-selection-item {
+  background-color: var(--opactiy-background);
+  color: var(--application-base-color);
+}
+
+.react-icon-spin {
+  display: inline-block;
+  animation: reactIconSpin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+@keyframes reactIconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.contentTab {
+  background-color: var(--tab-background-color);
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.activeContentTab {
+  background-color: var(--defaultColor);
+  padding: 5px 8px;
+  border-radius: 10px;
+}
+
+.custom-react-select-audit.multiSelect {
+  margin: 0px 0px !important;
+  height: 30px !important;
+  width: 100% !important;
+}
+
+.patient-status {
+  border: 2px solid var(--app-header-boder-color);
+  padding: 2px;
+  border-radius: 20px;
+  width: 130px;
 }

@@ -40,8 +40,8 @@ export interface projectDetailsDropDownTypes {
 
 export interface accessListForPanel1 {
   title: string;
-  tabMenuList: string[] | [];
-  tabMenuList2: string[] | [];
+  tabMenuList: string[];
+  tabMenuList2: string[];
   active: boolean;
 }
 export interface panelListType {
@@ -104,6 +104,8 @@ export interface projectTypes {
   getAllClientDetails: () => Promise<clinetDetailsDropDowntypes>;
   getAllProjects: () => Promise<projectDetailsDropDownTypes>;
   getAllTin: () => Promise<tinDropDownResponseType>;
-  handleRoleDropChange: () => void;
+  handleRoleDropChange: ({ key }: { key: string }) => void;
   setRole: (value: string | undefined) => void;
 }
+
+

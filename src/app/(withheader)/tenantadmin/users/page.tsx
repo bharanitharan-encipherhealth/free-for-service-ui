@@ -7,13 +7,26 @@ import { actions as tableAction } from "@/state/table";
 import { actions as usersAction } from "@/state/tenantadmin/users";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { assignUserPageId } from "@/util/pageIds";
-import tableViewType from "@/state/tenantadmin/users/model";
-import { userPropsType } from "@/models/tenantadmin/users";
+import {
+  UserContentType,
+  userPropsType,
+  userTabelType,
+} from "@/models/tenantadmin/users";
 import ReusabelTable from "@/components/ReusabelTable";
-import { metaDataType, SortType } from "@/state/table/model";
-import { findMatchesByField } from "@/util/reusableFunction";
+import TableViewType, { metaDataType, SortType } from "@/state/table/model";
+import {
+  CreateIdGens,
+  findItemWithTrueKey,
+  findMatchesByField,
+  getResponePopup,
+} from "@/util/reusableFunction";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
-import UserAssignModal from "@/components/users/assignUserModal";
+import UserAssignModal from "@/components/tenantadmin/users/assignUserModal";
+import ReusableFilters from "@/components/ReusbaleFilter";
+
+import { getStorage } from "@/util/storage";
+import { Button, Select } from "antd";
+import UserReducerType from "@/state/tenantadmin/users/model";
 
 function Users({
   getTableView,
@@ -21,7 +34,12 @@ function Users({
   tabelData,
   tableLoader,
   tableCustomizationCall,
+  allRoles,
+  getAllRole,
+  setUserEditRoles,
+  editUsersLoader,
 }: userPropsType) {
+  const aliasName = getStorage("aliasName");
   const [sort, setSort] = useState<SortType>({
     allocatedOn: {
       sortDir: "DESC",
@@ -36,10 +54,11 @@ function Users({
       sortField: "processedDate",
     },
   });
-  const [searchText, setSearchText] = useState(null);
+
+  const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [selectedOption, setSelectedOption] = useState({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
-  const [selectedDates, setSelectedDates] = useState([]);
+  const [selectedDates, setSelectedDates] = useState({});
   const [pageNo, setPageNo] = useState(0);
   const [pageSize, setPageSize] = useState(15);
   const [paginationFirst, setPaginationFirst] = useState(0);
@@ -53,21 +72,38 @@ function Users({
   const [selectedColumns, setSelectedColumns] = useState<metaDataType[]>([]);
 
   const [assignUserModal, setAssignUserModal] = useState<boolean>(false);
+
+  const [selectedItem, setSelectedItem] = useState<string>("");
+
+  const [selectedRole, setSelectedRole] = useState<string[] | null>(null);
+
+  const [visiblePopoverKey, setVisiblePopoverKey] = useState<boolean | string>(
+    ""
+  );
+
+  const [editingUser, setEditingUser] = useState<UserContentType | null>(null);
+
+  const [selectedRoleList, setSelectedRoleList] = useState<string[] | null>(
+    null
+  );
   const layoutList = useMemo(
     () => [
       {
         isFilter: true,
         data: tabelData?.metaDataDTO,
+        loading: tableLoader,
       },
       {
         isBtn: true,
         btnTitle: "Table Customization",
         onClick: () => setTableCustomization(!tableCustomization),
+        loading: tableLoader,
       },
       {
         isBtn: true,
         btnTitle: "Assign User",
         onClick: () => setAssignUserModal(!assignUserModal),
+        loading: tableLoader,
       },
     ],
     [
@@ -76,8 +112,13 @@ function Users({
       setTableCustomization,
       setAssignUserModal,
       assignUserModal,
+      tableLoader,
     ]
   );
+
+  const getUserRole = useCallback(async () => {
+    await getAllRole();
+  }, [getAllRole]);
 
   const onPageChange = useCallback(
     (e: PaginatorPageChangeEvent) => {
@@ -134,6 +175,10 @@ function Users({
     getTableView,
   ]);
 
+  const handleAction = (item: UserContentType) => {
+    setSelectedItem(item?.userName);
+  };
+
   const handleInsert = useCallback(
     async ({ data }: { data: string[] }) => {
       const payload = {
@@ -153,19 +198,78 @@ function Users({
     setAssignUserModal(false);
   };
 
+  const roles = allRoles?.map((item) => ({
+    value: item?.roleName,
+    label: item?.roleName?.split("_")?.join(" "),
+  }));
+
+  const handleRoleSubmit = async () => {
+    const payload = {
+      userName: selectedItem,
+      roles: selectedRole,
+    };
+    const response = await setUserEditRoles(payload);
+    if (response?.status === "SUCCESS") {
+      getUsersAPi();
+      setVisiblePopoverKey(false);
+      getResponePopup(response);
+    } else {
+      getResponePopup(response);
+    }
+  };
+
+  const onCloseIconClick = () => {
+    setSelectedRole(selectedRoleList);
+    setVisiblePopoverKey(false);
+  };
+
+  const content = (item: UserContentType) => {
+    const FIXED_ROLE = item.currentUser && aliasName ? aliasName : null;
+
+    const updatedRoles = roles?.map((role) => ({
+      ...role,
+      disabled: role.value === FIXED_ROLE,
+    }));
+
+    const handleRoleChange = (value: string[]) => {
+      if (FIXED_ROLE && !value.includes(FIXED_ROLE)) {
+        value = [FIXED_ROLE, ...value];
+      }
+      setSelectedRole(value);
+    };
+
+    return (
+      <>
+        <Select
+          options={updatedRoles}
+          placeholder="Select the role"
+          style={{ width: 250 }}
+          dropdownStyle={{ width: 250 }}
+          value={selectedRole}
+          mode="multiple"
+          onChange={handleRoleChange}
+          data-testid={CreateIdGens("userEdit")}
+        />
+
+        <div className="flex justify-end mt-3 gap-2">
+          <Button
+            onClick={handleRoleSubmit}
+            className="btn btnColor"
+            data-testid={CreateIdGens("submitBtn")}
+            disabled={editUsersLoader}
+          >
+            {editUsersLoader ? "Loading..." : "Submit"}
+          </Button>
+        </div>
+      </>
+    );
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       getUsersAPi();
     }
-  }, [
-    selectedOption,
-    selectedDateRanges,
-    searchText,
-    pageSize,
-    pageNo,
-    sort,
-    getUsersAPi,
-  ]);
+  }, [selectedOption, selectedDateRanges, searchText, pageSize, pageNo, sort]);
 
   useEffect(() => {
     const accountStatus: { [key: string]: boolean } = {};
@@ -190,6 +294,17 @@ function Users({
     }
   }, [tabelData?.metaDataDTO]);
 
+  useEffect(() => {
+    getUserRole();
+  }, []);
+
+  useEffect(() => {
+    if (editingUser) {
+      setSelectedRole(editingUser.roleNames ?? null);
+      setSelectedRoleList(editingUser.roleNames ?? null);
+    }
+  }, [editingUser]);
+
   return (
     <>
       <ContentLayout
@@ -204,6 +319,25 @@ function Users({
         setTableCustomization={setTableCustomization}
       />
       <div className="content">
+        <div className="flex">
+          <ReusableFilters
+            showFilter={false}
+            setActiveFilters={setActiveFilters}
+            setSearchText={setSearchText}
+            searchText={searchText}
+            setSelectedOption={setSelectedOption}
+            selectedOption={selectedOption}
+            setSelectedDateRanges={setSelectedDateRanges}
+            // selectedDateRanges={selectedDateRanges}
+            FilterItems={activeFilters}
+            selectedDates={selectedDates}
+            setSelectedDates={setSelectedDates}
+            activeFilters={activeFilters}
+            setPageNo={setPageNo}
+            //customize table
+            tableLoader={tableLoader}
+          />
+        </div>
         <ReusabelTable
           data={tabelData?.pageResponse?.content}
           column={tabelData?.metaDataDTO?.filter(
@@ -221,6 +355,17 @@ function Users({
           isPagination={true}
           isRowSizabel={false}
           count={30}
+          isEdit={{
+            show: findItemWithTrueKey(tabelData?.staticDesign, "edit"),
+            value: "patientId",
+          }}
+          handleAction={handleAction}
+          content={content}
+          visiblePopoverKey={visiblePopoverKey}
+          setVisiblePopoverKey={setVisiblePopoverKey}
+          setEditingUser={setEditingUser}
+          selectedRole={selectedRole}
+          onCloseIconClick={onCloseIconClick}
         />
       </div>
 
@@ -235,14 +380,21 @@ function Users({
 }
 
 const connector = connect(
-  (state: { tableView: tableViewType }) => ({
+  (state: {
+    tableView: TableViewType<userTabelType>;
+    userReducer: UserReducerType;
+  }) => ({
     tableLoader: state?.tableView?.tableViewLoading,
     tabelData: state?.tableView?.tableView?.data?.response,
+    allRoles: state?.userReducer?.alluserRoleList?.data?.response?.content,
+    editUsersLoader: state?.userReducer?.userRoleEditLoading,
   }),
   {
     getTableView: tableAction?.tabelViewCall,
     getUserEnable: usersAction?.usersSoftDelete,
     tableCustomizationCall: tableAction?.tableDynamicColumn,
+    getAllRole: usersAction?.getRole,
+    setUserEditRoles: usersAction?.userEditRoles,
   }
 );
 

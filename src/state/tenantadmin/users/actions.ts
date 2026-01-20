@@ -16,8 +16,12 @@ export const getRole = createActionThunk(
   network.getUserRole
 );
 
-
 export const usersAssigned = createActionThunk(
   "USERS_ASSIGNED_DETIALS",
   network.usersAssignedList
+);
+
+export const userEditRoles = createActionThunk(
+  "EDIT_USERS_ROLES",
+  network.editRoles
 );

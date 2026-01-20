@@ -20,61 +20,31 @@ import {
 } from "@/util/reusableFunction";
 import { getStorage } from "@/util/storage";
 import { tableApiParamsType } from "./model";
+import { getReportTableCallType } from "@/models/tenantadmin/report";
 
 const requestManager = {
-  tableRequests: new Map(), // Store AbortControllers for table requests
-  statusRequests: new Map(), // Store AbortControllers for status requests
-  currentTableKey: null, // Track current valid table request key
-  currentStatusKey: null, // Track current valid status request key
+  tableRequests: new Map<string, AbortController>(),
+  currentTableKey: null as string | null,
 
-  // Get or create AbortController for a request key (automatically cancels previous request)
-  getAbortController(key: null | string, type = "table") {
-    const map = type === "status" ? this.statusRequests : this.tableRequests;
-    const currentKeyProp =
-      type === "status" ? "currentStatusKey" : "currentTableKey";
-
-    // Cancel previous request if exists
-    if (map.has(key)) {
-      const prevController = map.get(key);
-      if (prevController && !prevController.signal.aborted) {
-        try {
-          prevController.abort();
-        } catch (e) {
-          // Ignore errors when aborting
-        }
-      }
-      map.delete(key);
+  getAbortController(key: string) {
+    // Abort previous request
+    if (this.currentTableKey && this.tableRequests.has(this.currentTableKey)) {
+      const prevController = this.tableRequests.get(this.currentTableKey);
+      prevController?.abort();
+      this.tableRequests.delete(this.currentTableKey);
     }
 
-    // Set this as the current valid request
-    this[currentKeyProp] = key;
-
-    // Create new AbortController
     const controller = new AbortController();
-    map.set(key, controller);
+    this.currentTableKey = key;
+    this.tableRequests.set(key, controller);
+
     return controller;
   },
 
-  // Check if this request key is still the current valid one
-  isCurrentRequest(key: string, type = "table") {
-    const currentKeyProp =
-      type === "status" ? "currentStatusKey" : "currentTableKey";
-    return this[currentKeyProp] === key;
-  },
-
-  // Clean up completed request
-  removeController(key: string | null, type = "table") {
-    const map = type === "status" ? this.statusRequests : this.tableRequests;
-    const currentKeyProp =
-      type === "status" ? "currentStatusKey" : "currentTableKey";
-
-    if (map.has(key)) {
-      map.delete(key);
-    }
-
-    // Clear current key if this was the current request
-    if (this[currentKeyProp] === key) {
-      this[currentKeyProp] = null;
+  removeController(key: string) {
+    this.tableRequests.delete(key);
+    if (this.currentTableKey === key) {
+      this.currentTableKey = null;
     }
   },
 };
@@ -89,7 +59,6 @@ export async function getTableView({
   searchText,
   activeStatus,
   roleId,
-  // projectId,
   selectedRole,
   isReAssigned,
   isQueried,
@@ -115,41 +84,23 @@ export async function getTableView({
   downloaderLead,
   signal,
 }: tableApiParamsType) {
-  if (!reloadTrue) {
-    // Create unique key for this request based on pageId, activeStatus, pageNo, and router path
-    // Include router pathname to differentiate between different pages using same pageId
-    const routerPath = router?.pathname || "";
-    const requestKey = `table_${pageId}_${activeStatus || ""}_${
-      pageNo || 0
-    }_${routerPath}_${Date.now()}`;
+  if (reloadTrue) return null;
 
-    // Cancel all previous requests for this pageId/activeStatus/router combination
-    const baseKey = `table_${pageId}_${activeStatus || ""}_${
-      pageNo || 0
-    }_${routerPath}`;
-    requestManager.tableRequests.forEach((controller, key) => {
-      if (key.startsWith(baseKey) && key !== requestKey) {
-        if (controller && !controller.signal.aborted) {
-          try {
-            controller.abort();
-          } catch (e) {
-            // Ignore errors
-          }
-        }
-        requestManager.tableRequests.delete(key);
-      }
-    });
+  // 🔑 Stable request key (NO Date.now)
+  const routerPath = router || "";
+  const requestKey = `table_${pageId}_${activeStatus || ""}_${
+    pageNo || 0
+  }_${routerPath}`;
 
-    // Get or create AbortController for this request
-    const abortController = requestManager.getAbortController(
-      requestKey,
-      "table"
-    );
+  const abortController = requestManager.getAbortController(requestKey);
+  const finalSignal = signal || abortController.signal;
 
-    // Use provided signal or the managed one
-    const finalSignal = signal || abortController.signal;
+  const options = {
+    method: "GET",
+    signal: finalSignal,
+  };
 
-    const options = { method: "GET", signal: finalSignal };
+  try {
     let searchTextParams = null;
     let selectParams = null;
     let dateRagngesParams = null;
@@ -190,8 +141,6 @@ export async function getTableView({
     const allowedPageIds = [reAssignedPageId, queriedPageId, workQueuePageId];
     const clientBasesPageIds = [assignUserPageId, userCreatePageId];
     const masterAuditpageIds = [patientAllocationPageId, reAllocationPageId];
-    const usersPageId = ["8e4f1d2a-7b3c-45e6-9f1d-2a7b3c45e6f1"];
-
     if (masterAuditpageIds.includes(pageId)) {
       baseUrl += `&isMasterAudit=${isMasterAudit || false}`;
     }
@@ -257,20 +206,13 @@ allTinIds=${allTinIds || false}`;
     if (role === "QA_LEAD" && usersPageIds.includes(pageId)) {
       baseUrl += `&qaLead=${qaLead || false}`;
     }
-    if (role === "DOWNLOADER_LEAD" && usersPageIds.includes(pageId)) {
-      baseUrl += `&
-downloaderLead=${downloaderLead || false}`;
-    }
     if (role === "PROJECT_LEAD" && usersPageIds.includes(pageId)) {
       baseUrl += `&projectLead=${projectLead || false}`;
     }
 
     const masterPageIds = [workQueuePageId];
 
-    if (
-      router?.pathname?.endsWith("/tindetails") &&
-      masterPageIds.includes(pageId)
-    ) {
+    if (router?.endsWith("/tindetails") && masterPageIds.includes(pageId)) {
       baseUrl += `&tin=${tin || ""}&allTinIds=${
         allTinIds || false
       }&isMasterAudit=true`;
@@ -279,43 +221,84 @@ downloaderLead=${downloaderLead || false}`;
       dateRagngesParams || ""
     }${searchIntParams || ""}`;
 
-    try {
-      const data = await requestPortal(finalUrl, options);
+    const data = await requestPortal(finalUrl, options);
 
-      // Check if this is still the current valid request - don't update Redux if it's been superseded
-      if (
-        !requestManager.isCurrentRequest(requestKey, "table") ||
-        finalSignal.aborted
-      ) {
-        requestManager.removeController(requestKey, "table");
-        // Throw a special error that won't trigger Redux updates
-        const abortError = new Error("Request was aborted");
-        abortError.name = "AbortError";
-        // abortError.isAborted = true;
-        throw abortError;
-      }
+    requestManager.removeController(requestKey);
+    return data;
+  } catch (error: any) {
+    requestManager.removeController(requestKey);
 
-      // Clean up controller on success
-      requestManager.removeController(requestKey, "table");
-      return data;
-    } catch (error: unknown) {
-      // Clean up controller on error
-      requestManager.removeController(requestKey, "table");
-
-      // If request was aborted or superseded, throw error that won't trigger Redux updates
-      if (
-        error.name === "AbortError" ||
-        finalSignal.aborted ||
-        error.isAborted ||
-        !requestManager.isCurrentRequest(requestKey, "table")
-      ) {
-        const abortError = new Error("Request was aborted");
-        abortError.name = "AbortError";
-        // abortError.isAborted = true;
-        throw abortError;
-      }
-      throw error;
+    // 🔕 Abort → ignore silently
+    if (error?.name === "AbortError" || finalSignal.aborted) {
+      return null;
     }
+
+    // 🌐 Network error
+    if (!navigator.onLine) {
+      throw new Error("No internet connection. Please check your network.");
+    }
+
+    // 🧯 Server error
+    if (error?.response?.status >= 500) {
+      throw new Error(
+        "Server error while loading data. Please try again later."
+      );
+    }
+
+    // ❓ Generic error
+    throw new Error("Unable to load table data. Please refresh or try again.");
+  }
+}
+
+export async function getTable({
+  pageId,
+  pageNo,
+  pageSize,
+  activeStatus,
+  roleId,
+  selectedRole,
+  allPatientIds,
+  search,
+  searchText,
+  selectedOption,
+  selectedDateRanges,
+  reloadTrue,
+  isMasterAudit,
+}: tableApiParamsType) {
+  if (!reloadTrue) {
+    const options = {
+      method: "GET",
+    };
+    const tin = getStorage("tinNumber");
+    let searchTextParams = null;
+    let selectParams = null;
+    let dateRagngesParams = null;
+    let searchIntParams = null;
+    if (searchText) {
+      searchTextParams = convertToCustomParams(searchText);
+    }
+    if (search) {
+      searchIntParams = convertToCustomParams(search);
+    }
+    if (selectedOption) {
+      selectParams = convertToCustomParams(selectedOption);
+    }
+    if (selectedDateRanges) {
+      dateRagngesParams = convertToCustomParamsDatePicker(selectedDateRanges);
+    }
+
+    const baseUrl = `dbservice/table/view?pageId=${pageId}&page=${pageNo}&size=${pageSize}&status=${
+      activeStatus ? activeStatus : ""
+    }&roleId=${roleId ? roleId : ""}&aliasName=${
+      selectedRole ? selectedRole : ""
+    }&allPatientIds=${allPatientIds ? allPatientIds : ""}&tin=${
+      tin || ""
+    }&isMasterAudit=${isMasterAudit || false}`;
+    const finalUrl = `${baseUrl}${searchTextParams || ""}${selectParams || ""}${
+      dateRagngesParams || ""
+    }${searchIntParams || ""}`;
+    const data = await requestPortal(finalUrl, options);
+    return data;
   } else {
     return null;
   }
@@ -335,5 +318,29 @@ export async function dynamicColumn({
   };
 
   const data = await requestPortal(`dbservice/table/column`, options);
+  return data;
+}
+
+export async function tableCall({
+  patientType,
+  searchText,
+  dateRange,
+  pageNo,
+  allAzureBlobPath = false,
+}: getReportTableCallType) {
+  const options = {
+    method: "GET",
+  };
+
+  const startDate = dateRange?.startDate?.split("T")[0];
+  const endDate = dateRange?.endDate?.split("T")[0];
+  const data = await requestPortal(
+    `dbservice/am/report/table/view?patientType=${patientType}&fileName=${
+      searchText?.fileName || ""
+    }&startDate=${startDate || ""}&endDate=${endDate || ""}&pageNo=${
+      pageNo || 0
+    }&allAzureBlobPath=${allAzureBlobPath}`,
+    options
+  );
   return data;
 }

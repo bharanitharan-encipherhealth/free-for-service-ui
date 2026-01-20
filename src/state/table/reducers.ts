@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import { handleActions } from "redux-actions";
-import { tabelViewCall } from "./actions";
+import { getReportTable, tabelViewCall } from "./actions";
 import { ReducerType } from "../storeModal";
 
 const initialState: ReducerType = {
@@ -39,7 +39,7 @@ const getTableLoading = (type: any) =>
       [type.SUCCEEDED]: () => false,
       [type.FAILED]: () => false,
     },
-    false
+    true
   );
 
 const localRedux = (action: any) =>
@@ -51,9 +51,11 @@ const localRedux = (action: any) =>
   );
 const authReducer = combineReducers({
   tableView: createReducer(tabelViewCall),
+  reportTable: createReducer(getReportTable),
 
   //   loader
   tableViewLoading: getTableLoading(tabelViewCall),
+  reportTableLoader: getTableLoading(getReportTable),
 });
 
 export default authReducer;
