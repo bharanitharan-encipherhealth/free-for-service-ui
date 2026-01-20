@@ -1,4 +1,5 @@
 import { accessListForPanel1 } from "@/models/(withoutheader)/projects";
+import { getStorage } from "@/util/storage";
 import { MenuProps } from "antd";
 import { ReactNode } from "react";
 import { AiOutlineDashboard } from "react-icons/ai";
@@ -9,7 +10,7 @@ import { PiUserCircleDashedFill } from "react-icons/pi";
 import { TbReportAnalytics } from "react-icons/tb";
 import { TfiMapAlt } from "react-icons/tfi";
 
-type MenuItem = Required<MenuProps>["items"][number];
+export type MenuItem = Required<MenuProps>["items"][number];
 const createMenuItem = (
   label: ReactNode,
   key: string,
@@ -36,7 +37,7 @@ export const PhysicanMenuList = (
           createMenuItem(
             "Dashboard",
             "/reviewer/dashboard",
-            <AiOutlineDashboard  />
+            <AiOutlineDashboard />
           )
         );
         break;
@@ -64,7 +65,9 @@ export const PhysicanMenuList = (
         break;
 
       case "Logs":
-        items.push(createMenuItem("Logs", "/tenantadmin/logs", <TfiMapAlt />));
+        items.push(
+          createMenuItem("Logs", "/tenantadmin/tracking", <TfiMapAlt />)
+        );
         break;
 
       case "Productivity":
@@ -130,7 +133,9 @@ export const ProviderMenuList = (
         break;
 
       case "Logs":
-        items.push(createMenuItem("Logs", "/tenantadmin/logs", <TfiMapAlt />));
+        items.push(
+          createMenuItem("Logs", "/tenantadmin/tracking", <TfiMapAlt />)
+        );
         break;
 
       case "Productivity":
@@ -166,4 +171,64 @@ export const ProviderMenuList = (
   });
 
   return items;
+};
+
+export const statusColorPick = ({ status }: { status: string }) => {
+  switch (status?.toLowerCase()) {
+    case "processed":
+      return {
+        backgroundColor: "var(--processed-bg-color)",
+        color: "var(--defaultColor)",
+      };
+    case "processing":
+      return {
+        backgroundColor: "var(--processing-bg-color)",
+        color: "var(--defaultColor)",
+      };
+    case "not processed":
+    case "failed":
+      return {
+        backgroundColor: "var(--not-processed-bg-color)",
+        color: "var(--defaultColor)",
+      };
+  }
+};
+
+export const getAccessTabItems = ({
+  page,
+  tab,
+}: {
+  page: string;
+  tab: "tabMenuList" | "tabMenuList2";
+}) => {
+  const accessMenuList: accessListForPanel1[] = JSON.parse(
+    getStorage("accessMenuList")
+  );
+
+  const currentTabs: string[] = accessMenuList?.find(
+    (item) => item?.title === page
+  )?.[tab] ?? [""];
+
+  if (currentTabs) return currentTabs;
+  return [];
+};
+
+export const getProcessStatusKey = ({ item }: { item: string | number }) => {
+  console.log(item, "titntjnjx");
+
+  switch (item) {
+    case 0:
+    case "NOTPROCESSED":
+      return "Not Processed";
+    case 1:
+    case "PROCESSING":
+      return "Processing";
+    case 2:
+    case "PROCESSED":
+      return "Processed";
+    case 3:
+      return "Failed";
+    default:
+      return "";
+  }
 };

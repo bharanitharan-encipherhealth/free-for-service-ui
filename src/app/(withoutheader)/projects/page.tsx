@@ -11,11 +11,7 @@ import { connect } from "react-redux";
 import authTypes from "@/state/auth/model";
 import { actions as authAction } from "@/state/auth";
 import { useRouter } from "next/navigation";
-import {
-  clientDropDownTypes,
-  projectDropDownTypes,
-  projectTypes,
-} from "@/models/(withoutheader)/projects";
+import { projectTypes } from "@/models/(withoutheader)/projects";
 import { useMsal } from "@azure/msal-react";
 import { ssoLogout } from "../../../../lib/authService";
 function Projects({
@@ -30,6 +26,7 @@ function Projects({
   roleLoading,
   getAllClientDetails,
   getAllProjects,
+  setRole,
 }: projectTypes) {
   const router = useRouter();
   const { accounts } = useMsal();
@@ -139,6 +136,7 @@ function Projects({
     }
 
     setStorage("userRole", selectedRoleObj?.proxyRole);
+    setRole(selectedRoleObj?.proxyRole);
     router?.push(dynamicRoute);
   };
 
@@ -397,6 +395,7 @@ const connector = connect(
     getAllRoles: authAction?.allRoles,
     getAllClientDetails: authAction?.clientDetails,
     getAllProjects: authAction?.projectDetails,
+    setRole: authAction?.setRole,
   }
 );
 

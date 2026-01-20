@@ -8,6 +8,16 @@ import {
 } from "redux";
 import type { ThunkMiddleware } from "redux-thunk";
 import { reducer as authReducer } from "./auth";
+import { reducer as tableReducer } from "./table";
+import { reducer as userReducer } from "./tenantadmin/users";
+import { reducer as logsReducer } from "./tenantadmin/tracking";
+import { reducer as productivityReducer } from "./tenantadmin/productivity";
+import { reducer as reportReducer } from "./tenantadmin/report";
+import { reducer as projectReducer } from "./tenantadmin/project";
+import { reducer as patientAllocationReducer } from "./tenantadmin/tin/tinDetails/patientAllocation";
+import { reducer as patinetReAllocationReducer } from "./tenantadmin/tin/tinDetails/patientReAllocation";
+import { reducer as patinetMoveBackReducer } from "./tenantadmin/tin/tinDetails/moveBack";
+import { reducer as patientDetailsReducer } from "./tenantadmin/patients/details";
 
 // Import thunk middleware using require to handle module export issues
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -36,6 +46,18 @@ const promiseMiddleware =
 // ✅ Combine reducers
 const rootReducer = combineReducers({
   authReducer: authReducer,
+  tableView: tableReducer,
+  userReducer: userReducer,
+  logsReducer: logsReducer,
+  productivityReducer: productivityReducer,
+  reportReducer: reportReducer,
+  projectReducer: projectReducer,
+  tinDetailsReducer: combineReducers({
+    patientAllocationReducer: patientAllocationReducer,
+    patinetReAllocationReducer: patinetReAllocationReducer,
+    patinetMoveBackReducer: patinetMoveBackReducer,
+  }),
+  patientDetailsReducer: patientDetailsReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -87,7 +109,7 @@ const composedEnhancers = composeEnhancers(applyMiddleware(...middlewares));
 
 export const store: Store<RootState> = createStore(
   rootReducer,
-  composedEnhancers
+  composedEnhancers,
 );
 
 export default store;

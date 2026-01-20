@@ -1,0 +1,28 @@
+.contentLayout {
+  border-bottom: 1px solid var(--app-header-boder-color);
+  background-color: var(--defaultColor);
+}
+
+.headerBtnColor {
+  background-color: var(--application-base-color);
+  color: var(--defaultColor);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.filterSelectAll {
+  border-bottom: 1px solid var(--app-header-boder-color);
+}
+
+.tableCheckBox {
+  border: 1px solid #a8b3bd;
+  padding: 8px 8px;
+  border-radius: 10px;
+}
+
+.leftArrow {
+  background-color: var(--application-base-color);
+  color: var(--defaultColor);
+  padding: 10px;
+  border-radius: 10px;
+}

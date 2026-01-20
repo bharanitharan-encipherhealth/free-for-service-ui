@@ -1,16 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f0f6fe;
   --foreground: #171717;
 
   --app-header-color: #ffffff;
   --login-info-color: #3d5262;
-  --application-base-color: #0561fc;
+  --application-base-color: #0942c4;
   --app-header-boder-color: #a8b3bd;
   --text-white-color: #ffff;
 
+  --app-table-secondary1: #5271fa;
+  --app-table-secondary2: #008fca;
+  --app-table-secondary3: #006ddc;
+
   --sidebar-arrow-color: #c8d8e5;
+  --defaultColor: #fff;
+  --tableBorder: #a0a0a0;
+  --opactiy-background: #f0f6ff;
+  --tab-background-color: #f3f3f4;
+
+  --excel-error-color: #ff4d4f;
+  --excel-text-muted: #999;
+  --excel-text-secondary: #666;
+  --excel-border-color: #d9d9d9;
+  --excel-header-bg: #f5f5f5;
+  --excel-row-bg: #ffffff;
+  --excel-pagination-bg: #fafafa;
+  --excel-pagination-border: #e8e8e8;
+  --excel-white: #ffffff;
+
+  --processed-bg-color: #00a2d6;
+  --processing-bg-color: #5271fa;
+  --not-processed-bg-color: #7e5cad;
+  --failed-bg-color: #7e5cad;
 }
 
 @theme inline {
@@ -28,7 +51,7 @@
 }
 
 body {
-  background: var(--background);
+  /* background: var(--background); */
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -39,19 +62,37 @@ body {
   --foreground: #ededed;
 }
 
-.dark body {
+.dark .content {
   background: var(--background);
   color: var(--foreground);
+  padding: 10px;
+}
+
+.content {
+  background: var(--background);
+  color: var(--foreground);
+  padding: 10px;
 }
 
 .ant-layout-header {
   background-color: #e0ecf7;
 }
 
+.ant-layout-content {
+  background-color: var(--background);
+}
+
+.dark .ant-layout-content {
+  background-color: var(--foreground);
+}
+
 .ant-layout-sider,
 .ant-menu {
-  height: 90vh;
-  background-color: var(--background);
+  height: 90dvh;
+}
+
+.ant-layout-sider {
+  background-color: white;
 }
 
 .select-divider .ant-select-selector {
@@ -640,6 +681,20 @@ img.login-logo {
   opacity: 1;
 }
 
+.btnColor.ant-btn-variant-outlined {
+  background-color: var(--application-base-color);
+  color: var(--defaultColor);
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+
+.btnColor.ant-btn-variant-outlined:disabled {
+  background-color: var(--application-base-color);
+  color: var(--defaultColor);
+  padding: 10px 15px;
+  border-radius: 10px;
+  opacity: 0.5;
+}
 .input-group .search-area .form-control {
   height: 3rem;
 }
@@ -651,9 +706,314 @@ img.login-logo {
 .ant-menu-light .ant-menu-item-selected {
   color: #fff !important;
   background-color: var(--application-base-color);
-
 }
 
 .ant-menu-inline-collapsed > .ant-menu-item .ant-menu-item-icon {
   font-size: 20px !important;
+}
+
+.ant-table-wrapper .ant-table-thead > tr > th {
+  background: none !important;
+  color: white !important;
+}
+
+.ant-table-thead > tr {
+  background: linear-gradient(
+    to right,
+    var(--app-table-secondary1),
+    var(--app-table-secondary2),
+    var(--app-table-secondary3)
+  ) !important;
+  transition: none !important;
+  color: white !important;
+}
+
+.ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th:not(:last-child):not(.ant-table-selection-column):not(
+    .ant-table-row-expand-icon-cell
+  ):not([colspan])::before {
+  background-color: transparent !important;
+}
+
+.ant-drawer .ant-drawer-body {
+  padding: 15px;
+}
+
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+/* Base checkbox size */
+.custom-checkbox .ant-checkbox {
+  width: 15px;
+  height: 15px;
+  position: relative;
+}
+
+/* Remove default inner border and background */
+.custom-checkbox .ant-checkbox-inner {
+  border: none !important;
+  background: transparent !important;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Outer halo */
+.custom-checkbox .ant-checkbox-inner::before {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  background: #e5e7eb;
+  border: 4px solid var(--tableBorder);
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+/* Inner square (unchecked) */
+.custom-checkbox .ant-checkbox-inner::after {
+  content: "✓";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  border: 4px solid var(--app-table-secondary2);
+  background: transparent;
+  transition: all 0.3s ease;
+  z-index: 1;
+  background-color: var(--app-table-secondary2) !important;
+  color: var(--defaultColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+/* Remove default Ant tick icon completely */
+.custom-checkbox .ant-checkbox-inner-icon {
+  display: none;
+}
+
+/* Checked outer halo */
+.custom-checkbox
+  .ant-checkbox.ant-checkbox-checked
+  .ant-checkbox-inner::before {
+  background: var(--app-table-secondary2) !important;
+  border-color: var(--app-table-secondary2) !important;
+  opacity: 0.4;
+  height: 25px;
+  width: 25px;
+}
+
+.custom-table-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+/* Base checkbox size */
+.custom-table-checkbox .ant-checkbox {
+  width: 18px;
+  height: 18px;
+  position: relative;
+  background-color: var(--defaultColor);
+  border: 2px solid var(--tableBorder);
+}
+
+/* Remove default inner border and background */
+.custom-table-checkbox .ant-checkbox-inner {
+  border: none !important;
+  background: transparent !important;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Outer halo */
+.custom-table-checkbox .ant-checkbox-inner::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  background: #e5e7eb;
+  border: 0px solid var(--app-header-boder-color);
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+/* Inner square (unchecked) */
+.custom-table-checkbox .ant-checkbox-inner::after {
+  content: "✓";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  border: 4px solid var(--app-table-secondary3);
+  background: transparent;
+  transition: all 0.3s ease;
+  z-index: 1;
+  background-color: var(--app-table-secondary3) !important;
+  color: var(--defaultColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+/* Remove default Ant tick icon completely */
+.custom-table-checkbox .ant-checkbox-inner-icon {
+  display: none;
+}
+
+/* Checked outer halo */
+.custom-table-checkbox
+  .ant-checkbox.ant-checkbox-checked
+  .ant-checkbox-inner::before {
+  background: var(--defaultColor) !important;
+  border-color: var(--defaultColor) !important;
+  opacity: 0.4;
+  height: 25px;
+  width: 25px;
+}
+
+.pagination-container {
+  margin: 20px 0px 20px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination-container > .p-paginator.p-component {
+  background: transparent !important;
+  margin-right: 20px;
+  gap: 10px;
+}
+.total-pages {
+  color: #999696;
+  font-family: Manrope;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.pagination-container .p-paginator-first,
+.pagination-container .p-paginator-last,
+.pagination-container .p-paginator-next,
+.pagination-container .p-paginator-prev {
+  background-color: var(--defaultColor) !important;
+  padding: 10px;
+  border: 1px solid var(--tableBorder);
+  border-radius: 10px;
+}
+
+.pagination-container .p-paginator-pages {
+  display: flex;
+  gap: 15px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.pagination-container .p-paginator-pages .p-highlight {
+  background-color: var(--application-base-color);
+  color: var(--defaultColor);
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+
+.default-filter-size {
+  width: 220px;
+}
+
+.new-search {
+  height: 30px !important;
+  border-radius: 10px !important;
+}
+
+.custom-range-picker {
+  height: 30px !important;
+  border-radius: 10px !important;
+  margin: 12px 0px;
+}
+
+.custom-react-select-audit {
+  margin: 12px 0px !important;
+  height: 30px !important;
+  width: 100% !important;
+}
+
+.ant-select-single .ant-select-selector {
+  border-radius: 10px !important;
+}
+
+.editIcon {
+  background-color: var(--app-table-secondary3);
+  color: var(--defaultColor);
+  width: fit-content;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.ant-select-outlined.ant-select-multiple .ant-select-selection-item {
+  background-color: var(--opactiy-background);
+  color: var(--application-base-color);
+}
+
+.react-icon-spin {
+  display: inline-block;
+  animation: reactIconSpin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+@keyframes reactIconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.contentTab {
+  background-color: var(--tab-background-color);
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.activeContentTab {
+  background-color: var(--defaultColor);
+  padding: 5px 8px;
+  border-radius: 10px;
+}
+
+.custom-react-select-audit.multiSelect {
+  margin: 0px 0px !important;
+  height: 30px !important;
+  width: 100% !important;
+}
+
+.patient-status {
+  border: 2px solid var(--app-header-boder-color);
+  padding: 2px;
+  border-radius: 20px;
+  width: 130px;
 }

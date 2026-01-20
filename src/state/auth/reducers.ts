@@ -7,6 +7,7 @@ import {
   CurrentUserInfoAction,
   getMFAValidation,
   projectDetails,
+  setRole,
   tinsDropdown,
 } from "./actions";
 import { ReducerType } from "../storeModal";
@@ -16,14 +17,6 @@ const initialState: ReducerType = {
   data: null,
   error: null,
 };
-
-const menuSelected = (action: any) =>
-  handleActions(
-    {
-      [action.toString()]: (state, { payload }) => payload,
-    },
-    {}
-  );
 
 const createReducer = (actionType: any) =>
   handleActions(
@@ -57,6 +50,14 @@ const getUsersDetailsLoading = (type: any) =>
     },
     false
   );
+
+const localRedux = (action: any) =>
+  handleActions(
+    {
+      [action.toString()]: (state, { payload }) => payload,
+    },
+    ""
+  );
 const authReducer = combineReducers({
   allRolesData: createReducer(allRoles),
   clientDetails: createReducer(clientId),
@@ -64,6 +65,7 @@ const authReducer = combineReducers({
   projectDetails: createReducer(projectDetails),
   CurrentUserInfo: createReducer(CurrentUserInfoAction),
   tinDetails: createReducer(tinsDropdown),
+  selectedUserRole: localRedux(setRole),
   // loaders
   mfaLoader: getUsersDetailsLoading(getMFAValidation),
   clientDetailsLoading: getUsersDetailsLoading(clientDetails),

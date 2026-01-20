@@ -30,6 +30,7 @@ function Login({ getMFAValidation, loginResponse }: loginTypes) {
   const [emailErro, setEmailError] = useState<{ email: string }>({ email: "" });
   const [errors, setErrors] = useState<loginAuth>({ email: "", password: "" });
   const [isClickAuth, setClickAuth] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const validateEmail = (enteredEmail: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     setEmailError({ email: "" });
@@ -98,9 +99,15 @@ function Login({ getMFAValidation, loginResponse }: loginTypes) {
       if (accounts.length > 0) {
         setStorage("token", accounts[0]?.idToken);
         router.replace("/projects");
+      } else {
+        setIsLoading(false);
       }
     }
   }, [accounts, inProgress, router]);
+
+  if (isLoading) {
+    return <div>{/* <PageLoading /> */}</div>;
+  }
   return (
     <>
       {
@@ -122,112 +129,117 @@ function Login({ getMFAValidation, loginResponse }: loginTypes) {
                     <div className="flex items-center justify-center">
                       <h2 className="title font-bold">Welcome</h2>
                     </div>
-
-                    <form onSubmit={onLogin} autoComplete="off">
-                      <div className="login-input">
-                        <label className="mb-1 text-dark">Your Username</label>
-                        <div id="select-email" data-name="select-email">
-                          <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            className="form-control px-2"
-                            value={enteredEmail}
-                            onChange={(e) => {
-                              setEmail(e.target.value);
-                              validateEmail(e.target.value);
-                            }}
-                            placeholder="Enter your username"
-                          />
-                        </div>
-                        {emailErro?.email && (
-                          <div className="text-danger fs-12 mt-3">
-                            {emailErro?.email}
-                          </div>
-                        )}
-                      </div>
-                      <div className="login-input">
-                        <label className="mb-1 text-dark">Your Password</label>
-                        <div id="select-password" data-name="select-password">
-                          <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            className="form-control px-2"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter your password"
-                          />
-                        </div>
-                        {errors?.password && (
-                          <div className="text-danger fs-12">
-                            {errors?.password}
-                          </div>
-                        )}
-                      </div>
-
-                      <div
-                        id="login-submit"
-                        data-name="login-submit"
-                        className="text-center login-btn"
-                      >
-                        <RegularButton
-                          type="submit"
-                          name="Get Started"
-                          width="100%"
-                          loading={loginResponse}
-                          disabled={true}
-                          padding="10px"
-                        />
-                      </div>
-
-                      <div className="social-login mt-1 text-center">
-                        <div className="flex items-center justify-center or-divider mb-1">
-                          <div className={`grow ${styles.line}`}></div>
-                          <span className="mx-2 text-muted login-option">
-                            Or
-                          </span>
-                          <div className={`grow ${styles.line}`}></div>
-                        </div>
-                        <div className="login-with">
-                          <small className="mx-2 text-muted login-option">
-                            Login With
-                          </small>
-                        </div>
-                        <div className="flex justify-center gap-1">
-                          <div
-                            id="click-ms-login"
-                            className="cursor-pointer"
-                            onClick={() => {
-                              // setClickAuth("MS");
-                              handleClick();
-                            }}
-                          >
-                            <Image
-                              className="login-logo mx-3 mx-md-0"
-                              src={MS_Logo}
-                              style={{ width: "40px", height: "40px" }}
-                              alt="mslogo"
+                    {!isClickAuth && (
+                      <form onSubmit={onLogin} autoComplete="off">
+                        <div className="login-input">
+                          <label className="mb-1 text-dark">
+                            Your Username
+                          </label>
+                          <div id="select-email" data-name="select-email">
+                            <input
+                              id="email"
+                              name="email"
+                              type="email"
+                              className="form-control px-2"
+                              value={enteredEmail}
+                              onChange={(e) => {
+                                setEmail(e.target.value);
+                                validateEmail(e.target.value);
+                              }}
+                              placeholder="Enter your username"
                             />
                           </div>
-
-                          <div
-                            id="click-google-login"
-                            className="cursor-pointer"
-                            onClick={() => {
-                              setClickAuth("Client");
-                            }}
-                          >
-                            <Image
-                              className="login-logo"
-                              src={GoogleLogo}
-                              style={{ width: "40px", height: "40px" }}
-                              alt="google"
+                          {emailErro?.email && (
+                            <div className="text-danger fs-12 mt-3">
+                              {emailErro?.email}
+                            </div>
+                          )}
+                        </div>
+                        <div className="login-input">
+                          <label className="mb-1 text-dark">
+                            Your Password
+                          </label>
+                          <div id="select-password" data-name="select-password">
+                            <input
+                              id="password"
+                              name="password"
+                              type="password"
+                              className="form-control px-2"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              placeholder="Enter your password"
                             />
                           </div>
+                          {errors?.password && (
+                            <div className="text-danger fs-12">
+                              {errors?.password}
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    </form>
+
+                        <div
+                          id="login-submit"
+                          data-name="login-submit"
+                          className="text-center login-btn"
+                        >
+                          <RegularButton
+                            type="submit"
+                            name="Get Started"
+                            width="100%"
+                            loading={loginResponse}
+                            disabled={true}
+                            padding="10px"
+                          />
+                        </div>
+
+                        <div className="social-login mt-1 text-center">
+                          <div className="flex items-center justify-center or-divider mb-1">
+                            <div className={`grow ${styles.line}`}></div>
+                            <span className="mx-2 text-muted login-option">
+                              Or
+                            </span>
+                            <div className={`grow ${styles.line}`}></div>
+                          </div>
+                          <div className="login-with">
+                            <small className="mx-2 text-muted login-option">
+                              Login With
+                            </small>
+                          </div>
+                          <div className="flex justify-center gap-1">
+                            <div
+                              id="click-ms-login"
+                              className="cursor-pointer"
+                              onClick={() => {
+                                // setClickAuth("MS");
+                                handleClick();
+                              }}
+                            >
+                              <Image
+                                className="login-logo mx-3 mx-md-0"
+                                src={MS_Logo}
+                                style={{ width: "40px", height: "40px" }}
+                                alt="mslogo"
+                              />
+                            </div>
+
+                            <div
+                              id="click-google-login"
+                              className="cursor-pointer"
+                              onClick={() => {
+                                setClickAuth("Client");
+                              }}
+                            >
+                              <Image
+                                className="login-logo"
+                                src={GoogleLogo}
+                                style={{ width: "40px", height: "40px" }}
+                                alt="google"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    )}
                   </div>
                   <div className="login-footer">
                     <Footer isLogo={false} />

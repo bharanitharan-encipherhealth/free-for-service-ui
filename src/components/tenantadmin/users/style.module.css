@@ -1,0 +1,21 @@
+.userList {
+  border: 1px solid var(--app-table-secondary3);
+  border-radius: 10px;
+  padding: 10px;
+  background-color: var(--opactiy-background);
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.userIndex {
+  background: linear-gradient(
+    to bottom,
+    var(--app-table-secondary1),
+    var(--app-table-secondary2),
+    var(--app-table-secondary3)
+  );
+  color: var(--defaultColor);
+  padding: 10px 20px;
+  border-radius: 10px;
+
+}

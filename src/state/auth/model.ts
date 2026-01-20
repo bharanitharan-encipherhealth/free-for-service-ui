@@ -43,6 +43,7 @@ export default class authTypes {
   projectDetailsLoading: boolean;
   roleLoading: boolean;
   tinDetailsLoading: boolean;
+  selectedUserRole: string;
 
   constructor(
     allRolesData: {
@@ -147,6 +148,7 @@ export default class authTypes {
         ];
       };
     },
+    selectedUserRole: "",
     mfaLoader: false,
     clientDetailsLoading: false,
     projectDetailsLoading: false,
@@ -163,5 +165,6 @@ export default class authTypes {
     this.roleLoading = roleLoading;
     this.tinDetails = tinDetails;
     this.tinDetailsLoading = tinDetailsLoading;
+    this.selectedUserRole = selectedUserRole;
   }
 }
