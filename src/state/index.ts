@@ -18,7 +18,7 @@ import { reducer as patientAllocationReducer } from "./tenantadmin/tin/tinDetail
 import { reducer as patinetReAllocationReducer } from "./tenantadmin/tin/tinDetails/patientReAllocation";
 import { reducer as patinetMoveBackReducer } from "./tenantadmin/tin/tinDetails/moveBack";
 import { reducer as patientDetailsReducer } from "./tenantadmin/patients/details";
-
+import { reducer as dashboardReducer } from "./admin/dashboard";
 // Import thunk middleware using require to handle module export issues
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const thunkModule = require("redux-thunk");
@@ -45,6 +45,7 @@ const promiseMiddleware =
 
 // ✅ Combine reducers
 const rootReducer = combineReducers({
+  dashboardReducer: dashboardReducer,
   authReducer: authReducer,
   tableView: tableReducer,
   userReducer: userReducer,

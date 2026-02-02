@@ -232,3 +232,62 @@ export const getProcessStatusKey = ({ item }: { item: string | number }) => {
       return "";
   }
 };
+
+export const getRoleIdByRole = (role: string) => {
+  switch (role) {
+    case "ADMIN":
+      return "0";
+    case "DOWNLOADER":
+      return "1";
+    case "OWNER":
+      return "2";
+    case "AI":
+      return "3";
+    case "CODER_1":
+      return "4";
+    case "CODER_2":
+      return "5";
+    case "QA":
+      return "6";
+    case "QA_LEAD":
+      return "7";
+    case "PROJECT_LEAD":
+      return "8";
+    case "CLIENT":
+      return "9";
+    default:
+      return null;
+  }
+};
+
+export function getLast7Days() {
+  const date_seven_days = [];
+  const currentDate = new Date();
+
+  for (let i = 0; i < 7; i++) {
+    const pastDate = new Date(currentDate);
+    pastDate.setDate(currentDate.getDate() - i);
+    date_seven_days.push(
+      pastDate.toLocaleString("default", { month: "short" }) +
+        pastDate.getDate()
+    );
+  }
+
+  return date_seven_days.reverse();
+}
+
+export function getLast30Days() {
+  const date_thirty_days = [];
+  const currentDate = new Date();
+
+  for (let i = 0; i < 30; i++) {
+    const pastDate = new Date(currentDate);
+    pastDate.setDate(currentDate.getDate() - i);
+    date_thirty_days.push(
+      pastDate.toLocaleString("default", { month: "short" }) +
+        pastDate.getDate()
+    );
+  }
+
+  return date_thirty_days.reverse();
+}
