@@ -40,7 +40,7 @@ function Productivity({
   const clientId = getStorage("client");
   const [activeTab, setActiveTab] = useState<string>("");
   const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {}
+    {},
   );
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
@@ -65,11 +65,11 @@ function Productivity({
   const [selectedDates, setSelectedDates] = useState({});
 
   const handleTabChange = useCallback(
-    ({ item }: { item: { lable: string; value: string } }) => {
+    ({ item }: { item: { label: string; value: string } }) => {
       setActiveTab(item?.value);
-      setRoleAliasName(item?.lable);
+      setRoleAliasName(item?.label);
     },
-    []
+    [],
   );
 
   const generateBtnClick = useCallback(async () => {
@@ -160,7 +160,7 @@ function Productivity({
       }),
       loading: allAllocationRoleLoading,
       activeTab: activeTab,
-      onClick: ({ item }: { item: { lable: string; value: string } }) =>
+      onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
       value: "aliasName",
     };
@@ -176,7 +176,7 @@ function Productivity({
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
 
   const getAllAllocation = useCallback(async () => {
@@ -249,7 +249,7 @@ function Productivity({
         await getAllAllocation();
       }
     },
-    [tableCustomizationCall, getAllAllocation]
+    [tableCustomizationCall, getAllAllocation],
   );
 
   useEffect(() => {
@@ -275,12 +275,12 @@ function Productivity({
       !findMatchesByField(activeFilters, tableData?.metaDataDTO)
     ) {
       const a = tableData?.metaDataDTO.filter(
-        (item) => item.active && item?.filter?.style
+        (item) => item.active && item?.filter?.style,
       );
       setActiveFilters(
         tableData?.metaDataDTO.filter(
-          (item) => item.active && item?.filter?.style
-        )
+          (item) => item.active && item?.filter?.style,
+        ),
       );
       setSelectedColumns(tableData?.metaDataDTO);
       // setIsFilter(false);
@@ -324,7 +324,7 @@ function Productivity({
           <ReusableTable
             data={tableData?.pageResponse?.content}
             column={tableData?.metaDataDTO?.filter(
-              (item) => item?.active && item?.columnActive
+              (item) => item?.active && item?.columnActive,
             )}
             loader={tableLoader}
             setSort={setSort}
@@ -363,7 +363,7 @@ const connector = connect(
     tableCustomizationCall: tableAction?.tableDynamicColumn,
     getAllRolesTab: productivityAction?.getAllRoles,
     getLogsReportDownload: logsAction?.logsExport,
-  }
+  },
 );
 
 export default connector(Productivity);

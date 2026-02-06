@@ -48,10 +48,10 @@ function ContentLayout({
   setTableCustomization?: React.Dispatch<React.SetStateAction<boolean>>;
   tabList?: {
     isTab: boolean;
-    tabList: { lable: string; value: string }[];
+    tabList: { label: string; value: string }[];
     loading?: boolean;
     activeTab: string;
-    onClick: ({ item }: { item: { lable: string; value: string } }) => void;
+    onClick: ({ item }: { item: { label: string; value: string } }) => void;
   };
 }) {
   const handleTabelCustomizationRest = useCallback(() => {
@@ -74,10 +74,10 @@ function ContentLayout({
           prev.map((item) => ({
             ...item,
             active: status,
-          }))
+          })),
         );
     },
-    [setSelectedColumns]
+    [setSelectedColumns],
   );
 
   const handleSelectedColumn = useCallback(
@@ -95,25 +95,25 @@ function ContentLayout({
           });
           const activeCols = updated
             .filter(
-              (col) => col.active && col.actualField !== item?.actualField
+              (col) => col.active && col.actualField !== item?.actualField,
             )
             .sort((a, b) => a!.orderValue! - b!.orderValue!);
 
           const clickedActive = updated.find(
-            (col) => col.actualField === item?.actualField && col.active
+            (col) => col.actualField === item?.actualField && col.active,
           );
           if (clickedActive) activeCols.push(clickedActive);
 
           return updated.map((col) => {
             if (!col.active) return { ...col, order: null };
             const idx = activeCols.findIndex(
-              (c) => c.actualField === col.actualField
+              (c) => c.actualField === col.actualField,
             );
             return { ...col, orderValue: idx + 1 };
           });
         });
     },
-    [setSelectedColumns]
+    [setSelectedColumns],
   );
 
   const handleTableCustomization = useMemo(() => {
@@ -196,17 +196,17 @@ function ContentLayout({
       if (setActiveFilters)
         setActiveFilters((prev: metaDataType[]) =>
           prev.map((x) =>
-            x.headerName === item.headerName ? { ...x, active: !x.active } : x
-          )
+            x.headerName === item.headerName ? { ...x, active: !x.active } : x,
+          ),
         );
     },
-    [setActiveFilters]
+    [setActiveFilters],
   );
 
   const handleReset = useCallback(() => {
     if (setActiveFilters)
       setActiveFilters((prev: metaDataType[]) =>
-        prev.map((item) => ({ ...item, active: true }))
+        prev.map((item) => ({ ...item, active: true })),
       );
   }, [setActiveFilters]);
 
@@ -261,7 +261,7 @@ function ContentLayout({
                       : "cursor-pointer"
                   }
                 >
-                  {item?.lable}
+                  {item?.label}
                 </div>
               ))}
             </div>
@@ -338,7 +338,7 @@ const connector = connect(
   (state: { tableView: metaDataType[] }) => ({
     tabelData: state?.tableView,
   }),
-  {}
+  {},
 );
 
 export default connector(ContentLayout);

@@ -214,8 +214,6 @@ export const getAccessTabItems = ({
 };
 
 export const getProcessStatusKey = ({ item }: { item: string | number }) => {
-  console.log(item, "titntjnjx");
-
   switch (item) {
     case 0:
     case "NOTPROCESSED":

@@ -50,7 +50,7 @@ function PatientAllocation({
 }: patientTabProps) {
   const tin = getStorage("tinNumber");
   const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {}
+    {},
   );
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
@@ -75,15 +75,15 @@ function PatientAllocation({
   const prevAllocateModalRef = useRef<boolean | undefined>(undefined);
 
   const handleTabChange = useCallback(
-    ({ item }: { item: { lable: string; value: string } }) => {
+    ({ item }: { item: { label: string; value: string } }) => {
       setActiveTab(item?.value);
-      setRoleAliasName(item?.lable);
+      setRoleAliasName(item?.label);
       setSelectedDates({});
       setSelectedDateRanges({});
       setSelectedOption({});
       setSearchText({});
     },
-    []
+    [],
   );
 
   const tabList = useMemo(() => {
@@ -96,7 +96,7 @@ function PatientAllocation({
       }),
       loading: allAllocationRoleLoading,
       activeTab: activeTab,
-      onClick: ({ item }: { item: { lable: string; value: string } }) =>
+      onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
       value: "aliasName",
     };
@@ -111,7 +111,7 @@ function PatientAllocation({
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
   const handleRowChange = ({ value }: { value: number }) => {
     const totalRecords = tableData?.pageResponse?.totalElements || 0;
@@ -160,10 +160,10 @@ function PatientAllocation({
                 patientId: patient.patientId,
                 patientName: patient.patientName,
                 fileName: patient?.fileName,
-              })
+              }),
             );
             setSelectedRows(
-              result.map((patient: checkAllPatientIdType) => patient.patientId)
+              result.map((patient: checkAllPatientIdType) => patient.patientId),
             );
             setSelectedPatientDetails(result);
           }
@@ -185,7 +185,7 @@ function PatientAllocation({
               patientId: id,
               patientName: row.patientName,
               fileName: row?.fileName,
-            }))
+            })),
           );
           return updatedSelection;
         });
@@ -201,7 +201,7 @@ function PatientAllocation({
       setCheckedHeader,
       setSelectedRows,
       setSelectedPatientDetails,
-    ]
+    ],
   );
 
   const getAllPatientsAllocation = useCallback(async () => {
@@ -288,7 +288,7 @@ function PatientAllocation({
         <ReusableTable
           data={tableData?.pageResponse?.content}
           column={tableData?.metaDataDTO?.filter(
-            (item) => item?.active && item?.columnActive
+            (item) => item?.active && item?.columnActive,
           )}
           loader={tableLoader}
           setSort={setSort}
@@ -338,6 +338,6 @@ const connector = connect(
   {
     getTableView: tableAction?.tabelViewCall,
     getAllRolesTab: productivityAction?.getAllRoles,
-  }
+  },
 );
 export default connector(PatientAllocation);

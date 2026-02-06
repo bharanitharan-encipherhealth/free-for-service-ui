@@ -106,11 +106,11 @@ function TinDetailsClientPage({
       } catch (e) {
         console.error(
           e,
-          "Error Occur while tableCustomization call in the tinDetails"
+          "Error Occur while tableCustomization call in the tinDetails",
         );
       }
     },
-    [setTriggerTableCustomization, activeTab, tableCustomizationCall]
+    [setTriggerTableCustomization, activeTab, tableCustomizationCall],
   );
 
   const handleTabsButton = useCallback(() => {
@@ -161,11 +161,11 @@ function TinDetailsClientPage({
   ]);
 
   const handleTabChange = useCallback(
-    ({ item }: { item: { lable: string; value: string } }) => {
+    ({ item }: { item: { label: string; value: string } }) => {
       setActiveTab(item?.value);
       setPatientAllocationHasSelection(false);
     },
-    []
+    [],
   );
   const [tableCustomization, setTableCustomization] = useState<boolean>(false);
   const tabList = useMemo(() => {
@@ -174,11 +174,11 @@ function TinDetailsClientPage({
       tabList: generateHeaderTab({
         tabList: tinDetailsTab,
       }).filter(
-        (item: { lable: string; value: string }) =>
-          item?.value != "Query Approval"
+        (item: { label: string; value: string }) =>
+          item?.value != "Query Approval",
       ),
       activeTab,
-      onClick: ({ item }: { item: { lable: string; value: string } }) =>
+      onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
     };
   }, [handleTabChange, activeTab, tinDetailsTab]);
@@ -225,7 +225,7 @@ function TinDetailsClientPage({
       const tinId = getStorage("tinId");
       if (result?.status == "SUCCESS") {
         const headers = result?.response?.pageResponse?.content.filter(
-          (item: contentArrayType) => item?.id == tinId
+          (item: contentArrayType) => item?.id == tinId,
         )?.[0];
         const row = result?.response?.metaDataDTO;
 
@@ -233,7 +233,7 @@ function TinDetailsClientPage({
           row.map((h: metaDataType) => ({
             title: h.headerName,
             value: headers?.[h.actualField],
-          }))
+          })),
         );
         setLoading(false);
       }
@@ -253,8 +253,8 @@ function TinDetailsClientPage({
     ) {
       setActiveFilters(
         tableData?.metaDataDTO.filter(
-          (item) => item.active && item?.filter?.style
-        )
+          (item) => item.active && item?.filter?.style,
+        ),
       );
       setSelectedColumns(tableData?.metaDataDTO);
       // setIsFilter(false);
@@ -337,7 +337,7 @@ const connector = connect(
   }),
   {
     tableCustomizationCall: tableAction?.tableDynamicColumn,
-  }
+  },
 );
 
 export default connector(TinDetailsClientPage);

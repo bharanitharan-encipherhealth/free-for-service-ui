@@ -46,7 +46,7 @@ function MoveBack({
   const [activeTab, setActiveTab] = useState<string>("");
   const [roleAliasName, setRoleAliasName] = useState("");
   const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {}
+    {},
   );
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
@@ -65,15 +65,15 @@ function MoveBack({
   const [checkedHeader, setCheckedHeader] = useState(false);
 
   const handleTabChange = useCallback(
-    ({ item }: { item: { lable: string; value: string } }) => {
+    ({ item }: { item: { label: string; value: string } }) => {
       setActiveTab(item?.value);
-      setRoleAliasName(item?.lable);
+      setRoleAliasName(item?.label);
       setSelectedDates({});
       setSelectedDateRanges({});
       setSelectedOption({});
       setSearchText({});
     },
-    []
+    [],
   );
   const tabList = useMemo(() => {
     return {
@@ -85,7 +85,7 @@ function MoveBack({
       }),
       loading: allAllocationRoleLoading,
       activeTab: activeTab,
-      onClick: ({ item }: { item: { lable: string; value: string } }) =>
+      onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
       value: "aliasName",
     };
@@ -112,7 +112,7 @@ function MoveBack({
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
 
   const handleRowChange = ({ value }: { value: number }) => {
@@ -183,11 +183,11 @@ function MoveBack({
               (patient: checkAllPatientIdType) => ({
                 patientId: patient?.patientId,
                 patientName: patient.patientName,
-              })
+              }),
             );
 
             setSelectedRows(
-              result.map((patient: checkAllPatientIdType) => patient.patientId)
+              result.map((patient: checkAllPatientIdType) => patient.patientId),
             );
           }
         } else {
@@ -213,7 +213,7 @@ function MoveBack({
       setCheckedLoader,
       setCheckedHeader,
       setSelectedRows,
-    ]
+    ],
   );
 
   useEffect(() => {
@@ -273,7 +273,7 @@ function MoveBack({
         <ReusableTable
           data={tableData?.pageResponse?.content}
           column={tableData?.metaDataDTO?.filter(
-            (item) => item?.active && item?.columnActive
+            (item) => item?.active && item?.columnActive,
           )}
           loader={tableLoader}
           setSort={setSort}
@@ -322,7 +322,7 @@ const connector = connect(
   {
     getRolesTab: productivityAction?.getAllRoles,
     getTableView: tableAction?.tabelViewCall,
-  }
+  },
 );
 
 export default connector(MoveBack);

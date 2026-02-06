@@ -1,0 +1,12 @@
+.chartIcon {
+  background-color: var(--chartIcon);
+  color: var(--defaultColor);
+  font-size: 10px;
+  border-radius: 5px;
+}
+
+.dosBorderValue {
+  border-right: 2px;
+  border-color: var(--excel-border-color);
+  border-style: solid;
+}

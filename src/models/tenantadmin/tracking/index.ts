@@ -79,7 +79,7 @@ export interface WorkflowItem {
   allocatedOn: string | null;
   status: string;
   dueDate: string | null;
-  performedOn: string;
+  performedOn: string | null;
   reAssigned: boolean;
   query: string | null;
   queryDetails: string | null;
@@ -145,7 +145,7 @@ export interface getTableViewResponse {
 }
 export interface TrackingPropsType {
   getTableView: (
-    tableApiParamsType: tableApiParamsType
+    tableApiParamsType: tableApiParamsType,
   ) => Promise<getTableViewResponse>;
   tableData: trackingTableView;
   tableCustomizationCall: ({
@@ -155,7 +155,7 @@ export interface TrackingPropsType {
   }) => Promise<tableCustomizationResposnetype>;
   tableLoader: boolean;
   getLogsReportDownload: (
-    tableApiParamsType: tableApiParamsType
+    tableApiParamsType: tableApiParamsType,
   ) => Promise<Response>;
   exportLoading: boolean;
 }

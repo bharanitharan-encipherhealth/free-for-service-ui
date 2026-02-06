@@ -8,11 +8,10 @@ export default function PageHeaderLayout({
   onHandleBack,
   loading,
 }: {
-  data: { title: string; value: string | number }[];
+  data: { title?: string; value: string | number; icon?: React.ReactNode }[];
   onHandleBack: () => void;
   loading: boolean;
 }) {
-
   return (
     <div
       className={`${style.contentLayout} h-[53px] flex justify-start items-center py-2 gap-10 px-5`}
@@ -30,15 +29,25 @@ export default function PageHeaderLayout({
               </div>
               <div>
                 <div>{item?.title}</div>
-                <div>{item?.value}</div>
+                <div className={`${item?.icon && "flex gap-1 items-center"}`}>
+                  {item?.icon && (
+                    <div className={style?.headerIcon}>{item?.icon}</div>
+                  )}
+                  {item?.value}
+                </div>
               </div>
             </div>
           ) : (
             <div key={index}>
               <div>{item?.title}</div>
-              <div>{item?.value}</div>
+              <div className={`${item?.icon && "flex gap-1 items-center"}`}>
+                {item?.icon && (
+                  <div className={style?.headerIcon}>{item?.icon}</div>
+                )}
+                {item?.value}
+              </div>
             </div>
-          )
+          ),
         )
       ) : (
         <Skeleton.Input active block />

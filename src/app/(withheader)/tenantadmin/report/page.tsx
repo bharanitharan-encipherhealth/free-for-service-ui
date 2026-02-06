@@ -36,7 +36,7 @@ function Report({
   const [activeTab, setActiveTab] = useState<string>("");
   const [pageNo, setPageNo] = useState(0);
   const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {}
+    {},
   );
   const [searchText, setSearchText] = useState<Record<string, string>>({});
 
@@ -47,10 +47,10 @@ function Report({
   const [checkedLoader, setCheckedLoader] = useState<boolean>(false);
 
   const handleTabChange = useCallback(
-    ({ item }: { item: { lable: string; value: string } }) => {
+    ({ item }: { item: { label: string; value: string } }) => {
       setActiveTab(item?.value);
     },
-    [setActiveTab]
+    [setActiveTab],
   );
   const [selectedDateRanges, setSelectedDateRanges] = useState<
     Record<string, DateRange>
@@ -126,7 +126,7 @@ function Report({
       tabList: generateHeaderTab({ tabList: reportTabList?.tabMenuList2 }),
       loading: reportTabListLoading,
       activeTab,
-      onClick: ({ item }: { item: { lable: string; value: string } }) =>
+      onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
     };
   }, [reportTabList, handleTabChange, reportTabListLoading, activeTab]);
@@ -172,7 +172,7 @@ function Report({
         if (response?.status === "SUCCESS") {
           const result = response?.response?.data[0]?.allAzureBlobPath.map(
             (azureBlobPath: { azureBlobPath: string }) =>
-              azureBlobPath?.azureBlobPath
+              azureBlobPath?.azureBlobPath,
           );
           setSelectedRows(result);
         }
@@ -185,7 +185,7 @@ function Report({
         setSelectedRows((prev) => [...prev, row.azureBlobPath]);
       } else {
         setSelectedRows((prev) =>
-          prev.filter((item) => item != row?.azureBlobPath)
+          prev.filter((item) => item != row?.azureBlobPath),
         );
       }
     }
@@ -264,7 +264,7 @@ function Report({
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
 
   useEffect(() => {
@@ -274,8 +274,8 @@ function Report({
     ) {
       setActiveFilters(
         tableData?.amMetaData.filter(
-          (item) => item.columnActive && item?.filter?.style
-        )
+          (item) => item.columnActive && item?.filter?.style,
+        ),
       );
     }
   }, [tableData?.amMetaData]);
@@ -320,7 +320,7 @@ function Report({
         <ReusableTable
           data={tableData?.data}
           column={tableData?.amMetaData?.filter(
-            (item) => item?.active && item?.columnActive
+            (item) => item?.active && item?.columnActive,
           )}
           loader={tableLoader}
           setSort={setSort}
@@ -464,6 +464,6 @@ const connector = connect(
     getReportTableCall: tableAction?.getReportTable,
     getReportDownload: ReportAction?.getReportDownload,
     getReportCall: ReportAction?.getReportCall,
-  }
+  },
 );
 export default connector(Report);
