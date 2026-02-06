@@ -1,0 +1,5 @@
+.allocateBgColor {
+  background-color: var(--allocateBgColor);
+  color: var(--defaultColor);
+  border: none;
+}

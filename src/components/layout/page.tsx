@@ -32,7 +32,7 @@ const LayoutPage = ({ children }: LayoutPageProps) => {
         colorText: theme === "dark" ? "#f3f4f6" : "#111827",
       },
     }),
-    [theme]
+    [theme],
   );
 
   if (!mounted) return null;

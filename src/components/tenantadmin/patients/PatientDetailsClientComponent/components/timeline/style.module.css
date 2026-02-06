@@ -1,0 +1,101 @@
+.detailsContainer {
+  display: flex;
+  width: 400px;
+}
+.oldCodeContiner {
+  width: 50%;
+  margin: 5px;
+  border: 2px solid #e96a3e;
+  border-radius: 6px;
+}
+.editCodeContainer {
+  width: 50%;
+  margin: 5px;
+  border: 2px solid #69aa9d;
+  border-radius: 6px;
+}
+.codeTitle {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  background: #e96a3e;
+  height: 35px;
+  align-items: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 13px;
+}
+.editTitle {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  background: #69aa9d;
+  height: 35px;
+  align-items: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 13px;
+}
+.details {
+  margin: 10px;
+}
+.disCode {
+  font-size: 14px;
+  color: #04306f;
+
+  margin-top: 5px;
+  width: 140px; /* Fixed width for left labels */
+  font-weight: 600;
+}
+.discription {
+  font-size: 14px;
+  display: flex;
+  margin-bottom: 5px;
+}
+.detailsHeader {
+  margin-top: 10px;
+}
+.viewTag {
+  cursor: pointer;
+  font-size: 14px !important;
+  color: #04306f;
+}
+.deleteIcon {
+  color: #be3144;
+  font-size: 18px;
+  margin-right: 2px;
+  border-radius: 100%;
+  cursor: pointer;
+}
+.closeIcon {
+  cursor: pointer;
+  color: red;
+  align-items: self-start;
+}
+.textContent {
+  min-width: 200px;
+  max-width: 300px;
+  word-wrap: break-word;
+  white-space: normal;
+}
+.rebuttalButton {
+  border: 0.5px solid #690308;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #690308;
+}
+.markAsCompleted {
+  border: 0.5px solid #04306f;
+  color: #fff;
+  background-color: #04306f;
+}
+.agree {
+  border: 0.5px solid #038500;
+  color: #038500;
+  background-color: #fff;
+}
+.disagree {
+  border: 0.5px solid #690308;
+  color: #690308;
+  background-color: #fff;
+}

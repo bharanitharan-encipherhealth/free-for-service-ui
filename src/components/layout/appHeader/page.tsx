@@ -112,14 +112,14 @@ function AppHeader({
     if (client) setSelectedClient(client);
     if (project) setSelectedProject(project);
     let selectedRoleObj = allRoles?.find(
-      (res: userRolesTypes) => res?.proxyRole == key
+      (res: userRolesTypes) => res?.proxyRole == key,
     );
 
     if (!selectedRoleObj) {
       setNotificationCount(0);
       // getNotification()
       selectedRoleObj = allRoles?.find(
-        (res: userRolesTypes) => res?.proxyRole == key
+        (res: userRolesTypes) => res?.proxyRole == key,
       );
     }
     const accessMenuList = selectedRoleObj?.panelList?.accessListForPanel1;
@@ -279,7 +279,7 @@ const connector = connect(
     getAllRoles: authAction?.allRoles,
     getAllTin: authAction?.tinsDropdown,
     setRole: authAction?.setRole,
-  }
+  },
 );
 
 export default connector(AppHeader);

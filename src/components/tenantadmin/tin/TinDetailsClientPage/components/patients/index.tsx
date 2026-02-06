@@ -113,7 +113,7 @@ function PatientsTab({
         setStorage("patientId", record?.patientId);
         setStorage("routeBackTo", "/tenantadmin/tin/tindetails?tab=Patients");
         getRoutedData(params);
-        route.push("/tenantadmin/patients/details");
+        route.push("/tenantadmin/tin/details");
       } else {
         notification.warning({
           message: record?.patientName + " file not processed. Please wait!",

@@ -21,8 +21,13 @@
 }
 
 .leftArrow {
-  background-color: var(--application-base-color);
+  background-color: var(--app-table-secondary2);
   color: var(--defaultColor);
-  padding: 10px;
-  border-radius: 10px;
+  padding: 5px 8px;
+  border-radius: 5px;
+}
+
+.headerIcon {
+  color: var(--app-header-boder-color);
+  font-size: 20px;
 }

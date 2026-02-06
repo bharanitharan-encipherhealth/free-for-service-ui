@@ -35,10 +35,10 @@ function Project({
   }, []);
 
   const handleTabChange = useCallback(
-    ({ item }: { item: { lable: string; value: string } }) => {
+    ({ item }: { item: { label: string; value: string } }) => {
       setActiveTab(item?.value);
     },
-    []
+    [],
   );
 
   const handleTableCustomizationClick = useCallback(() => {
@@ -59,7 +59,7 @@ function Project({
         loading: tableLoader,
       },
     ],
-    [tableLoader, tableData?.metaDataDTO, handleTableCustomizationClick]
+    [tableLoader, tableData?.metaDataDTO, handleTableCustomizationClick],
   );
 
   const tabList = useMemo(() => {
@@ -69,7 +69,7 @@ function Project({
         tabList: projectTab,
       }),
       activeTab: activeTab,
-      onClick: ({ item }: { item: { lable: string; value: string } }) =>
+      onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
     };
   }, [activeTab, projectTab, handleTabChange]);
@@ -87,7 +87,7 @@ function Project({
         setTableCustomization(false);
       }
     },
-    [tableCustomizationCall, activeTab]
+    [tableCustomizationCall, activeTab],
   );
 
   useEffect(() => {
@@ -131,7 +131,7 @@ const connector = connect(
   }),
   {
     tableCustomizationCall: tableAction?.tableDynamicColumn,
-  }
+  },
 );
 
 export default connector(Project);

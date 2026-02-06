@@ -19,7 +19,7 @@ import {
   Table,
   Tooltip,
 } from "antd";
-import React, { ReactNode, useCallback, useMemo } from "react";
+import React, {  useCallback, useMemo } from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
 
 import style from "./style.module.css";

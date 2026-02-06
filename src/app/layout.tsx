@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { ReduxProvider } from "@/components/providers/ReduxProvider";
 import MsalClientProvider from "@/util/msalClientProvider";
+import AntdAppWrapper from "@/components/layout/AntdAppWrapper";
 
 import "./globals.css";
 
@@ -33,7 +34,9 @@ export default function RootLayout({
       >
         <MsalClientProvider>
           <ReduxProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              <AntdAppWrapper>{children}</AntdAppWrapper>
+            </ThemeProvider>
           </ReduxProvider>
         </MsalClientProvider>
       </body>

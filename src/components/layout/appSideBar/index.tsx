@@ -26,7 +26,7 @@ function AppSideBar({ selectedUserRole }: appSideBarType) {
   const getRoleMenuList = ({ userRole }: { userRole: string }) => {
     const allRoles = JSON?.parse(getStorage("userAllRoles"));
     const selectedRoleObj = allRoles?.find(
-      (res: userRolesTypes) => res.proxyRole === userRole
+      (res: userRolesTypes) => res.proxyRole === userRole,
     );
 
     const accessMenuList = selectedRoleObj?.panelList?.accessListForPanel1
