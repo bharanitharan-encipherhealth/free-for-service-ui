@@ -4,12 +4,9 @@ import { DiagnosisDetailsPropsType } from "@/models/tenantadmin/patients/Diagnos
 import { connect, ConnectedProps } from "react-redux";
 import patinetDetailsReducerType from "@/state/tenantadmin/patients/details/model";
 import HccCard from "../components/hccCard";
-import {
-  generateMeatCriteriaList,
-  getDiseaseData,
-} from "../components/function/reusabelFunction";
-import { DiseaseItem } from "@/models/tenantadmin/patients/details";
+import { getDiseaseData } from "../components/function/reusabelFunction";
 import Filter from "../../filter";
+
 
 type DiagnosisFileReduxType = ConnectedProps<typeof connector>;
 
@@ -92,7 +89,7 @@ function DiagnosisFile({
               activeTab: activeTab || 0,
               diseaseType: "potentialDiseases",
             })}
-            cardTitle="DeleteIcon"
+            cardTitle="Delete"
           />
         ),
         length: getDiseaseData({
@@ -126,7 +123,9 @@ const connector = connect(
     patientDiseaseDetails:
       state?.patientDetailsReducer?.patientDiseaseDetails?.data?.response,
   }),
-  {},
+  {
+   
+  },
 );
 
 export default connector(DiagnosisFile);

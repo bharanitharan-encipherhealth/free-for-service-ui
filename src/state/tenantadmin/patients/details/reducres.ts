@@ -9,13 +9,16 @@ import {
   getPatientListFilter,
   getSelectedDosPageNumber,
   getTimelineList,
+  getValidCode,
   getVersionHistory,
   patientDiseaseDetails,
   patientDosDetails,
   patientHccFileAction,
   patientOverallDetails,
   patientOverallYear,
+  setAddModaOpen,
   setAdmissionNumber,
+  setEditDiseaseList,
   setPageLoading,
   setPatientOverallYear,
   setPdfSearch,
@@ -59,7 +62,7 @@ const getLoading = (type: any) =>
       [type.SUCCEEDED]: () => false,
       [type.FAILED]: () => false,
     },
-    true,
+    false,
   );
 
 const localRedux = (action: any) =>
@@ -116,6 +119,12 @@ const patientDetailsReducer = combineReducers({
   getVersionHistoryloading: getLoading(getVersionHistory),
 
   setPdfView: localRedux(setPdfView),
+
+  setAddModaOpen: localRedux(setAddModaOpen),
+
+  getValidCodeLoading: getLoading(getValidCode),
+
+  editDiseaseList: localRedux(setEditDiseaseList),
 });
 
 export default patientDetailsReducer;

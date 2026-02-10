@@ -244,7 +244,7 @@ function ContentLayout({
   return (
     <>
       <div
-        className={`${style?.contentLayout} h-[53px] px-2  flex items-center justify-between font-semibold`}
+        className={`${style?.contentLayout} h-13.25 px-2  flex items-center justify-between font-semibold`}
       >
         <div className="flex items-center gap-3">
           <div className={`${style?.pageTitle}  text-lg`}>{pageTitle}</div>
@@ -255,11 +255,13 @@ function ContentLayout({
                 <div
                   key={index}
                   onClick={() => tabList?.onClick({ item: item })}
-                  className={
-                    tabList?.activeTab == item?.value
-                      ? "activeContentTab cursor-pointer"
-                      : "cursor-pointer"
-                  }
+                  className={`
+                    ${
+                      tabList?.activeTab == item?.value
+                        ? "activeContentTab cursor-pointer"
+                        : "cursor-pointer"
+                    }
+                    capitalize `}
                 >
                   {item?.label}
                 </div>

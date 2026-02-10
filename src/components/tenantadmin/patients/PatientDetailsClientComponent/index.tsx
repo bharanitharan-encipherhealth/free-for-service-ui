@@ -15,6 +15,7 @@ import PdfViewer from "./components/pdfViewer";
 import { DosSummary } from "@/models/tenantadmin/patients/details";
 import DiagnosisDetails from "./components/diagnosisDetails";
 import { DosTableRow } from "./components/dosSelect";
+import AddEditDiseaseModal from "./components/addEditDiseaseModal";
 
 type PatientDetailsReduxType = ConnectedProps<typeof connector>;
 
@@ -38,6 +39,7 @@ function PatientDetailsClientComponent({
   setPageLoading,
   setPdfView,
   pdfView,
+  addMoadlOpen,
 }: PatientDetailsReduxType) {
   const router = useRouter();
   const pathName = usePathname();
@@ -123,11 +125,15 @@ function PatientDetailsClientComponent({
         admNo: patientOverallDetails?.admNo,
       });
       if (overallYear?.status === "SUCCESS") {
-        setSelectedYear(overallYear?.response?.[0] || "");
-        const dosYear = overallYear?.response?.map((res: string) => {
-          return { value: res, label: res };
-        });
-        setPatientYearOptions(dosYear);
+        if (overallYear?.response?.length) {
+          setSelectedYear(overallYear?.response?.[0] || "");
+          const dosYear = overallYear?.response?.map((res: string) => {
+            return { value: res, label: res };
+          });
+          setPatientYearOptions(dosYear);
+        } else {
+          setPageLoading(false);
+        }
       }
     } catch (e) {
       setPageLoading(false);
@@ -319,11 +325,21 @@ function PatientDetailsClientComponent({
                         : "w-1/5"
             } overflow-scroll`}
           >
-            <DiagnosisDetails
-              collapse={collapse}
-              setCollapse={setCollapse}
-              activeTab={activeTab}
-            />
+            {addMoadlOpen?.isAdd ||
+            addMoadlOpen?.isEdit ||
+            addMoadlOpen?.isMeatEdit ? (
+              <div className="content h-full">
+                <AddEditDiseaseModal
+                  getPatientDiseaseDetails={getPatientDiseaseDetails}
+                />
+              </div>
+            ) : (
+              <DiagnosisDetails
+                collapse={collapse}
+                setCollapse={setCollapse}
+                activeTab={activeTab}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -341,6 +357,7 @@ const connector = connect(
     selectedPatientYear: state?.patientDetailsReducer?.setPatientOverallYear,
     patientYearDetails: state?.patientDetailsReducer?.patientOverallYear,
     pdfView: state?.patientDetailsReducer?.setPdfView,
+    addMoadlOpen: state?.patientDetailsReducer?.setAddModaOpen,
   }),
   {
     getPatientOverallDetails: patientDetailsAction?.patientOverallDetails,

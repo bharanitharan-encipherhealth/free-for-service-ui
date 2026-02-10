@@ -106,7 +106,6 @@ function PatientsTab({
 
   const goToPatientDetails = useCallback(
     ({ record }: { record: productivityContentArrayType }) => {
-      console.log(record, "record");
       if (record?.computing === 2) {
         const controller = new AbortController();
         controller.abort();

@@ -519,7 +519,6 @@ export const useFormSubmittable = (form, fields) => {
 
     const isChanged = !isEqual(currentValues, initialValues);
 
-
     const isTouched = fields
       ? form.isFieldsTouched(fields, true)
       : form.isFieldsTouched(true);
@@ -528,4 +527,84 @@ export const useFormSubmittable = (form, fields) => {
   }, [form, fields]);
 
   return isDisabled;
+};
+
+export const formValidate = ({ value, valueType }) => {
+  switch (valueType) {
+    case "allowNumber":
+      return /^[0-9]+$/.test(value);
+
+    case "allowDecimal":
+      return /^\d*\.?\d*$/.test(value);
+
+    case "allowAlphabet":
+      return /^[A-Za-z]+$/.test(value);
+
+    case "allowAlphanumeric":
+      return /^[A-Za-z0-9]+$/.test(value);
+
+    case "noSpecialChar":
+      return /^[A-Za-z0-9 ]+$/.test(value);
+
+    case "notEmpty":
+      return value?.trim()?.length > 0;
+    case "icdCode": {
+      if (value === "") return true;
+
+      const v = value.trim().toUpperCase();
+      return /^[A-Z][A-Z0-9]{0,6}(\.[A-Z0-9]{0,4})?$/.test(v);
+    }
+
+    default:
+      return true;
+  }
+};
+
+const lightColors = [
+  "#1B1B1B",
+  "#2C3E50",
+  "#3B3B98",
+  "#2E4053",
+  "#512E5F",
+  "#4A235A",
+  "#154360",
+  "#1C2833",
+  "#212F3D",
+  "#424949",
+  "#7B241C",
+  "#641E16",
+  "#873600",
+  "#784212",
+  "#4D5656",
+  "#17202A",
+  "#1A5276",
+  "#0E6655",
+  "#145A32",
+  "#186A3B",
+];
+
+export const stringToColour = (str) => {
+  if (!str) return lightColors[0];
+
+  let hash = 0;
+  str.split("").forEach((char) => {
+    hash = char.charCodeAt(0) + ((hash << 5) - hash);
+  });
+
+  // Pick from the 20 colors deterministically
+  let index = Math.abs(hash) % lightColors.length;
+  let colour = lightColors[index];
+
+  // Special overrides
+  if (str.toLowerCase() === "plan") {
+    colour = "#7e00ff";
+  }
+  if (str.toLowerCase() === "examination") {
+    colour = "#9eb875";
+  }
+  if (["assessments", "assessment"].includes(str.toLowerCase())) {
+    colour = "#f1a113";
+  }
+
+  return colour;
 };

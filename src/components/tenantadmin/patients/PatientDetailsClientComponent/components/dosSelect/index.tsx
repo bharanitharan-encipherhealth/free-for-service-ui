@@ -71,8 +71,8 @@ function DosSelect({
       providerName: item?.providerName,
     }));
     setDataSoucre(data);
-    if (selectedDos && options.length) {
-      const matchedItem = options.find((item) => item.dos === selectedDos);
+    if (selectedDos && options?.length) {
+      const matchedItem = options?.find((item) => item?.dos === selectedDos);
 
       if (matchedItem) {
         const row = {

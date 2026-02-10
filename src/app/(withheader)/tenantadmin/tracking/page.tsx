@@ -7,7 +7,7 @@ import React, {
   useRef,
 } from "react";
 import ContentLayout from "@/components/layout/ContentLayout/page";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { notification } from "antd";
 
 import { actions as tableAction } from "@/state/table";
@@ -15,6 +15,7 @@ import TableViewType, { metaDataType, SortType } from "@/state/table/model";
 import {
   getTableViewResponse,
   TrackingPropsType,
+  trackingTableView,
 } from "@/models/tenantadmin/tracking";
 import ReusableFilters from "@/components/ReusbaleFilter";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
@@ -22,8 +23,12 @@ import ReusableTable from "@/components/ReusabelTable";
 
 import { actions as logsAction } from "@/state/tenantadmin/tracking";
 import { logsPageId } from "@/util/pageIds";
-import { getStorage } from "@/util/storage";
+import { getStorage, setStorage } from "@/util/storage";
 import LogsReducerType from "@/state/tenantadmin/tracking/model";
+import { productivityContentArrayType } from "@/models/tenantadmin/tin/patients";
+import { useRouter } from "next/navigation";
+
+type LogsReduxType = ConnectedProps<typeof connector> & TrackingPropsType;
 
 function Logs({
   getTableView,
@@ -32,7 +37,9 @@ function Logs({
   tableLoader,
   getLogsReportDownload,
   exportLoading,
-}: TrackingPropsType) {
+  getRoutedData,
+}: LogsReduxType) {
+  const route = useRouter();
   const [pageNo, setPageNo] = useState(0);
   const [paginationFirst, setPaginationFirst] = useState(0);
   const [sort, setSort] = useState<SortType>({
@@ -56,7 +63,7 @@ function Logs({
   });
   const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {}
+    {},
   );
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [selectedDates, setSelectedDates] = useState({});
@@ -69,7 +76,7 @@ function Logs({
   // Refs to track previous values for deep comparison
   const prevSelectedOptionRef = useRef<typeof selectedOption | null>(null);
   const prevSelectedDateRangesRef = useRef<typeof selectedDateRanges | null>(
-    null
+    null,
   );
   const prevSearchTextRef = useRef<typeof searchText | null>(null);
   const prevSortRef = useRef<typeof sort | null>(null);
@@ -160,7 +167,7 @@ function Logs({
       tableLoader,
       selectedOption,
       exportLoading,
-    ]
+    ],
   );
 
   const handleRowChange = ({ value }: { value: number }) => {
@@ -205,7 +212,7 @@ function Logs({
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
 
   const handleInsert = useCallback(
@@ -220,7 +227,7 @@ function Logs({
         await getAllTracking();
       }
     },
-    [tableCustomizationCall, getAllTracking]
+    [tableCustomizationCall, getAllTracking],
   );
 
   // Deep comparison helper for objects
@@ -232,7 +239,7 @@ function Logs({
       const currentStr = JSON.stringify(current);
       return prevStr !== currentStr;
     },
-    []
+    [],
   );
 
   useEffect(() => {
@@ -253,15 +260,15 @@ function Logs({
     // Check if any dependency has actually changed
     const optionChanged = hasObjectChanged(
       prevSelectedOptionRef.current,
-      selectedOption
+      selectedOption,
     );
     const dateRangesChanged = hasObjectChanged(
       prevSelectedDateRangesRef.current,
-      selectedDateRanges
+      selectedDateRanges,
     );
     const searchTextChanged = hasObjectChanged(
       prevSearchTextRef.current,
-      searchText
+      searchText,
     );
     const sortChanged = hasObjectChanged(prevSortRef.current, sort);
     const activeTabChanged = prevPageNoRef.current !== pageNo;
@@ -296,6 +303,35 @@ function Logs({
     hasObjectChanged,
   ]);
 
+  const params = {
+    pageNo,
+    selectedDates,
+    paginationFirst,
+    sort,
+    activeFilters,
+    searchText,
+    selectedOption,
+    selectedDateRanges,
+  };
+
+  const goToPatientDetails = useCallback(
+    ({ record }: { record: productivityContentArrayType }) => {
+      if (record?.computing === 2) {
+        const controller = new AbortController();
+        controller.abort();
+        setStorage("patientId", record?.patientId);
+        setStorage("routeBackTo", "/tenantadmin/tracking");
+        getRoutedData(params);
+        route.push("/tenantadmin/tracking/details");
+      } else {
+        notification.warning({
+          message: record?.patientName + " file not processed. Please wait!",
+        });
+      }
+    },
+    [getRoutedData, params, route],
+  );
+
   useEffect(() => {
     if (!tableData?.metaDataDTO) return;
 
@@ -313,7 +349,7 @@ function Logs({
 
     if (hasChanged) {
       const newActiveFilters = currentMetaData.filter(
-        (item) => item.active && item?.filter?.style
+        (item) => item.active && item?.filter?.style,
       );
 
       setActiveFilters(newActiveFilters);
@@ -357,10 +393,10 @@ function Logs({
         </div>
 
         <div>
-          <ReusableTable
+          <ReusableTable<trackingTableView>
             data={tableData?.pageResponse?.content}
             column={tableData?.metaDataDTO?.filter(
-              (item) => item?.active && item?.columnActive
+              (item) => item?.active && item?.columnActive,
             )}
             loader={tableLoader}
             setSort={setSort}
@@ -373,6 +409,7 @@ function Logs({
             isRowSizabel={true}
             count={30}
             handleRowChange={handleRowChange}
+            onRowClick={goToPatientDetails}
           />
         </div>
       </div>
@@ -393,7 +430,8 @@ const connector = connect(
     getTableView: tableAction?.tabelViewCall,
     tableCustomizationCall: tableAction?.tableDynamicColumn,
     getLogsReportDownload: logsAction?.logsExport,
-  }
+    getRoutedData: tableAction?.getReportTable,
+  },
 );
 
 export default connector(Logs);

@@ -60,7 +60,7 @@ function Batch({ getBatchTable, tableData, tableLoader }: BatchReduxProps) {
         design: ["COMPUTATION_STATUS"],
       },
     ],
-    []
+    [],
   );
 
   const [activeFilters, setActiveFilters] =
@@ -68,7 +68,7 @@ function Batch({ getBatchTable, tableData, tableLoader }: BatchReduxProps) {
 
   const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {}
+    {},
   );
   const [selectedDateRanges, setSelectedDateRanges] = useState<
     Record<string, DateRange>
@@ -93,7 +93,7 @@ function Batch({ getBatchTable, tableData, tableLoader }: BatchReduxProps) {
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
 
   const handleRowChange = ({ value }: { value: number }) => {
@@ -119,7 +119,7 @@ function Batch({ getBatchTable, tableData, tableLoader }: BatchReduxProps) {
     });
   }, [getBatchTable, selectedOption, searchText, pageNo, selectedDateRanges]);
 
-  const handleRowClick = (record: bacthContentArrayType) => {
+  const handleRowClick = ({ record }: { record: bacthContentArrayType }) => {
     setShowBatchDetails({ status: true, data: record });
   };
 
@@ -220,7 +220,7 @@ const connector = connect(
   }),
   {
     getBatchTable: projectAction?.getAllBatches,
-  }
+  },
 );
 
 export default connector(Batch);

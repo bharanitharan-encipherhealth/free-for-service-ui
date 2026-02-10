@@ -6,7 +6,7 @@ import { GoBell } from "react-icons/go";
 import { getheaderLogo, getResponePopup } from "@/util/reusableFunction";
 import style from "./style.module.css";
 import { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import authTypes from "@/state/auth/model";
 import {
   projectTypes,
@@ -18,6 +18,7 @@ import { ssoLogout } from "../../../../lib/authService";
 import { actions as authAction } from "@/state/auth";
 import { usePathname, useRouter } from "next/navigation";
 
+type AppHeaderRedux = ConnectedProps<typeof connector>;
 function AppHeader({
   clientDetails,
   projectDetails,
@@ -27,7 +28,7 @@ function AppHeader({
   getAllRoles,
   getAllTin,
   setRole,
-}: projectTypes) {
+}: AppHeaderRedux) {
   const router = useRouter();
   const pathName = usePathname();
   const userRole = getStorage("userRole");
