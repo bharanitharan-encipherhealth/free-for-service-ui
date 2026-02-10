@@ -421,3 +421,83 @@ export async function getRevertDetails({
   const data = await requestPortal(url, options);
   return data;
 }
+
+export async function isValideCode({
+  code,
+  isDosSelected,
+}: {
+  code: string;
+  isDosSelected: string;
+}) {
+  const options = {
+    method: "GET",
+  };
+  const data = await requestPortal(
+    `dbservice/icddisease/disease-autocomplete?diseasecode=${code}&dateOfService=${isDosSelected}`,
+
+    options,
+  );
+  return data;
+}
+
+export async function getProviderAndCaptured({
+  payload,
+}: {
+  payload: {
+    dateOfService: string[];
+    fileId: string;
+    patientId: string;
+    processedYear: number;
+  };
+}) {
+  const options = {
+    method: "POST",
+    body: JSON.stringify(payload),
+  };
+  const data = await requestPortal(
+    `dbservice/provider/getProviderAndCapturedSection`,
+    options,
+  );
+  return data;
+}
+
+export async function isCodePresent({
+  code,
+  dos,
+  date,
+  admissionNumber,
+}: {
+  code: string;
+  dos: string;
+  date: string;
+  admissionNumber: { patientType: string; batchDate: string; admNo: string };
+}) {
+  const options = {
+    method: "GET",
+  };
+  const patientId = getStorage("patientId");
+  let url = `dbservice/find/diagnosiscode?diagnosisCode=${code}&patientId=${patientId}&dos=${dos}&date=${date}`;
+  if (admissionNumber?.patientType == "INPATIENT" && admissionNumber?.admNo) {
+    url += `&admNo=${admissionNumber?.admNo}`;
+  }
+  const data = await requestPortal(url, options);
+  return data;
+}
+
+export async function manuallyAddCode({ obj }: { obj: unknown }) {
+  const options = {
+    method: "POST",
+    body: JSON.stringify(obj),
+  };
+  const data = await requestPortal(`management/disease/add`, options);
+  return data;
+}
+
+export async function diseaseEdit({ payload }: { payload: unknown }) {
+  const options = {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  };
+  const data = await requestPortal(`management/edit/disease`, options);
+  return data;
+}

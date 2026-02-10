@@ -12,6 +12,11 @@ import { PaginatorPageChangeEvent } from "primereact/paginator";
 import ReusableTable from "@/components/ReusabelTable";
 import { formatDateTime } from "@/util/reusableFunction";
 import PageHeaderLayout from "@/components/layout/pageHeaderLayout/page";
+import { productivityContentArrayType } from "@/models/tenantadmin/tin/patients";
+import { setStorage } from "@/util/storage";
+import { actions as tableAction } from "@/state/table";
+import { useRouter } from "next/navigation";
+import { notification } from "antd";
 
 type BatchReduxProps = ConnectedProps<typeof connector>;
 
@@ -22,7 +27,9 @@ function BatchDetails({
   tableData,
   tableLoader,
   setViewDetailedBatch,
+  getRoutedData,
 }: BacthPropsType) {
+  const route = useRouter();
   const batchFilterColumn: metaDataType[] = useMemo(
     () => [
       {
@@ -35,7 +42,7 @@ function BatchDetails({
         orderValue: 1,
       },
     ],
-    []
+    [],
   );
 
   const bactchInfoDetails = useMemo(
@@ -65,7 +72,7 @@ function BatchDetails({
           : "---",
       },
     ],
-    [bacthInfo]
+    [bacthInfo],
   );
 
   const [activeFilters, setActiveFilters] =
@@ -80,7 +87,7 @@ function BatchDetails({
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
 
   const getAllBatchInfo = useCallback(async () => {
@@ -142,6 +149,31 @@ function BatchDetails({
     setColumnData(column);
   }, [tableData]);
 
+  const params = {
+    pageNo,
+    paginationFirst,
+    activeFilters,
+    searchText,
+  };
+
+  const goToPatientDetails = useCallback(
+    ({ record }: { record: productivityContentArrayType }) => {
+      if (record?.processStage === "FINISHED") {
+        const controller = new AbortController();
+        controller.abort();
+        setStorage("patientId", record?.patientId);
+        setStorage("routeBackTo", "/tenantadmin/project");
+        getRoutedData(params);
+        route.push("/tenantadmin/patientsync/batchfilesview");
+      } else {
+        notification.warning({
+          message: record?.patientName + " file not processed. Please wait!",
+        });
+      }
+    },
+    [getRoutedData, params, route],
+  );
+
   return (
     <>
       <PageHeaderLayout
@@ -169,6 +201,7 @@ function BatchDetails({
           onPageChange={onPageChange}
           isPagination
           count={30}
+          onRowClick={goToPatientDetails}
         />
       </div>
     </>
@@ -182,7 +215,8 @@ const connector = connect(
   }),
   {
     getBatchInfoDetails: projectAction.getBatchInfo,
-  }
+    getRoutedData: tableAction?.getReportTable,
+  },
 );
 
 export default connector(BatchDetails);

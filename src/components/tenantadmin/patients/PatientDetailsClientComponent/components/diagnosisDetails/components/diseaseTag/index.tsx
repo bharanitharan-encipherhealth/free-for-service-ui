@@ -46,20 +46,30 @@ export default function DiseaseTag({ data }: DiseaseTagType) {
   if (!data) return;
 
   const activeTags = tagConfig.filter((tag) => tag.condition);
+  const activeTagSlice = activeTags?.slice(0, 1);
+  const restLength = activeTags?.slice(1)?.length;
   if (activeTags.length === 0) return null;
   return (
     <div className={`flex items-center flex-wrap gap-2`}>
       <div className="iconBagColor">
         <FaRegCircleDot />
       </div>
-      <div className={`flex items-center ${style?.borderLast}`}>
-        {activeTags.map((tag, index) => (
-          <span key={index} className="">
+      <div className={`flex items-center ${style?.borderLast} gap-1`}>
+        {activeTagSlice.map((tag, index) => (
+          <div key={index} className="">
             <span className={`hccCardOverallFont cr-pointer `}>
               {tag?.label}
             </span>
-          </span>
+          </div>
         ))}
+        {restLength > 0 && (
+          <div
+            className={`${style?.restLength} rounded-full text-xs text-center p-1 cursor-pointer`}
+            onClick={() => {}}
+          >
+            {"+" + restLength}
+          </div>
+        )}
       </div>
     </div>
   );

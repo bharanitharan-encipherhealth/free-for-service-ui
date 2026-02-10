@@ -28,6 +28,8 @@ function HccCard({
   patientDiseaseDetailsLoading,
   patientDosDetailsLoading,
   pageLoading,
+  setAddModalOpen,
+  setEditDiseaseList,
 }: HccCardPropsType) {
   return (
     <div className="h-full w-full overflow-scroll">
@@ -53,19 +55,23 @@ function HccCard({
             >
               {/* disease code section */}
               <div className="flex justify-between items-center">
-                <div className="text-sm font-semibold">
-                  {item?.diagnosisCode}
-                </div>
+                <div className="text-sm font-bold">{item?.diagnosisCode}</div>
 
                 <div className="flex gap-2 items-center">
-                  <div className="iconBagColor border-r border-gray-300 pe-2">
-                    <LuSquarePen />
+                  <div
+                    className="iconBagColor border-r border-gray-300 pe-2 cursor-pointer"
+                    onClick={() => {
+                      setAddModalOpen({ isEdit: true });
+                      setEditDiseaseList(item);
+                    }}
+                  >
+                    <LuSquarePen className="font-bold text-base" />
                   </div>
 
                   <div
-                    className={`${style.comboCode} border-gray-300 border-r pe-2`}
+                    className={`${style.comboCode} border-gray-300 border-r pe-2 `}
                   >
-                    <BsDiagram3 />
+                    <BsDiagram3 className="font-bold text-base" />
                   </div>
 
                   <div className={`${style?.borderLast}`}>
@@ -74,7 +80,7 @@ function HccCard({
                         diagnosisIcon: cardTitle !== "Diagnosis",
                         careGapIcon: cardTitle !== "CargeGap",
                         potientialIcon: cardTitle !== "Suggested",
-                        deleteIcon: cardTitle !== "DeleteIcon",
+                        deleteIcon: cardTitle !== "Delete",
                       }}
                     />
                   </div>
@@ -82,7 +88,7 @@ function HccCard({
               </div>
 
               {/* disease discription section */}
-              <div className="text-xs">
+              <div className="text-xs my-1 font-medium">
                 {reusableEllipses({ str: item?.actualDescription, count: 40 })}
               </div>
 
@@ -126,23 +132,25 @@ function HccCard({
 
                 {/* disease capture section */}
 
-                <div className="flex gap-2 items-center">
-                  <div className="iconBagColor">
-                    <GiMedicines />
-                  </div>
+                {item?.capturedSections?.length ? (
+                  <div className="flex gap-2 items-center">
+                    <div className="iconBagColor">
+                      <GiMedicines />
+                    </div>
 
-                  <div className={`flex gap-1 ${style?.borderLast} `}>
-                    {renderProviderSection({
-                      setPdfSearch,
-                      capture: item?.capturedSections,
-                      hyperLinks: item?.hyperlinks,
-                      pdfSearchValue: pdfSearchValue,
-                      hyperlinkKey: "dateOfService",
-                      isDateShow: false,
-                      sectionName: "captureSection",
-                    })}
+                    <div className={`flex gap-1 ${style?.borderLast} `}>
+                      {renderProviderSection({
+                        setPdfSearch,
+                        capture: item?.capturedSections,
+                        hyperLinks: item?.hyperlinks,
+                        pdfSearchValue: pdfSearchValue,
+                        hyperlinkKey: "dateOfService",
+                        isDateShow: false,
+                        sectionName: "captureSection",
+                      })}
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
                 {/* tags section */}
                 <div>
@@ -183,7 +191,11 @@ const connector = connect(
       state?.patientDetailsReducer?.patientDosDetailsLoading,
     pageLoading: state?.patientDetailsReducer?.setPageLoading,
   }),
-  { setPdfSearch: patientDetailsAction?.setPdfSearch },
+  {
+    setPdfSearch: patientDetailsAction?.setPdfSearch,
+    setAddModalOpen: patientDetailsAction?.setAddModaOpen,
+    setEditDiseaseList: patientDetailsAction?.setEditDiseaseList,
+  },
 );
 
 export default connector(HccCard);

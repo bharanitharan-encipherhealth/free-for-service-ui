@@ -82,6 +82,31 @@ export const getVersionHistory = createActionThunk(
   network?.getRevertDetails,
 );
 
+export const getValidCode = createActionThunk(
+  "isValideCode",
+  network?.isValideCode,
+);
+
+export const getCaptureSection = createActionThunk(
+  "GET_CAPTURE_SECTION_LIST_ARRAY",
+  network?.getProviderAndCaptured,
+);
+
+export const checkCodePresent = createActionThunk(
+  "GET_CHECK_CODE_PRESENT",
+  network?.isCodePresent,
+);
+
+export const manuallyAdd = createActionThunk(
+  "MANUALLY_ADDED",
+  network.manuallyAddCode,
+);
+
+export const diseaseEdit = createActionThunk(
+  "DISEASE_EDIT",
+  network.diseaseEdit,
+);
+
 export const setAdmissionNumber = createAction("SET_ADMISSION_NUMBER");
 
 export const setPatientOverallYear = createAction("SET_PATIENT_OVERALL_YEAR");
@@ -98,4 +123,8 @@ export const stroeFileIdPreAction = createAction("STORE_FILE_ID_PRE");
 
 export const setPageLoading = createAction("SET_PAGE_LOADING");
 
-export const setPdfView = createAction("SET_PDF_VIEW")
+export const setPdfView = createAction("SET_PDF_VIEW");
+
+export const setAddModaOpen = createAction("SET_DISEASE_ADD_MODAL");
+
+export const setEditDiseaseList = createAction("SET_EDIT_DISEASE");

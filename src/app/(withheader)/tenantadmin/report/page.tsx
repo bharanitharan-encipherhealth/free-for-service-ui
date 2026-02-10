@@ -50,7 +50,7 @@ function Report({
     ({ item }: { item: { label: string; value: string } }) => {
       setActiveTab(item?.value);
     },
-    [setActiveTab],
+    [activeTab, setActiveTab],
   );
   const [selectedDateRanges, setSelectedDateRanges] = useState<
     Record<string, DateRange>

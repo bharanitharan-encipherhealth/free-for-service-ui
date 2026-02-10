@@ -252,7 +252,7 @@ export const renderMeatFound = ({
   if (meat?.length != 0) {
     switch (value) {
       case "M":
-        if (meat?.[0]?.monitor) backgroundColor = true;
+        if (meat?.[0]?.monitorAspect) backgroundColor = true;
         meatTitle = "Monitor";
         break;
       case "E":
@@ -274,7 +274,7 @@ export const renderMeatFound = ({
   return (
     <Tooltip title={meatTitle} placement="top">
       <span
-        className={`${backgroundColor ? style?.meatFound : style?.meatNotFound} inline-flex items-center justify-center rounded-md text-sm font-semibold min-w-5.5 min-h-5.5`}
+        className={`${backgroundColor ? style?.meatFound : style?.meatNotFound} inline-flex items-center justify-center rounded-md text-xs font-semibold min-w-5.5 min-h-5.5`}
       >
         {value}
       </span>

@@ -1,4 +1,5 @@
 import {
+  DiseaseItem,
   patientDiseaseDetailstype,
   patientDosDetailsType,
   patientHccFileType,
@@ -96,6 +97,16 @@ export default class patinetDetailsReducerType {
   };
 
   setPdfView: boolean;
+
+  setAddModaOpen: {
+    isAdd: boolean;
+    isEdit: boolean;
+    isMeatEdit: boolean;
+  };
+
+  getValidCodeLoading: boolean;
+
+  editDiseaseList: DiseaseItem | null;
 
   constructor(
     patientOverallYear: {
@@ -1273,6 +1284,68 @@ export default class patinetDetailsReducerType {
       };
     },
     setPdfView: false,
+    setAddModaOpen: {
+      isAdd: false;
+      isEdit: false;
+      isMeatEdit: false;
+    },
+    getValidCodeLoading: false,
+    editDiseaseList: {
+      id: "";
+      diagnosisCode: "";
+
+      actualDescription: "";
+      dbDescription: "";
+
+      notes: null;
+
+      capturedSections: [];
+      dateOfServices: [];
+
+      hyperlinks: [];
+      dosHyperlinks: [];
+
+      manuallyAddedDetails: {
+        isManuallyAdded: false;
+        manuallyAddedAt: "";
+        manuallyAddedBy: "";
+      };
+
+      defaultPosition: "";
+
+      providerNames: [];
+      providerHyperlinks: [];
+
+      formedCodes: [];
+      children: [];
+
+      stateIndicators: [];
+
+      isShow: false;
+      diseaseSource: "";
+
+      suspectType: [];
+
+      uniqueIds: [];
+
+      riskAdjustmentDtoList: null;
+      hccCategoryDataList: null;
+      addOnCodes: null;
+
+      ruleType: null;
+      reason: null;
+
+      educationalError: false;
+
+      oldValue: [];
+      newValue: [];
+
+      comment: null;
+      lastAddedComment: null;
+
+      isRxHcc: false;
+      isCmsHcc: false;
+    },
   ) {
     this.patientOverallDetails = patientOverallDetails;
     this.patietOverallDetailsLoading = patietOverallDetailsLoading;
@@ -1304,5 +1377,8 @@ export default class patinetDetailsReducerType {
     this.getVersionHistoryloading = getVersionHistoryloading;
     this.getVersionHistory = getVersionHistory;
     this.setPdfView = setPdfView;
+    this.setAddModaOpen = setAddModaOpen;
+    this.getValidCodeLoading = getValidCodeLoading;
+    this.editDiseaseList = editDiseaseList;
   }
 }

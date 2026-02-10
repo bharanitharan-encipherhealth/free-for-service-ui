@@ -625,3 +625,16 @@ export interface versionHistorytype {
   status: string;
   response: timeLineContentType[];
 }
+
+export interface icdDiseaseCodeType {
+  code: string;
+  description: string;
+  header: string;
+  _id: string;
+}
+
+export interface autoCompleteDTOList {
+  oldValue: number[];
+  newValue: number[];
+  icdDiseaseDTO: icdDiseaseCodeType;
+}
