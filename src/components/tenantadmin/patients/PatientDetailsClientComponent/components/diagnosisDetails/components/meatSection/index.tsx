@@ -12,8 +12,6 @@ function MeatSection({
   meatDetails,
   patientDiseaseDetails,
 }: MeatSectionPropsType) {
-  console.log(meatDetails, "MeatSectionType");
-
   const meatCriteriaList = useMemo(
     () =>
       generateMeatCriteriaList<MeatCriteriaItem>({

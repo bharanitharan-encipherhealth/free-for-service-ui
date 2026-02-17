@@ -56,7 +56,7 @@ export async function getAllProcessYear({
 
   let URL = `dbservice/patient/compute/get/allyear?patientId=${patientId}`;
 
-  if (type?.toLowerCase() == "inpatient") {
+  if (type?.toLowerCase() == "inpatient" && admNo) {
     URL = `dbservice/patient/compute/get/allyear?admNo=${admNo}`;
   }
   const data = await requestPortal(URL, options);
@@ -148,6 +148,7 @@ export async function patientDetails({
   if (masterAudit) {
     url += `&masterAudit=${masterAudit}`;
   }
+
   if (admissionNumber?.patientType == "INPATIENT" && admissionNumber?.admNo) {
     url += `&admNo=${admissionNumber?.admNo}`;
   }
@@ -499,5 +500,137 @@ export async function diseaseEdit({ payload }: { payload: unknown }) {
     body: JSON.stringify(payload),
   };
   const data = await requestPortal(`management/edit/disease`, options);
+  return data;
+}
+
+export async function suggestedMeatCheck({
+  diagnosisCode,
+}: {
+  diagnosisCode: string;
+}) {
+  const options = {
+    method: "GET",
+  };
+  const data = await requestPortal(
+    `dbservice/meat/conformation?diagnosisCode=${diagnosisCode}`,
+    options,
+  );
+  return data;
+}
+
+export async function movementApiCall({
+  payload,
+  apiUrl,
+}: {
+  payload: unknown;
+  apiUrl: string;
+}) {
+  const options = {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  };
+  const data = await requestPortal(apiUrl, options);
+  return data;
+}
+
+export async function suggestedToValid({
+  payload,
+  dragAndDrop,
+}: {
+  payload: unknown;
+  dragAndDrop: string;
+}) {
+  const options = {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  };
+  let apiUrl = "management/disease/move/suggestedtovalid";
+  if (dragAndDrop === "caregap_diagnosis") {
+    apiUrl = "management/disease/move/suggestedtovalid";
+  }
+  if (dragAndDrop === "suggested_diagnosis") {
+    apiUrl = "management/disease/move/potentialtovalid";
+  }
+  if (dragAndDrop === "delete_diagnosis") {
+    apiUrl = "management/meat/move/deletedtovalid";
+  }
+  const data = await requestPortal(apiUrl, options);
+  return data;
+}
+
+export async function diseaseEditMeat({ payload }: { payload: unknown }) {
+  const options = {
+    method: "PUT",
+    body: JSON.stringify(payload),
+  };
+  const data = await requestPortal(`management/edit/meat`, options);
+  return data;
+}
+
+export const confirmRevert = async ({
+  dos,
+  year,
+  versionHistory,
+  admissionNumber,
+}: {
+  dos: string;
+  year: number;
+  versionHistory: number;
+  admissionNumber: { patientType: string; batchDate: string; admNo: string };
+}) => {
+  const patientId = getStorage("patientId");
+  const options = {
+    method: "PUT",
+  };
+
+  let url = `management/disease/revert?patientId=${patientId}&dateOfService=${dos}&processedYear=${year}&versionHistory=${versionHistory}`;
+
+  if (admissionNumber?.patientType == "INPATIENT" && admissionNumber?.admNo)
+    url += `&admNo=${admissionNumber?.admNo}`;
+
+  const response = await requestPortal(url, options);
+
+  return response;
+};
+
+export async function dosStatusAction({
+  payload,
+}: {
+  payload: {
+    patientId: string;
+    notes: string;
+    processedYear: number;
+    dateOfService: string;
+    roleId: string;
+    processedStatus: string;
+    masterAudit: boolean;
+    admNo?: string;
+  };
+}) {
+  const options = {
+    method: "POST",
+    body: JSON.stringify(payload),
+  };
+
+  const data = await requestPortal(`dbservice/status/update-status`, options);
+  return data;
+}
+
+export async function overallStatusUpdate({
+  payload,
+}: {
+  payload: {
+    patientId: string;
+    roleId: string;
+    processedStatus: string;
+    masterAudit: boolean;
+  };
+}) {
+  const options = {
+    method: "POST",
+    body: JSON.stringify(payload),
+  };
+
+  const data = await requestPortal(`dbservice/status/overallstatus`, options);
   return data;
 }

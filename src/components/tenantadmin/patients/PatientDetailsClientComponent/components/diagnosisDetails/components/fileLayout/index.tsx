@@ -3,7 +3,9 @@ import style from "../../style.module.css";
 import { IoIosArrowBack, IoMdAdd } from "react-icons/io";
 import { actions as patientDetailsAction } from "@/state/tenantadmin/patients/details";
 import { connect, ConnectedProps } from "react-redux";
-import React from "react";
+import React, { useMemo } from "react";
+import { useDroppable } from "@dnd-kit/core";
+import patinetDetailsReducerType from "@/state/tenantadmin/patients/details/model";
 
 type FileLayoutReduxType = ConnectedProps<typeof connector> & FileLayoutType;
 const FileLayout = React.memo(
@@ -13,9 +15,26 @@ const FileLayout = React.memo(
     diseaseCategories,
     activeTab,
     setAddModaOpen,
+    isDisable,
   }: FileLayoutReduxType) => {
+    const { setNodeRef: setDiagnosisDropRef } = useDroppable({
+      id: "diagnosis",
+    });
+    const { setNodeRef: setCareGapDropRef } = useDroppable({
+      id: "caregap",
+    });
+    const { setNodeRef: setSuggestedDropRef } = useDroppable({
+      id: "suggested",
+    });
+    const { setNodeRef: setDeleteDropRef } = useDroppable({
+      id: "delete",
+    });
+    const isDisabledStatus = useMemo(
+      () => isDisable?.isDosWise || isDisable?.isYearWise,
+      [isDisable],
+    );
     return (
-      <div className="flex gap-3 h-full overflow-hidden w-full">
+      <div className="flex gap-3 h-full w-full">
         {diseaseCategories?.map((item, index) => {
           return (
             <>
@@ -23,6 +42,13 @@ const FileLayout = React.memo(
                 <div
                   className={`${style?.[item?.layout]} p-2 flex flex-col min-h-0 ${collapse?.includes(item?.layout) ? "w-full" : "w-20 flex justify-center cursor-pointer items-center"}`}
                   key={item?.id + index}
+                  ref={
+                    item.id === 1
+                      ? setDiagnosisDropRef
+                      : item.id === 2
+                        ? setCareGapDropRef
+                        : undefined
+                  }
                   onClick={() => {
                     if (!collapse?.includes(item?.layout)) {
                       setCollapse((prev) => [...prev, item?.layout]);
@@ -43,9 +69,11 @@ const FileLayout = React.memo(
                     <div className="flex gap-2 items-center">
                       {item?.cardTitle === "Diagnosis" && (
                         <div
-                          className="cursor-pointer"
+                          className={`${!isDisabledStatus ? "cursor-pointer" : "cursor-not-allowed"}`}
                           onClick={() => {
-                            setAddModaOpen({ isAdd: true });
+                            if (!isDisabledStatus) {
+                              setAddModaOpen({ isAdd: true });
+                            }
                           }}
                         >
                           <IoMdAdd className="font-bold text-xl" />
@@ -67,7 +95,7 @@ const FileLayout = React.memo(
                   </div>
 
                   {collapse?.includes(item?.layout) && (
-                    <div className="flex-1 min-h-0 overflow-auto mb-3">
+                    <div className="flex-1 min-h-0 overflow-y-auto mb-3">
                       {item?.children}
                     </div>
                   )}
@@ -89,6 +117,13 @@ const FileLayout = React.memo(
                       <div
                         className={`${style?.[data!.layout]} p-2 w-full h-full flex flex-col min-h-0 ${collapse?.includes(item?.layout) ? "w-full" : "flex justify-center cursor-pointer items-center"}`}
                         key={data!.id + index}
+                        ref={
+                          data?.id === 3
+                            ? setSuggestedDropRef
+                            : data?.id === 4
+                              ? setDeleteDropRef
+                              : undefined
+                        }
                         onClick={() => {
                           if (!collapse?.includes(item?.layout)) {
                             setCollapse((prev) => [...prev, item?.layout]);
@@ -103,7 +138,7 @@ const FileLayout = React.memo(
                               {data?.cardTitle?.toUpperCase()}
                             </div>
                             {collapse?.includes(item?.layout) && (
-                              <span>{item?.length || 0}</span>
+                              <span>{data?.length || 0}</span>
                             )}
                           </div>
                           {index == 0 && collapse?.includes(item?.layout) && (
@@ -121,8 +156,8 @@ const FileLayout = React.memo(
                         </div>
 
                         {collapse?.includes(item?.layout) && (
-                          <div className="flex-1 min-h-0 overflow-auto mb-3">
-                            {item?.children}
+                          <div className="flex-1 min-h-0 overflow-y-auto mb-3">
+                            {data?.children}
                           </div>
                         )}
                       </div>
@@ -140,8 +175,13 @@ const FileLayout = React.memo(
 
 FileLayout.displayName = "FileLayout";
 
-const connector = connect((state) => ({}), {
-  setAddModaOpen: patientDetailsAction?.setAddModaOpen,
-});
+const connector = connect(
+  (state: { patientDetailsReducer: patinetDetailsReducerType }) => ({
+    isDisable: state?.patientDetailsReducer?.isDisable,
+  }),
+  {
+    setAddModaOpen: patientDetailsAction?.setAddModaOpen,
+  },
+);
 
 export default connector(FileLayout);

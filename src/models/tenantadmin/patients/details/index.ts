@@ -146,6 +146,9 @@ export interface patientSubHeaderType {
   activeChartTab: string;
   selectedPatientYear: number;
   onHandleChangeDos: ({ record }: { record: DosTableRow }) => void;
+  getPatientDosCall: () => void;
+  getPatientDiseaseDetails: ({ dos }: { dos: string }) => void;
+  getPatientDetails: ({ patientId }: { patientId: string }) => void;
 }
 
 export interface patientDosResponseType {
@@ -355,6 +358,8 @@ export interface DiseaseItem {
 
   isRxHcc: boolean;
   isCmsHcc: boolean;
+
+  comments?: string;
 }
 
 export interface Hyperlink {

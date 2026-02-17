@@ -102,11 +102,21 @@ export default class patinetDetailsReducerType {
     isAdd: boolean;
     isEdit: boolean;
     isMeatEdit: boolean;
+    isMeatPage: boolean;
   };
 
   getValidCodeLoading: boolean;
 
   editDiseaseList: DiseaseItem | null;
+
+  setDropConfirm: boolean;
+
+  setMovingData: { data: DiseaseItem; dropId: string; dragId: string } | null;
+
+  isDisable: {
+    isYearWise: boolean;
+    isDosWise: boolean;
+  };
 
   constructor(
     patientOverallYear: {
@@ -1288,6 +1298,7 @@ export default class patinetDetailsReducerType {
       isAdd: false;
       isEdit: false;
       isMeatEdit: false;
+      isMeatPage: false;
     },
     getValidCodeLoading: false,
     editDiseaseList: {
@@ -1346,6 +1357,10 @@ export default class patinetDetailsReducerType {
       isRxHcc: false;
       isCmsHcc: false;
     },
+
+    setDropConfirm: false,
+    setMovingData: null,
+    isDisable: { isYearWise: false; isDosWise: false },
   ) {
     this.patientOverallDetails = patientOverallDetails;
     this.patietOverallDetailsLoading = patietOverallDetailsLoading;
@@ -1380,5 +1395,8 @@ export default class patinetDetailsReducerType {
     this.setAddModaOpen = setAddModaOpen;
     this.getValidCodeLoading = getValidCodeLoading;
     this.editDiseaseList = editDiseaseList;
+    this.setDropConfirm = setDropConfirm;
+    this.setMovingData = setMovingData;
+    this.isDisable = isDisable;
   }
 }

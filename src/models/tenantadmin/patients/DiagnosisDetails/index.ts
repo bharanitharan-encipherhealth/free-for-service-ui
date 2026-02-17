@@ -25,22 +25,35 @@ export interface FileLayoutType extends DiagnosisDetailsPropsType {
     children: React.ReactNode;
     length: number;
     layout: string;
+    dropId: string;
+    dropRef?: (element: HTMLElement | null) => void;
   }[];
 }
 
 export interface HccCardType {
   diseaseData: DiseaseItem[];
   cardTitle: string;
+  dragId: string;
+}
+
+export interface HccCardRowType {
+  item: DiseaseItem;
+  index: number;
+  cardTitle: string;
+  dragId: string;
 }
 
 export interface showMoveIconType {
-  diagnosisIcon: boolean;
-  careGapIcon: boolean;
-  potientialIcon: boolean;
-  deleteIcon: boolean;
+  diagnosisIcon?: boolean;
+  careGapIcon?: boolean;
+  potientialIcon?: boolean;
+  deleteIcon?: boolean;
 }
 export interface MovementIconType {
   showMoveIcon: showMoveIconType;
+  data: DiseaseItem | MeatCriteriaItem;
+  dragId: string;
+  isDisabledStatus: boolean
 }
 
 export interface renderProviderSectionType {

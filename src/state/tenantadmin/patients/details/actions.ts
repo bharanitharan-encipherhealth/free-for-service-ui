@@ -107,6 +107,16 @@ export const diseaseEdit = createActionThunk(
   network.diseaseEdit,
 );
 
+export const meatEditAction = createActionThunk(
+  "MEAT_DISEASE_PAGE",
+  network.diseaseEditMeat,
+);
+
+export const confirmRevert = createActionThunk(
+  "CONFIRM_REVERT_VERSION_HISTORY",
+  network?.confirmRevert,
+);
+
 export const setAdmissionNumber = createAction("SET_ADMISSION_NUMBER");
 
 export const setPatientOverallYear = createAction("SET_PATIENT_OVERALL_YEAR");
@@ -128,3 +138,11 @@ export const setPdfView = createAction("SET_PDF_VIEW");
 export const setAddModaOpen = createAction("SET_DISEASE_ADD_MODAL");
 
 export const setEditDiseaseList = createAction("SET_EDIT_DISEASE");
+
+export const setDropConfirm = createAction("SET_DROP_ACTION_CONFIRM");
+
+export const setMovingData = createAction("SET_MOVING_DATA");
+
+export const setComments = createAction("ADD_COMMENTS_ACTION");
+
+export const setDisable = createAction("SET_DISABLE_ACTION");

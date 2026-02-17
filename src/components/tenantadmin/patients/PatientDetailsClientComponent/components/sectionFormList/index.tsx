@@ -154,7 +154,7 @@ const SectionListForm = React.memo(
                       });
                       onCloseCaptureSection();
                     } catch (err) {
-                      console.log("Validation failed", err);
+                      console.error("Validation failed", err);
                     }
                   }}
                 >

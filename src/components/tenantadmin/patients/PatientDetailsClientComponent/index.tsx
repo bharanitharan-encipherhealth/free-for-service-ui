@@ -16,6 +16,8 @@ import { DosSummary } from "@/models/tenantadmin/patients/details";
 import DiagnosisDetails from "./components/diagnosisDetails";
 import { DosTableRow } from "./components/dosSelect";
 import AddEditDiseaseModal from "./components/addEditDiseaseModal";
+import ConfirmModal from "./components/confirmModal";
+import { checkStatusDisable } from "./components/function/reusableFunction";
 
 type PatientDetailsReduxType = ConnectedProps<typeof connector>;
 
@@ -40,6 +42,8 @@ function PatientDetailsClientComponent({
   setPdfView,
   pdfView,
   addMoadlOpen,
+  setDisable,
+  patientDiseaseDetails,
 }: PatientDetailsReduxType) {
   const router = useRouter();
   const pathName = usePathname();
@@ -86,13 +90,22 @@ function PatientDetailsClientComponent({
     getPatientOverallYear({ dataEmpty: true });
     const routerBackTo = getStorage("routeBackTo");
     router?.push(routerBackTo);
-  }, [router, setSelectDos]);
+  }, [
+    router,
+    setSelectDos,
+    setAdmissionNumber,
+    setSelectedYear,
+    getPatientOverallYear,
+  ]);
 
-  const onHandleTabChange = useCallback(({ item }: { item: number }) => {
-    setPdfView(false);
-    if (item === 1) setPdfView(true);
-    setActiveTab(item);
-  }, []);
+  const onHandleTabChange = useCallback(
+    ({ item }: { item: number }) => {
+      setPdfView(false);
+      if (item === 1) setPdfView(true);
+      setActiveTab(item);
+    },
+    [setPdfView],
+  );
 
   const onHandleChangeDos = useCallback(
     ({ record }: { record: DosTableRow }) => {
@@ -166,12 +179,14 @@ function PatientDetailsClientComponent({
 
   const getPatientDiseaseDetails = useCallback(
     async ({ dos }: { dos: string }) => {
+      // console.log(admissionNumber, "admissionNumber");
+
       try {
         const diseaseDetails = await getPatientDiseaseDetials({
           patientId,
           dos,
           navigate: pathName,
-          admissionNumber,
+          admissionNumber: admissionNumber,
         });
         if (diseaseDetails?.status === "SUCCESS") {
           const dosSummaries =
@@ -187,6 +202,12 @@ function PatientDetailsClientComponent({
             });
           }
         }
+        checkStatusDisable({
+          patientOverallDetails,
+          patientDiseaseDetails: diseaseDetails?.response,
+          pathName,
+          setDisable,
+        });
       } catch (e) {
         console.error(e, "Erro While Calling the patient Disease Call");
       } finally {
@@ -203,6 +224,11 @@ function PatientDetailsClientComponent({
       getSelectedDosPageNumber,
       setPdfSearch,
       patientId,
+      setPageLoading,
+      pathName,
+      patientOverallDetails,
+      patientDiseaseDetails,
+      setDisable,
     ],
   );
 
@@ -298,6 +324,9 @@ function PatientDetailsClientComponent({
         activeTab={activeTab}
         selectedPatientYear={selectedPatientYear}
         onHandleChangeDos={onHandleChangeDos}
+        getPatientDosCall={getPatientDosCall}
+        getPatientDiseaseDetails={getPatientDiseaseDetails}
+        getPatientDetails={getPatientDetails}
       />
 
       <div className="h-[69vh] xl:h-[75vh] 2xl:h-[79vh] 3xl:h-[81vh] 4xl:h-[82.5vh] overflow-hidden w-full">
@@ -343,6 +372,8 @@ function PatientDetailsClientComponent({
           </div>
         </div>
       </div>
+
+      <ConfirmModal getPatientDiseaseDetails={getPatientDiseaseDetails} />
     </div>
   );
 }
@@ -358,6 +389,8 @@ const connector = connect(
     patientYearDetails: state?.patientDetailsReducer?.patientOverallYear,
     pdfView: state?.patientDetailsReducer?.setPdfView,
     addMoadlOpen: state?.patientDetailsReducer?.setAddModaOpen,
+    patientDiseaseDetails:
+      state?.patientDetailsReducer?.patientDiseaseDetails?.data?.response,
   }),
   {
     getPatientOverallDetails: patientDetailsAction?.patientOverallDetails,
@@ -374,6 +407,7 @@ const connector = connect(
     getPdfFileId: patientDetailsAction?.patientHccFileAction,
     setPageLoading: patientDetailsAction?.setPageLoading,
     setPdfView: patientDetailsAction?.setPdfView,
+    setDisable: patientDetailsAction?.setDisable,
   },
 );
 

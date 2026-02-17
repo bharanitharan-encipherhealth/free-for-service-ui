@@ -47,7 +47,7 @@ export interface tableApiParamsType {
   pageId: string;
   pageNo?: number;
   pageSize?: number;
-  selectedOption?: Record<string, string>;
+  selectedOption?: Record<string, string | string[]>;
   sort?: SortType;
   selectedDateRanges?: Record<string, string>;
   searchText?: Record<string, string>;

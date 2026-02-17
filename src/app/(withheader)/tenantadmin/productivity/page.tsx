@@ -3,12 +3,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 
 import { actions as tableAction } from "@/state/table";
-import TableViewType, { metaDataType } from "@/state/table/model";
+import TableViewType, { metaDataType, SortType } from "@/state/table/model";
 import { actions as productivityAction } from "@/state/tenantadmin/productivity";
 import ContentLayout from "@/components/layout/ContentLayout/page";
 import {
   ProductivityPropsType,
   productivitytabelResposne,
+  productivityContentArrayType,
 } from "@/models/tenantadmin/productivity/page";
 import { productivityPageId } from "@/util/pageIds";
 import productivityReducerType from "@/state/tenantadmin/productivity/model";
@@ -39,13 +40,13 @@ function Productivity({
   const projectId = getStorage("project");
   const clientId = getStorage("client");
   const [activeTab, setActiveTab] = useState<string>("");
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {},
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [pageNo, setPageNo] = useState(0);
-  const [sort, setSort] = useState({
+  const [sort, setSort] = useState<SortType>({
     computedDate: {
       sortDir: "DESC",
       sortField: "computedDate",
@@ -266,25 +267,31 @@ function Productivity({
   ]);
 
   useEffect(() => {
-    getAllRoles();
+    const callRoles = () => {
+      getAllRoles();
+    };
+    callRoles();
   }, []);
 
   useEffect(() => {
-    if (
-      tableData?.metaDataDTO ||
-      !findMatchesByField(activeFilters, tableData?.metaDataDTO)
-    ) {
-      const a = tableData?.metaDataDTO.filter(
-        (item) => item.active && item?.filter?.style,
-      );
-      setActiveFilters(
-        tableData?.metaDataDTO.filter(
+    const activeFilterSet = () => {
+      if (
+        tableData?.metaDataDTO ||
+        !findMatchesByField(activeFilters, tableData?.metaDataDTO)
+      ) {
+        const a = tableData?.metaDataDTO.filter(
           (item) => item.active && item?.filter?.style,
-        ),
-      );
-      setSelectedColumns(tableData?.metaDataDTO);
-      // setIsFilter(false);
-    }
+        );
+        setActiveFilters(
+          tableData?.metaDataDTO.filter(
+            (item) => item.active && item?.filter?.style,
+          ),
+        );
+        setSelectedColumns(tableData?.metaDataDTO);
+        // setIsFilter(false);
+      }
+    };
+    activeFilterSet();
   }, [tableData?.metaDataDTO]);
   return (
     <>

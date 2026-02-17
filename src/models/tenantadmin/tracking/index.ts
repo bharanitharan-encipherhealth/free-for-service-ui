@@ -5,6 +5,7 @@ import {
   tableCustomizationResposnetype,
   OtherTableType,
 } from "@/state/table/model";
+import { productivityContentArrayType } from "../tin/patients";
 
 export interface TrackingContentArrayType {
   createdDate: string;
@@ -130,7 +131,7 @@ export interface FlagItem {
 }
 
 export interface pageResponsetype extends OtherTableType {
-  content: TrackingContentArrayType[];
+  content: productivityContentArrayType[];
   pageable: pageableType;
 }
 

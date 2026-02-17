@@ -1,5 +1,5 @@
 import { Button, Form, Input, Skeleton } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { VscSend } from "react-icons/vsc";
 import { connect, ConnectedProps } from "react-redux";
 
@@ -23,10 +23,16 @@ const Comments = React.memo(
     setAddCommentAction,
     patientOverallDetails,
     removeCommentsAction,
+    isDisable,
   }: CommentsRedux) => {
     const [form] = Form.useForm();
     const [commentLoading, setCommentsLoadig] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
+
+    const isDisabledStatus = useMemo(
+      () => isDisable?.isDosWise || isDisable?.isYearWise,
+      [isDisable],
+    );
 
     const getCommentsList = useCallback(async () => {
       await getCommetsAction({
@@ -110,6 +116,7 @@ const Comments = React.memo(
             className="w-full"
             onFinish={handleSubmitComments}
             layout="vertical"
+            disabled={isDisabledStatus}
           >
             <Form.Item
               label="Comments"
@@ -214,6 +221,7 @@ const connector = connect(
     commentListData: state?.patientDetailsReducer?.commentList?.data?.response,
     patientOverallDetails:
       state?.patientDetailsReducer?.patientDiseaseDetails?.data?.response,
+    isDisable: state?.patientDetailsReducer?.isDisable,
   }),
   {
     getCommetsAction: patientDetailsAction?.getCommentAction,

@@ -31,9 +31,9 @@ function PatientsTab({
 }: patientTabProps) {
   const route = useRouter();
   const tin = getStorage("tinNumber");
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {},
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [pageNo, setPageNo] = useState(0);

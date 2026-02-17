@@ -58,8 +58,6 @@ const Timeline = React.memo(
     }, [allRoleData]);
 
     const allAction = useMemo(() => {
-      console.log(actionListData, "actionListData");
-
       return actionListData?.map((item) => ({
         value: item,
         label: item?.replace(/_/g, " "),

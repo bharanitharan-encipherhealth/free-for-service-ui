@@ -1,3 +1,4 @@
+import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { metaDataType, SortType } from "@/state/table/model";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
 import { ReactNode } from "react";
@@ -7,13 +8,16 @@ import { UserContentType } from "../tenantadmin/users";
 type btnType = {
   show: boolean;
   value: string;
+  title?: string;
+  onClick?: ({ item }: { item: string }) => void;
+  id?: string;
 };
 
-export interface handleRowCheckboxChangeType {
-  e: React.ChangeEvent<HTMLInputElement>;
-  row: Record<string, string>;
+export interface handleRowCheckboxChangeType<T = Record<string, unknown>> {
+  e: React.ChangeEvent<HTMLInputElement> | CheckboxChangeEvent;
+  row: T;
   singleCheck: boolean;
-  checked: boolean;
+  checked?: boolean;
 }
 export interface AppTableType<T> {
   column: metaDataType[];
@@ -30,8 +34,8 @@ export interface AppTableType<T> {
   isPagination: boolean;
   row: number;
   isRowSizabel: boolean;
-  setSort: React.Dispatch<React.SetStateAction<SortType>>;
-  sort: SortType;
+  setSort?: React.Dispatch<React.SetStateAction<SortType>>;
+  sort?: SortType;
   first: number;
   totalRecords: number;
   onPageChange: (e: PaginatorPageChangeEvent) => void;
@@ -45,28 +49,26 @@ export interface AppTableType<T> {
   isTrigger?: btnType;
   isGenerateReportDownload?: btnType;
   tableId?: string;
-  handleAction?: (item: UserContentType) => void;
-  content?: (item: UserContentType) => ReactNode;
+  handleAction?: (item: T) => void;
+  content?: (item: T) => ReactNode;
   visiblePopoverKey?: boolean | string;
   setVisiblePopoverKey?: React.Dispatch<React.SetStateAction<boolean | string>>;
-  setEditingUser?: React.Dispatch<React.SetStateAction<UserContentType | null>>;
+  setEditingUser?: React.Dispatch<React.SetStateAction<T | null>>;
   selectedRole?: string[] | null;
   onCloseIconClick?: () => void;
   id?: string;
   checkedHeader?: boolean;
   disabled?: boolean;
-  handleRowCheckboxChange?: ({
-    e,
-    row,
-    singleCheck,
-    checked,
-  }: handleRowCheckboxChangeType) => void;
+  handleRowCheckboxChange?: (
+    args: handleRowCheckboxChangeType<T>,
+  ) => void;
   checkBoxLoader?: boolean;
   selectedRows?: string[];
-  onRowClick: ({ record }: { record: T }) => void;
+  onRowClick?: ({ record }: { record: T }) => void;
+  checkedLoader?: boolean;
 }
 
 export interface tableItemType {
   item: UserContentType & TrackingContentArrayType;
-  actualField: keyof UserContentType & TrackingContentArrayType;
+  actualField: keyof (UserContentType & TrackingContentArrayType);
 }

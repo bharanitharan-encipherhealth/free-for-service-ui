@@ -1,6 +1,6 @@
 import patinetDetailsReducerType from "@/state/tenantadmin/patients/details/model";
 import React, { useCallback, useEffect, useState } from "react";
-import { IoMdAdd, IoMdClose, IoMdRemove } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 import { connect, ConnectedProps } from "react-redux";
 import { actions as patientDetailsAction } from "@/state/tenantadmin/patients/details";
 import { Button, Form, Input, Select, Spin, Switch } from "antd";
@@ -27,6 +27,7 @@ import { FaPen } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
 import MeatButton from "../meatButton";
 import SectionListForm from "../sectionFormList";
+import { suggestedToValid } from "@/state/tenantadmin/patients/details/network";
 
 type DiagnosisOption = {
   label: string;
@@ -55,6 +56,11 @@ const AddEditDiseaseModal = React.memo(
     editDiseaseList,
     patientDiseaseDetails,
     diseaseEdit,
+    setEditDiseaseList,
+    moveData,
+    meatEditAction,
+    setMovingData,
+    setPdfView,
   }: AddEditDiseaseModalReduxType) => {
     const [form] = Form.useForm();
     const patientId = getStorage("patientId");
@@ -493,13 +499,24 @@ const AddEditDiseaseModal = React.memo(
     );
 
     const handleFormClear = useCallback(() => {
+      if (modalOpen?.isMeatPage) setPdfView(false);
       setAddModalOpen({
         isAdd: false,
         isEdit: false,
         isMeatAdd: false,
+        isMeatPage: false,
       });
       form.resetFields();
-    }, [setAddModalOpen, form]);
+      setEditDiseaseList(null);
+      setMovingData(null);
+    }, [
+      setAddModalOpen,
+      form,
+      setEditDiseaseList,
+      setMovingData,
+      setPdfView,
+      modalOpen,
+    ]);
 
     const handleSucess = useCallback(() => {
       getPatientDiseaseDetails({ dos: selectedDos });
@@ -514,6 +531,7 @@ const AddEditDiseaseModal = React.memo(
           comment: comments,
           chartProcessType: selectedDos ? "DATE_OF_SERVICE" : "YEAR",
           activeHeader: activeMeat,
+          educationalError: false,
         };
 
         let payload;
@@ -601,6 +619,49 @@ const AddEditDiseaseModal = React.memo(
                 }),
           };
         }
+
+        if (modalOpen?.isMeatEdit) {
+          payload = {
+            ...CommanPayload,
+            comment: editDiseaseList?.comments,
+            diagnosisCode:
+              editDiseaseList?.diagnosisCode || moveData?.data?.diagnosisCode,
+            dateOfServices: [selectedDos],
+            dateOfServiceIfDosWiseCompute: selectedDos,
+            monitorAspect: getMeatSection({ meatLetter: "M" })
+              ?.meatSeactionList?.[0]?.captureSectionList?.[0]?.reference,
+            monitorHyperLink: activeMeat
+              ? []
+              : convertToHyperLinkFormat({
+                  sectionList: getMeatSection({ meatLetter: "M" })
+                    ?.meatSeactionList,
+                }),
+            evaluateAspect: getMeatSection({ meatLetter: "E" })
+              ?.meatSeactionList?.[0]?.captureSectionList?.[0]?.reference,
+            evaluateHyperLink: activeMeat
+              ? []
+              : convertToHyperLinkFormat({
+                  sectionList: getMeatSection({ meatLetter: "E" })
+                    ?.meatSeactionList,
+                }),
+            assessmentAspect: getMeatSection({ meatLetter: "A" })
+              ?.meatSeactionList?.[0]?.captureSectionList?.[0]?.reference,
+            assessmentHyperLink: activeMeat
+              ? []
+              : convertToHyperLinkFormat({
+                  sectionList: getMeatSection({ meatLetter: "A" })
+                    ?.meatSeactionList,
+                }),
+            treatmentAspect: getMeatSection({ meatLetter: "T" })
+              ?.meatSeactionList?.[0]?.captureSectionList?.[0]?.reference,
+            treatmentHyperLink: activeMeat
+              ? []
+              : convertToHyperLinkFormat({
+                  sectionList: getMeatSection({ meatLetter: "T" })
+                    ?.meatSeactionList,
+                }),
+          };
+        }
         if (admissionNumber?.patientType == "INPATIENT") {
           payload = { ...payload, admNo: admissionNumber?.admNo };
         }
@@ -611,6 +672,19 @@ const AddEditDiseaseModal = React.memo(
         }
         if (modalOpen?.isEdit) {
           res = await diseaseEdit({ payload });
+        }
+
+        if (modalOpen?.isMeatEdit) {
+          if (modalOpen?.isMeatPage) {
+            res = await meatEditAction({ payload });
+          } else {
+            const dragAndDrop = `${moveData?.dragId}_${moveData?.dropId}`;
+
+            res = await suggestedToValid({
+              payload,
+              dragAndDrop,
+            });
+          }
         }
 
         if (res?.status === "SUCCESS") {
@@ -628,7 +702,6 @@ const AddEditDiseaseModal = React.memo(
       selectedPatientYear,
       selectedDos,
       form,
-      selectedDos,
       modalOpen,
       captureSectionList,
       convertToHyperLinkFormat,
@@ -640,6 +713,8 @@ const AddEditDiseaseModal = React.memo(
       handleFormClear,
       handleSucess,
       editDiseaseList,
+      moveData,
+      meatEditAction,
     ]);
 
     const handleSetCaptureSection = useCallback(
@@ -667,7 +742,7 @@ const AddEditDiseaseModal = React.memo(
           (item) => item?.diagnosisCode === diagnosisCode,
         );
 
-        console.log(diagnosisCodeMeat, "diagnosisCodeMeat");
+        console.log(editDiseaseList, "setEditDiseaseList");
 
         form.setFieldsValue({
           diagnosisCode: diagnosisCode,
@@ -785,7 +860,7 @@ const AddEditDiseaseModal = React.memo(
 
     useEffect(() => {
       const editFill = async () => {
-        if (modalOpen?.isEdit && editDiseaseList) {
+        if ((modalOpen?.isEdit || modalOpen?.isMeatEdit) && editDiseaseList) {
           handleEditFill();
         }
       };
@@ -1267,8 +1342,8 @@ const AddEditDiseaseModal = React.memo(
                 className="mt-2"
                 disabled={
                   showMeatAdd ||
-                  showAdd ||
-                  captureSectionList?.length == 0 ||
+                  (!modalOpen?.isMeatEdit &&
+                    (showAdd || captureSectionList?.length == 0)) ||
                   (activeMeat
                     ? false
                     : getMeatSection({ meatLetter: selectMeat })
@@ -1299,6 +1374,7 @@ const connector = connect(
     editDiseaseList: state?.patientDetailsReducer?.editDiseaseList,
     patientDiseaseDetails:
       state?.patientDetailsReducer?.patientDiseaseDetails?.data?.response,
+    moveData: state?.patientDetailsReducer?.setMovingData,
   }),
   {
     setAddModalOpen: patientDetailsAction?.setAddModaOpen,
@@ -1307,6 +1383,10 @@ const connector = connect(
     checkCodePresent: patientDetailsAction?.checkCodePresent,
     manuallyAdd: patientDetailsAction?.manuallyAdd,
     diseaseEdit: patientDetailsAction?.diseaseEdit,
+    setEditDiseaseList: patientDetailsAction?.setEditDiseaseList,
+    meatEditAction: patientDetailsAction?.meatEditAction,
+    setMovingData: patientDetailsAction?.setMovingData,
+    setPdfView: patientDetailsAction?.setPdfView,
   },
 );
 

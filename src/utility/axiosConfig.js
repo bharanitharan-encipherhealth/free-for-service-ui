@@ -16,8 +16,8 @@ axios.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log(error);
-  }
+    console.error(error);
+  },
 );
 
 axios.interceptors.response.use(
@@ -81,7 +81,7 @@ axios.interceptors.response.use(
       });
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axios;

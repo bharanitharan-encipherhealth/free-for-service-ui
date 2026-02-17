@@ -153,7 +153,6 @@ export async function checkStatus(response) {
   if (!response) return;
 
   const { status } = response;
-  console.log(status, "status");
 
   switch (status) {
     case 401: {

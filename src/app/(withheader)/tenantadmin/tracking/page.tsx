@@ -62,9 +62,9 @@ function Logs({
     sort: { sortDir: "DESC", sortField: "" },
   });
   const [searchText, setSearchText] = useState<Record<string, string>>({});
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {},
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [selectedDates, setSelectedDates] = useState({});
   const [row, setRow] = useState<number>(15);
@@ -393,7 +393,7 @@ function Logs({
         </div>
 
         <div>
-          <ReusableTable<trackingTableView>
+          <ReusableTable<productivityContentArrayType>
             data={tableData?.pageResponse?.content}
             column={tableData?.metaDataDTO?.filter(
               (item) => item?.active && item?.columnActive,

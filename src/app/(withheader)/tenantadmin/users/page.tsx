@@ -63,7 +63,7 @@ function Users({
   const [pageSize, setPageSize] = useState(15);
   const [paginationFirst, setPaginationFirst] = useState(0);
   const [switchStates, setSwitchStates] = useState<{ [key: string]: boolean }>(
-    {}
+    {},
   );
   const [activeFilters, setActiveFilters] = useState<metaDataType[]>([]);
 
@@ -78,13 +78,13 @@ function Users({
   const [selectedRole, setSelectedRole] = useState<string[] | null>(null);
 
   const [visiblePopoverKey, setVisiblePopoverKey] = useState<boolean | string>(
-    ""
+    "",
   );
 
   const [editingUser, setEditingUser] = useState<UserContentType | null>(null);
 
   const [selectedRoleList, setSelectedRoleList] = useState<string[] | null>(
-    null
+    null,
   );
   const layoutList = useMemo(
     () => [
@@ -113,7 +113,7 @@ function Users({
       setAssignUserModal,
       assignUserModal,
       tableLoader,
-    ]
+    ],
   );
 
   const getUserRole = useCallback(async () => {
@@ -126,7 +126,7 @@ function Users({
       setPageNo(e.page);
       setPageSize(e.rows);
     },
-    [setPaginationFirst, setPageNo, setPageSize]
+    [setPaginationFirst, setPageNo, setPageSize],
   );
 
   const onSwitchToggle = async ({
@@ -191,7 +191,7 @@ function Users({
         await getUsersAPi();
       }
     },
-    [tableCustomizationCall, getUsersAPi]
+    [tableCustomizationCall, getUsersAPi],
   );
 
   const handleCloseMoadl = () => {
@@ -272,26 +272,32 @@ function Users({
   }, [selectedOption, selectedDateRanges, searchText, pageSize, pageNo, sort]);
 
   useEffect(() => {
-    const accountStatus: { [key: string]: boolean } = {};
-    tabelData?.pageResponse?.content.forEach((user) => {
-      accountStatus[user.userName] = user.accountStatus;
-    });
-    setSwitchStates(accountStatus);
+    const switchStatus = () => {
+      const accountStatus: { [key: string]: boolean } = {};
+      tabelData?.pageResponse?.content.forEach((user) => {
+        accountStatus[user.userName] = user.accountStatus;
+      });
+      setSwitchStates(accountStatus);
+    };
+    switchStatus();
   }, [tabelData?.pageResponse?.content]);
 
   useEffect(() => {
-    if (
-      tabelData?.metaDataDTO ||
-      !findMatchesByField(activeFilters, tabelData?.metaDataDTO)
-    ) {
-      setActiveFilters(
-        tabelData?.metaDataDTO.filter(
-          (item) => item.active && item?.filter?.style
-        )
-      );
-      setSelectedColumns(tabelData?.metaDataDTO);
-      // setIsFilter(false);
-    }
+    const callActiveFilter = () => {
+      if (
+        tabelData?.metaDataDTO ||
+        !findMatchesByField(activeFilters, tabelData?.metaDataDTO)
+      ) {
+        setActiveFilters(
+          tabelData?.metaDataDTO.filter(
+            (item) => item.active && item?.filter?.style,
+          ),
+        );
+        setSelectedColumns(tabelData?.metaDataDTO);
+        // setIsFilter(false);
+      }
+    };
+    callActiveFilter();
   }, [tabelData?.metaDataDTO]);
 
   useEffect(() => {
@@ -299,10 +305,13 @@ function Users({
   }, []);
 
   useEffect(() => {
-    if (editingUser) {
-      setSelectedRole(editingUser.roleNames ?? null);
-      setSelectedRoleList(editingUser.roleNames ?? null);
-    }
+    const setRole = () => {
+      if (editingUser) {
+        setSelectedRole(editingUser.roleNames ?? null);
+        setSelectedRoleList(editingUser.roleNames ?? null);
+      }
+    };
+    setRole();
   }, [editingUser]);
 
   return (
@@ -341,7 +350,7 @@ function Users({
         <ReusabelTable
           data={tabelData?.pageResponse?.content}
           column={tabelData?.metaDataDTO?.filter(
-            (item) => item?.active && item?.columnActive
+            (item) => item?.active && item?.columnActive,
           )}
           switchStates={switchStates}
           onSwitchToggle={onSwitchToggle}
@@ -395,7 +404,7 @@ const connector = connect(
     tableCustomizationCall: tableAction?.tableDynamicColumn,
     getAllRole: usersAction?.getRole,
     setUserEditRoles: usersAction?.userEditRoles,
-  }
+  },
 );
 
 export default connector(Users);

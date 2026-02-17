@@ -1,4 +1,4 @@
-import { metaDataType } from "@/state/table/model";
+import { metaDataType, SortType } from "@/state/table/model";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReusableFilters from "@/components/ReusbaleFilter";
 import { connect, ConnectedProps } from "react-redux";
@@ -36,7 +36,7 @@ function BatchDetails({
         active: true,
         actualField: "search",
         columnActive: true,
-        design: [],
+        design: [""],
         filter: { filter: "", style: "SEARCH", options: [], nameOptions: [] },
         headerName: "Search by Name",
         orderValue: 1,
@@ -81,6 +81,7 @@ function BatchDetails({
   const [pageNo, setPageNo] = useState(0);
   const [columnData, setColumnData] = useState<metaDataType[]>([]);
   const [paginationFirst, setPaginationFirst] = useState(0);
+  const [sort, setSort] = useState<SortType>({});
 
   const onPageChange = useCallback(
     (e: PaginatorPageChangeEvent) => {
@@ -107,46 +108,47 @@ function BatchDetails({
   }, [searchText, pageNo]);
 
   useEffect(() => {
-    const column = [
-      {
-        headerName: "MRN",
-        columnActive: true,
-        actualField: "mrNumber",
-        filter: null,
-        active: true,
-      },
-      {
-        headerName: "Patient Name",
-        columnActive: true,
-        actualField: "patientName",
-        filter: null,
-        active: true,
-      },
-      {
-        headerName: "Patient Type",
-        columnActive: true,
-        actualField: "patientType",
-        filter: null,
-        active: true,
-      },
-      {
-        headerName: "Processed Date & Time",
-        columnActive: true,
-        actualField: "createdDate",
-        filter: null,
-        active: true,
-        design: "DATE_TIME",
-      },
-      {
-        headerName: "Status",
-        columnActive: true,
-        actualField: "percentage",
-        design: ["PROGRESS_BAR"],
-        filter: null,
-        active: true,
-      },
-    ];
-    setColumnData(column);
+    const setColumn = () => {
+      const column = [
+        {
+          headerName: "MRN",
+          columnActive: true,
+          actualField: "mrNumber",
+          active: true,
+          design: [""],
+        },
+        {
+          headerName: "Patient Name",
+          columnActive: true,
+          actualField: "patientName",
+          active: true,
+          design: [""],
+        },
+        {
+          headerName: "Patient Type",
+          columnActive: true,
+          actualField: "patientType",
+          active: true,
+          design: [""],
+        },
+        {
+          headerName: "Processed Date & Time",
+          columnActive: true,
+          actualField: "createdDate",
+          active: true,
+          design: ["DATE_TIME"],
+        },
+        {
+          headerName: "Status",
+          columnActive: true,
+          actualField: "percentage",
+          design: ["PROGRESS_BAR"],
+          active: true,
+        },
+      ];
+      setColumnData(column);
+    };
+    setColumn();
   }, [tableData]);
 
   const params = {
@@ -192,10 +194,14 @@ function BatchDetails({
           tableLoader={false}
         />
 
-        <ReusableTable
-          data={tableData?.content}
+        <ReusableTable<productivityContentArrayType>
+          data={tableData?.content as unknown as productivityContentArrayType[]}
           column={columnData}
           loader={tableLoader}
+          row={15}
+          isRowSizabel={false}
+          setSort={setSort}
+          sort={sort}
           first={pageNo === 0 ? 0 : paginationFirst}
           totalRecords={tableData?.totalElements}
           onPageChange={onPageChange}

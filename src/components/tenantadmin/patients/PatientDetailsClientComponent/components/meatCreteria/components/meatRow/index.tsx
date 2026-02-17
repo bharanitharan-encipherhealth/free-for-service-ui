@@ -13,6 +13,8 @@ import patinetDetailsReducerType from "@/state/tenantadmin/patients/details/mode
 import { FaUserDoctor } from "react-icons/fa6";
 import noData from "@/../public/images/avatar/noData.png";
 import Image from "next/image";
+import MovementIcon from "../../../diagnosisDetails/components/movementIcon";
+import { LuSquarePen } from "react-icons/lu";
 
 type MeatRowRedux = ConnectedProps<typeof connector>;
 
@@ -25,6 +27,9 @@ const MeatRow = React.memo(
     setPdfView,
     pdfView,
     meatCreteria,
+    setAddModalOpen,
+    setEditDiseaseList,
+    isDisable,
   }: MeatRowPropsType) => {
     const tableHeader = useMemo(
       () => [
@@ -33,10 +38,16 @@ const MeatRow = React.memo(
         { label: "Evaluation", key: "evaluateAspect" },
         { label: "Assessment", key: "assessmentAspect" },
         { label: "Treatment", key: "treatmentAspect" },
-        ...(!pdfView ? [{ label: "Actions", key: "action" }] : []),
+        { label: "Actions", key: "action" },
       ],
       [pdfView],
     );
+
+    const isDisabledStatus = useMemo(
+      () => isDisable?.isDosWise || isDisable?.isYearWise,
+      [isDisable],
+    );
+
     const renderHeader = useCallback(() => {
       return (
         <div className={`${styles.headerRow}`}>
@@ -186,6 +197,31 @@ const MeatRow = React.memo(
                       })}
                     </>
                   </div>
+
+                  <div className="flex items-center gap-3">
+                    <MovementIcon
+                      showMoveIcon={{ deleteIcon: true }}
+                      data={item}
+                      dragId={`diagnosis-${item?.diagnosisCode}`}
+                      isDisabledStatus={isDisabledStatus}
+                    />
+
+                    <div
+                      className={`iconBagColor ${!isDisabledStatus ? "cursor-pointer" : "cursor-not-allowed"}`}
+                      onPointerDown={(e) => e.stopPropagation()}
+                      onClick={() => {
+                        if (!isDisabledStatus) {
+                          setAddModalOpen({
+                            isMeatEdit: true,
+                            isMeatPage: true,
+                          });
+                          setEditDiseaseList(item);
+                        }
+                      }}
+                    >
+                      <LuSquarePen className="font-bold text-base" />
+                    </div>
+                  </div>
                 </div>
               );
             })}
@@ -202,10 +238,13 @@ const connector = connect(
   (state: { patientDetailsReducer: patinetDetailsReducerType }) => ({
     pdfSearchValue: state?.patientDetailsReducer?.setPdfSearch,
     pdfView: state?.patientDetailsReducer?.setPdfView,
+    isDisable: state?.patientDetailsReducer?.isDisable,
   }),
   {
     setPdfSearch: patientDetailsAction?.setPdfSearch,
     setPdfView: patientDetailsAction?.setPdfView,
+    setAddModalOpen: patientDetailsAction?.setAddModaOpen,
+    setEditDiseaseList: patientDetailsAction?.setEditDiseaseList,
   },
 );
 export default connector(MeatRow);

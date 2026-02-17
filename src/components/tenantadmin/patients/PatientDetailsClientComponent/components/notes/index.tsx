@@ -1,6 +1,6 @@
 import patinetDetailsReducerType from "@/state/tenantadmin/patients/details/model";
 import { Button, Form, Input, Skeleton } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { VscSend } from "react-icons/vsc";
 import { connect, ConnectedProps } from "react-redux";
 import { actions as patientDetailsAction } from "@/state/tenantadmin/patients/details";
@@ -22,10 +22,16 @@ const Notes = React.memo(
     notesList,
     notesListLoading,
     removeNotesAction,
+    isDisable,
   }: NotesRedux) => {
     const [form] = Form.useForm();
     const [notesLoading, setNotesLoadig] = useState<boolean>(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
+
+    const isDisabledStatus = useMemo(
+      () => isDisable?.isDosWise || isDisable?.isYearWise,
+      [isDisable],
+    );
 
     const getNotesLists = useCallback(async () => {
       await getNotesListAction({
@@ -113,6 +119,7 @@ const Notes = React.memo(
             className="w-full"
             onFinish={handleSubmitNotes}
             layout="vertical"
+            disabled={isDisabledStatus}
           >
             <Form.Item
               label="Notes"
@@ -216,6 +223,7 @@ const connector = connect(
       state?.patientDetailsReducer?.patientDiseaseDetails?.data?.response,
     notesList: state?.patientDetailsReducer?.notesLists?.data?.response,
     notesListLoading: state?.patientDetailsReducer?.notesLoading,
+    isDisable: state?.patientDetailsReducer?.isDisable,
   }),
   {
     addNotesAction: patientDetailsAction?.addNotesAction,

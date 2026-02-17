@@ -7,14 +7,13 @@ export default function Dashboard() {
       headerName: "Batch Name",
       columnActive: true,
       actualField: "name",
-      filter: null,
       active: true,
+      design: [""],
     },
     {
       headerName: "Count",
       columnActive: true,
       actualField: "totalFileCount",
-      filter: null,
       active: true,
       design: ["fileCount"],
     },
@@ -22,24 +21,21 @@ export default function Dashboard() {
       headerName: "Initiated Date & Time",
       columnActive: true,
       actualField: "createdDate",
-      design: "DATE_TIME",
-      filter: null,
+      design: ["DATE_TIME"],
       active: true,
     },
     {
       headerName: "Processed Date & Time",
       columnActive: true,
       actualField: "endTime",
-      filter: null,
       active: true,
-      design: "DATE_TIME",
+      design: ["DATE_TIME"],
     },
     {
       headerName: "Status",
       columnActive: true,
       actualField: "batchUploadStatus",
       design: ["COMPUTATION_STATUS"],
-      filter: null,
       active: true,
     },
   ];
@@ -82,5 +78,5 @@ export default function Dashboard() {
     },
   ];
 
-  return <ReusabelTable column={columns} data={tableData} />;
+  return <div>bhhbbhh</div>;
 }

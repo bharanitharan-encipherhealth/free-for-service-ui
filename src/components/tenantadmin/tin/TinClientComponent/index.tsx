@@ -32,9 +32,9 @@ function TinClientComponent({
 
   const [selectedColumns, setSelectedColumns] = useState<metaDataType[]>([]);
 
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {},
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [selectedDates, setSelectedDates] = useState({});
   const [paginationFirst, setPaginationFirst] = useState(0);
@@ -125,21 +125,24 @@ function TinClientComponent({
   }, [pageNo, sort, searchText]);
 
   useEffect(() => {
-    if (
-      tableData?.metaDataDTO ||
-      !findMatchesByField(activeFilters, tableData?.metaDataDTO)
-    ) {
-      const a = tableData?.metaDataDTO.filter(
-        (item) => item.active && item?.filter?.style,
-      );
-      setActiveFilters(
-        tableData?.metaDataDTO.filter(
+    const setFilter = () => {
+      if (
+        tableData?.metaDataDTO ||
+        !findMatchesByField(activeFilters, tableData?.metaDataDTO)
+      ) {
+        const a = tableData?.metaDataDTO.filter(
           (item) => item.active && item?.filter?.style,
-        ),
-      );
-      setSelectedColumns(tableData?.metaDataDTO);
-      // setIsFilter(false);
-    }
+        );
+        setActiveFilters(
+          tableData?.metaDataDTO.filter(
+            (item) => item.active && item?.filter?.style,
+          ),
+        );
+        setSelectedColumns(tableData?.metaDataDTO);
+        // setIsFilter(false);
+      }
+    };
+    setFilter();
   }, [tableData?.metaDataDTO]);
 
   return (

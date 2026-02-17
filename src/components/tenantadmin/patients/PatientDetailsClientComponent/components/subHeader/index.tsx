@@ -6,7 +6,8 @@ import DosSelect, { DosTableRow } from "../dosSelect";
 import patinetDetailsReducerType from "@/state/tenantadmin/patients/details/model";
 import { connect, ConnectedProps } from "react-redux";
 import { actions as patientDetailsAction } from "@/state/tenantadmin/patients/details";
-import YearStatus from "../yearStatus";
+import YearStatusAction from "../yearStatus";
+import DosStatusAction from "../dosStatusAction";
 
 type SubHeaderReduxType = ConnectedProps<typeof connector>;
 
@@ -22,6 +23,9 @@ function SubHeader({
   dosList,
   setSelectedYear,
   onHandleChangeDos,
+  getPatientDosCall,
+  getPatientDiseaseDetails,
+  getPatientDetails,
 }: SubHeaderPropsType) {
   const getDosOptions = useMemo(() => {
     return dosList?.map((dos) => ({
@@ -60,7 +64,7 @@ function SubHeader({
 
   return (
     <div className={`${style?.contentLayout} px-5 py-2`}>
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <div className="flex gap-2 items-center">
           <Select
             options={ChartTabList}
@@ -93,17 +97,25 @@ function SubHeader({
               onHandleChangeDos={onHandleChangeDos}
             />
           </div>
+
+          <div>
+            <DosStatusAction
+              getPatientDosCall={getPatientDosCall}
+              getPatientDiseaseDetails={getPatientDiseaseDetails}
+            />
+          </div>
           <div>
             <Select
               options={yearOptions}
               className="w-25"
               value={selectedPatientYear}
               onChange={(e) => handleChange({ year: e })}
+              placeholder="Select Year"
             />
           </div>
 
           <div>
-            <YearStatus />
+            <YearStatusAction getPatientDetails={getPatientDetails} />
           </div>
         </div>
       </div>

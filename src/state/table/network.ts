@@ -93,7 +93,8 @@ export async function getTableView({
   }_${routerPath}`;
 
   const abortController = requestManager.getAbortController(requestKey);
-  const finalSignal = signal || abortController.signal;
+  const externalSignal = signal as AbortSignal | undefined;
+  const finalSignal: AbortSignal = externalSignal ?? abortController.signal;
 
   const options = {
     method: "GET",
@@ -225,11 +226,17 @@ allTinIds=${allTinIds || false}`;
 
     requestManager.removeController(requestKey);
     return data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     requestManager.removeController(requestKey);
 
     // 🔕 Abort → ignore silently
-    if (error?.name === "AbortError" || finalSignal.aborted) {
+    const isAbortError =
+      typeof error === "object" &&
+      error !== null &&
+      "name" in error &&
+      (error as { name?: string }).name === "AbortError";
+
+    if (isAbortError || finalSignal.aborted) {
       return null;
     }
 
@@ -239,7 +246,16 @@ allTinIds=${allTinIds || false}`;
     }
 
     // 🧯 Server error
-    if (error?.response?.status >= 500) {
+    const status =
+      typeof error === "object" &&
+      error !== null &&
+      "response" in error &&
+      typeof (error as { response?: { status?: number } }).response
+        ?.status === "number"
+        ? (error as { response?: { status?: number } }).response!.status
+        : undefined;
+
+    if (status !== undefined && status >= 500) {
       throw new Error(
         "Server error while loading data. Please try again later."
       );

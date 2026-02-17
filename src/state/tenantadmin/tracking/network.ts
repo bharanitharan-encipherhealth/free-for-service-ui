@@ -2,6 +2,7 @@ import {
   assignUserPayloadType,
   userEnableType,
 } from "@/models/tenantadmin/users";
+import { SortType } from "@/state/table/model";
 import { requestPortal, requestPortalExcel } from "@/util/network";
 import {
   convertToCustomParams,
@@ -24,6 +25,22 @@ export async function logsReportDownload({
   search,
   selectedDateRanges,
   page,
+}: {
+  pageId: string;
+  roleId: string;
+  aliasName: string;
+  isAdmin: boolean;
+  sort: SortType;
+  allClient: boolean;
+  allProject: boolean;
+  allTin: boolean;
+  clientId: string;
+  projectId: string;
+  selectedOption: Record<string, string>;
+  searchText: Record<string, string>;
+  search: Record<string, string>;
+  selectedDateRanges: Record<string, string>;
+  page: string;
 }) {
   try {
     if (!page) {

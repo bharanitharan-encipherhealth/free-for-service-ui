@@ -64,32 +64,35 @@ function DosSelect({
   const [selectRow, setSelctedRow] = useState<DosTableRow | null>(null);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    const data = options?.map((item, index) => ({
-      key: (index + 1).toString(),
-      dos: item,
-      page: item?.page?.startPageNumber + " - " + item?.page?.endPagNumber,
-      providerName: item?.providerName,
-    }));
-    setDataSoucre(data);
-    if (selectedDos && options?.length) {
-      const matchedItem = options?.find((item) => item?.dos === selectedDos);
+    const option = () => {
+      const data = options?.map((item, index) => ({
+        key: (index + 1).toString(),
+        dos: item,
+        page: item?.page?.startPageNumber + " - " + item?.page?.endPagNumber,
+        providerName: item?.providerName,
+      }));
+      setDataSoucre(data);
+      if (selectedDos && options?.length) {
+        const matchedItem = options?.find((item) => item?.dos === selectedDos);
 
-      if (matchedItem) {
-        const row = {
-          key: "1",
-          dos: matchedItem,
-          providerName: matchedItem.providerName,
-          page:
-            matchedItem.page?.startPageNumber +
-            " - " +
-            matchedItem.page?.endPagNumber,
-        };
+        if (matchedItem) {
+          const row = {
+            key: "1",
+            dos: matchedItem,
+            providerName: matchedItem.providerName,
+            page:
+              matchedItem.page?.startPageNumber +
+              " - " +
+              matchedItem.page?.endPagNumber,
+          };
 
-        setSelctedRow(row);
+          setSelctedRow(row);
+        }
+      } else {
+        setSelctedRow(null);
       }
-    } else {
-      setSelctedRow(null);
-    }
+    };
+    option();
   }, [options, selectedDos]);
 
   return (
@@ -141,12 +144,12 @@ function DosSelect({
               onRow={(record) => ({
                 style: { cursor: "pointer" },
                 onClick: () => {
-                  onHandleChangeDos({ record });
                   setSelctedRow(record);
                   setOpen(false);
+                  onHandleChangeDos({ record });
                 },
               })}
-              className="max-h-[200px] overflow-auto"
+              className="max-h-50 overflow-auto"
             />
           )}
         </div>

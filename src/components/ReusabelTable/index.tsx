@@ -19,22 +19,25 @@ import {
   Table,
   Tooltip,
 } from "antd";
-import React, {  useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
 
 import style from "./style.module.css";
 import { metaDataType, SortType } from "@/state/table/model";
-import { contentType } from "@/models/tenantadmin/users";
-import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
+import { Paginator } from "primereact/paginator";
 import { IoClose } from "react-icons/io5";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { AppTableType, tableItemType } from "@/models/ReusabelTable";
+import {
+  AppTableType,
+  handleRowCheckboxChangeType,
+} from "@/models/ReusabelTable";
 import { usePathname } from "next/navigation";
 import { getProcessStatusKey, statusColorPick } from "@/resuabelFunction/Menu";
 
-interface TableParams extends tableItemType {
+interface TableParams<T extends Record<string, unknown>> {
   columnItem: newColumnType;
+  item: T;
   colIndex: number;
 }
 
@@ -57,7 +60,9 @@ interface DynamicColumn {
 }
 
 interface newColumnType extends Partial<metaDataType>, Partial<DynamicColumn> {}
-export default function ReusabelTable<T>({
+export default function ReusabelTable<
+  T extends Record<string, unknown> = Record<string, unknown>,
+>({
   data,
   column,
   loader,
@@ -182,11 +187,18 @@ export default function ReusabelTable<T>({
     }
   };
 
-  const processstatusBodyTemplate = ({ item, actualField }: tableItemType) => {
-    console.log(actualField, "jnm nj");
-    const rowStatus: string = getProcessStatusKey({
-      item: item?.[actualField],
-    });
+  const processstatusBodyTemplate = ({
+    item,
+    actualField,
+  }: {
+    item: T;
+    actualField?: string;
+  }) => {
+    const rawValue =
+      actualField && item[actualField] !== undefined
+        ? (item[actualField] as string | number)
+        : "";
+    const rowStatus: string = getProcessStatusKey({ item: rawValue });
     return (
       <div className="patient-status">
         <div
@@ -210,16 +222,17 @@ export default function ReusabelTable<T>({
   };
 
   const renderEditCell = useCallback(
-    (columnItem: newColumnType, item: contentType, colIndex: number) => {
-      return item.accountStatus === true ? (
+    (columnItem: newColumnType, item: T, colIndex: number) => {
+      const record = item as T & { accountStatus?: boolean; id?: string };
+      return record.accountStatus === true ? (
         <div
           onClick={(e) => {
             e.stopPropagation();
-            handleAction(item);
+            handleAction?.(item);
           }}
         >
           <Popover
-            content={content && content(item)}
+            content={content?.(item)}
             title={
               <div className="flex justify-between items-center">
                 <span>Change Role</span>
@@ -236,16 +249,16 @@ export default function ReusabelTable<T>({
             }
             placement="bottom"
             trigger="click"
-            open={visiblePopoverKey === item.id}
+            open={visiblePopoverKey === record.id}
             onOpenChange={(visible) => {
               if (visible) {
                 if (setEditingUser) setEditingUser(item);
-                setVisiblePopoverKey(item.id);
+                if (record.id !== undefined) setVisiblePopoverKey?.(record.id);
               }
             }}
           >
             <div
-              onClick={() => handleAction(item)}
+              onClick={() => handleAction?.(item)}
               className="cursor-pointer editIcon"
             >
               <BiEdit className="text-md" />
@@ -270,7 +283,9 @@ export default function ReusabelTable<T>({
   );
 
   const renderCheckboxCell = useCallback(
-    ({ columnItem, item, colIndex }: TableParams) => {
+    ({ columnItem, item, colIndex }: TableParams<T>) => {
+      const record = item as T & { status?: string };
+      const valueKey = columnItem.value;
       return (
         <div
           className={`flex justify-center items-center`}
@@ -282,23 +297,24 @@ export default function ReusabelTable<T>({
               size="small"
               style={{ width: 20, height: 20 }}
             />
-          ) : item?.status === "FAILED" ? (
+          ) : record?.status === "FAILED" ? (
             "---"
           ) : (
             <Checkbox
               onChange={(e) => {
                 e.stopPropagation();
-                handleRowCheckboxChange({
+                handleRowCheckboxChange?.({
                   e,
                   row: item,
                   singleCheck: true,
-                });
+                } as handleRowCheckboxChangeType<T>);
               }}
               onClick={(e) => {
                 e.stopPropagation();
               }}
               checked={selectedRows?.some(
-                (row) => row === item[columnItem.value],
+                (row) =>
+                  valueKey !== undefined && row === (item as Record<string, unknown>)[valueKey],
               )}
               id={
                 tableId
@@ -317,12 +333,16 @@ export default function ReusabelTable<T>({
   );
 
   const renderBtnCell = useCallback(
-    ({ columnItem, item, colIndex }: TableParams) => {
+    ({ columnItem, item, colIndex }: TableParams<T>) => {
+      const idKey = columnItem?.id;
       return (
         <Button
           className="cursor-pointer"
           onClick={() =>
-            columnItem?.handleClick?.({ item: item?.[columnItem?.id] })
+            idKey !== undefined &&
+            columnItem?.handleClick?.({
+              item: String((item as Record<string, unknown>)[idKey] ?? ""),
+            })
           }
           key={colIndex}
         >
@@ -334,21 +354,25 @@ export default function ReusabelTable<T>({
   );
 
   const renderCellContent = useCallback(
-    ({ columnItem, item, colIndex }: TableParams) => {
-      const filed: string = columnItem?.actualField;
-      const value: string = columnItem.value;
+    ({ columnItem, item, colIndex }: TableParams<T>) => {
+      const record = item as Record<string, unknown>;
+      const filed: string | undefined = columnItem?.actualField;
+      const value: string | undefined = columnItem?.value;
 
-      const actualField = item[filed];
+      const actualField = filed !== undefined ? record[filed] : undefined;
+      const cellValue =
+        value !== undefined ? record[value] : undefined;
 
-      const cellValue = item?.[value];
       if (columnItem?.design?.includes("TOGGLE")) {
         return (
           <Switch
-            checked={item?.userName ? switchStates?.[item?.userName] : true}
-            onChange={(checked) =>
-              onSwitchToggle({ item: item?.userName, checked })
+            checked={
+              record?.userName ? switchStates?.[record.userName as string] : true
             }
-            disabled={item.currentUser === true}
+            onChange={(checked) =>
+              onSwitchToggle?.({ item: record?.userName as string, checked })
+            }
+            disabled={record?.currentUser === true}
             key={colIndex}
           />
         );
@@ -359,7 +383,11 @@ export default function ReusabelTable<T>({
         columnItem?.design?.includes("DATE_TIME")
       ) {
         return (
-          <div style={{ color: item.accountStatus === false ? "gray" : "" }}>
+          <div
+            style={{
+              color: record?.accountStatus === false ? "gray" : "",
+            }}
+          >
             {actualField ? (
               columnItem.design?.includes("DATE_TIME") ? (
                 formatDateTime({
@@ -367,12 +395,10 @@ export default function ReusabelTable<T>({
                   formatType: "dateTime",
                 })
               ) : (
-                // moment(item[`${columnItem.actualField}`]).format("MM-DD-YYYY hh:mm A")
                 formatDateTime({
                   date: actualField,
                   formatType: "date",
                 })
-                // moment(item[`${columnItem.actualField}`]).format("MM-DD-YYYY")
               )
             ) : (
               <div className="d-flex px-4">---</div>
@@ -385,7 +411,7 @@ export default function ReusabelTable<T>({
         return (
           <div
             style={{
-              color: item.accountStatus === false ? "gray" : "",
+              color: record?.accountStatus === false ? "gray" : "",
             }}
           >
             {renderUserProfile(item, columnItem)}
@@ -401,10 +427,15 @@ export default function ReusabelTable<T>({
       }
 
       if (columnItem?.design?.includes("PROGRESS_BAR")) {
+        const percentField = columnItem?.actualField;
         return (
           <div className="d-flex justify-content-start gap-3">
             <Progress
-              percent={item[`${columnItem.actualField}`]}
+              percent={
+                percentField !== undefined
+                  ? (record[percentField] as number)
+                  : undefined
+              }
               format={(percent) => `${percent}%`}
             />
           </div>
@@ -416,15 +447,15 @@ export default function ReusabelTable<T>({
         return (
           <div
             style={{
-              color: item?.accountStatus === false ? "gray" : "",
+              color: record?.accountStatus === false ? "gray" : "",
             }}
           >
             {typeof cellValue === "boolean" ? (
               <div className="flex px-4">{cellValue ? "True" : "False"}</div>
-            ) : actualField ? (
-              <Tooltip title={actualField}>
+            ) : actualField != null && actualField !== "" ? (
+              <Tooltip title={String(actualField)}>
                 {reusableEllipses({
-                  str: actualField,
+                  str: String(actualField),
                   count: count || 20,
                 })}
               </Tooltip>
@@ -485,7 +516,7 @@ export default function ReusabelTable<T>({
               }
             : undefined,
         }),
-        render: (value: newColumnType, record: contentType, rowIndex: number) =>
+        render: (_value: newColumnType, record: T, rowIndex: number) =>
           renderCellContent({
             columnItem: item,
             item: record,
@@ -495,7 +526,7 @@ export default function ReusabelTable<T>({
 
       if (item?.btnShow && item?.title) {
         columnConfig.title = item?.title;
-        columnConfig.render = (text, record, rowIndex) =>
+        columnConfig.render = (_text, record, rowIndex) =>
           renderBtnCell({ columnItem: item, item: record, colIndex: rowIndex });
       }
 
@@ -510,9 +541,9 @@ export default function ReusabelTable<T>({
               className="mx-2 custom-table-checkbox"
               onChange={(e) => {
                 e.stopPropagation();
-                handleRowCheckboxChange({
+                handleRowCheckboxChange?.({
                   e,
-                  row: item,
+                  row: item as unknown as T,
                   singleCheck: false,
                   checked: e.target.checked,
                 });
@@ -530,7 +561,7 @@ export default function ReusabelTable<T>({
             <span>{item.name}</span>
           </div>
         );
-        columnConfig.render = (text, record, rowIndex) =>
+        columnConfig.render = (_text, record, rowIndex) =>
           renderCheckboxCell({
             columnItem: item,
             item: record,
@@ -542,7 +573,7 @@ export default function ReusabelTable<T>({
           "tenantadmin/settings",
         );
         columnConfig.title = isUsersPage ? "Edit" : "Action";
-        columnConfig.render = (text, record, rowIndex) =>
+        columnConfig.render = (_text, record, rowIndex) =>
           renderEditCell(item, record, rowIndex);
       }
       return columnConfig;
@@ -567,6 +598,7 @@ export default function ReusabelTable<T>({
     <div>
       {loader ? (
         <Table
+          key={"tableLoader"}
           columns={antdColumns.map((col) => ({
             ...col,
             render: () => (
@@ -616,7 +648,7 @@ export default function ReusabelTable<T>({
             pagination={false}
             scroll={{ x: "max-content" }}
             className={`${style?.spacedTable}`}
-            rowClassName={(record: T) => style.pointerRow}
+            rowClassName={() => style.pointerRow}
             onRow={(record: T) => ({
               onClick: (event) => handleRowClick(record, event),
             })}

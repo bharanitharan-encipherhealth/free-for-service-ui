@@ -18,7 +18,10 @@ import {
   patientOverallYear,
   setAddModaOpen,
   setAdmissionNumber,
+  setDisable,
+  setDropConfirm,
   setEditDiseaseList,
+  setMovingData,
   setPageLoading,
   setPatientOverallYear,
   setPdfSearch,
@@ -125,6 +128,12 @@ const patientDetailsReducer = combineReducers({
   getValidCodeLoading: getLoading(getValidCode),
 
   editDiseaseList: localRedux(setEditDiseaseList),
+
+  setDropConfirm: localRedux(setDropConfirm),
+
+  setMovingData: localRedux(setMovingData),
+
+  isDisable: localRedux(setDisable),
 });
 
 export default patientDetailsReducer;

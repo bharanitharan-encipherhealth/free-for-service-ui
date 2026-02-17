@@ -35,7 +35,8 @@ export interface getAllRoleTabReducerType {
   loading: boolean;
 }
 
-export interface productivityContentArrayType {
+export interface productivityContentArrayType
+  extends Record<string, unknown> {
   allocatedTo: string;
   allocatedCount: number;
   pendingCount: number;

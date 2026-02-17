@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { actions as tableAction } from "@/state/table";
-import TableViewType from "@/state/table/model";
+import TableViewType, { SortType } from "@/state/table/model";
 import { reAllocationPageId } from "@/util/pageIds";
 import { getStorage } from "@/util/storage";
 import ReusableFilters from "@/components/ReusbaleFilter";
@@ -24,6 +24,7 @@ import {
   tinPatientReAllocationTableResposneType,
   tinPatientReAllocationTabType,
   checkAllPatientIdType,
+  patientReAllocationContentArrayType,
 } from "@/models/tenantadmin/tin/patientReAllocation";
 
 type patientReAllocationTabReduxType = ConnectedProps<typeof connector>;
@@ -47,13 +48,13 @@ function PatientReAllocation({
 }: patientReAllocationTabProps) {
   const prevReAllocateModalRef = useRef<boolean | undefined>(undefined);
   const tin = getStorage("tinNumber");
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {},
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [pageNo, setPageNo] = useState(0);
-  const [sort, setSort] = useState({
+  const [sort, setSort] = useState<SortType>({
     computedDate: {
       sortDir: "DESC",
       sortField: "computedDate",
@@ -134,7 +135,12 @@ function PatientReAllocation({
   }, [getAllRolesTab]);
 
   const handleRowCheckboxChange = useCallback(
-    async ({ e, row, singleCheck, checked }: handleRowCheckboxChangeType) => {
+    async ({
+      e,
+      row,
+      singleCheck,
+      checked,
+    }: handleRowCheckboxChangeType<patientReAllocationContentArrayType>) => {
       if (!singleCheck) {
         if (checked) {
           setCheckedLoader(true);
@@ -178,13 +184,20 @@ function PatientReAllocation({
           const updatedSelection = e.target.checked
             ? [...prev, row.patientId]
             : prev.filter((id) => id !== row.patientId);
+          const current = row as patientReAllocationContentArrayType & {
+            currentStatus?: { allocatedTo?: string; roleId?: string };
+            fileName?: string;
+          };
           setSelectedPatientDetails(
-            updatedSelection.map((id) => ({
-              patientId: id,
-              username: row?.currentStatus?.allocatedTo,
-              roleId: row?.currentStatus?.roleId,
-              fileName: row?.fileName,
-            })),
+            updatedSelection.map(
+              (id) =>
+                ({
+                  patientId: id,
+                  username: current.currentStatus?.allocatedTo ?? "",
+                  roleId: current.currentStatus?.roleId ?? "",
+                  fileName: current.fileName,
+                }) as checkAllPatientIdType,
+            ),
           );
           return updatedSelection;
         });
@@ -241,7 +254,9 @@ function PatientReAllocation({
   }, [pageNo, selectedOption, searchText, selectedDateRanges, sort, activeTab]);
 
   useEffect(() => {
-    getAllRoles();
+    const role = () => {
+      getAllRoles();
+    };
   }, []);
 
   useEffect(() => {

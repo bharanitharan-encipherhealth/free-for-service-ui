@@ -12,7 +12,7 @@ import { moveBackPageId } from "@/util/pageIds";
 import productivityReducerType from "@/state/tenantadmin/productivity/model";
 import { generateHeaderTab } from "@/util/reusableFunction";
 import ContentLayout from "@/components/layout/ContentLayout/page";
-import TableViewType from "@/state/table/model";
+import TableViewType, { SortType } from "@/state/table/model";
 import { tinPatientReAllocationTableResposneType } from "@/models/tenantadmin/tin/patientReAllocation";
 import { actions as tableAction } from "@/state/table";
 import { getStorage } from "@/util/storage";
@@ -45,13 +45,13 @@ function MoveBack({
   const tin = getStorage("tinNumber");
   const [activeTab, setActiveTab] = useState<string>("");
   const [roleAliasName, setRoleAliasName] = useState("");
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {},
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [pageNo, setPageNo] = useState(0);
-  const [sort, setSort] = useState({
+  const [sort, setSort] = useState<SortType>({
     computedDate: {
       sortDir: "DESC",
       sortField: "computedDate",
@@ -162,7 +162,12 @@ function MoveBack({
   ]);
 
   const handleRowCheckboxChange = useCallback(
-    async ({ e, row, singleCheck, checked }: handleRowCheckboxChangeType) => {
+    async ({
+      e,
+      row,
+      singleCheck,
+      checked,
+    }: handleRowCheckboxChangeType<checkAllPatientIdType>) => {
       if (!singleCheck) {
         if (checked) {
           setCheckedLoader(true);
@@ -229,7 +234,10 @@ function MoveBack({
   ]);
 
   useEffect(() => {
-    getAllRoles();
+    const getRole = () => {
+      getAllRoles();
+    };
+    getRole();
   }, []);
 
   useEffect(() => {

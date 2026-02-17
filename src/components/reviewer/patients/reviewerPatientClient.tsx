@@ -3,7 +3,7 @@ import { findMatchesByField, generateHeaderTab } from "@/util/reusableFunction";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import ContentLayout from "@/components/layout/ContentLayout/page";
-import TableViewType, { metaDataType } from "@/state/table/model";
+import TableViewType, { metaDataType, SortType } from "@/state/table/model";
 import { connect, ConnectedProps } from "react-redux";
 
 import { actions as tableAction } from "@/state/table";
@@ -53,9 +53,9 @@ const ReviewerPatientClient = ({
 
   const [activeTab, setActiveTab] = useState<string>("PENDING");
   const [pageNo, setPageNo] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {},
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [activeFilters, setActiveFilters] = useState<metaDataType[]>([]);
   const [selectedDates, setSelectedDates] = useState({});
@@ -64,7 +64,7 @@ const ReviewerPatientClient = ({
   const [row, setRow] = useState<number>(15);
 
   const [selectedColumns, setSelectedColumns] = useState<metaDataType[]>([]);
-  const [sort, setSort] = useState({
+  const [sort, setSort] = useState<SortType>({
     allocatedOn: {
       sortDir: "DESC",
       sortField: "allocatedOn",
@@ -231,17 +231,20 @@ const ReviewerPatientClient = ({
   ]);
 
   useEffect(() => {
-    if (
-      tableData?.metaDataDTO ||
-      !findMatchesByField(activeFilters, tableData?.metaDataDTO)
-    ) {
-      setActiveFilters(
-        tableData?.metaDataDTO.filter(
-          (item) => item.columnActive && item?.filter?.style,
-        ),
-      );
-      setSelectedColumns(tableData?.metaDataDTO);
-    }
+    const filterSet = () => {
+      if (
+        tableData?.metaDataDTO ||
+        !findMatchesByField(activeFilters, tableData?.metaDataDTO)
+      ) {
+        setActiveFilters(
+          tableData?.metaDataDTO.filter(
+            (item) => item.columnActive && item?.filter?.style,
+          ),
+        );
+        setSelectedColumns(tableData?.metaDataDTO);
+      }
+    };
+    filterSet();
   }, [tableData?.metaDataDTO]);
   return (
     <>

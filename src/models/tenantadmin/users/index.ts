@@ -29,7 +29,7 @@ export interface roleWiseStatusCountType {
   queried: number;
 }
 
-export interface UserContentType {
+export interface UserContentType extends Record<string, unknown> {
   createdDate: string;
   lastModifiedDate?: string | null;
   active: boolean;
@@ -110,7 +110,7 @@ export interface UserEditRolesResposneType {
 
 export interface userPropsType {
   getTableView: (
-    tableApiParamsType: tableApiParamsType
+    tableApiParamsType: tableApiParamsType,
   ) => Promise<userTabelType>;
   getUserEnable: ({
     data,

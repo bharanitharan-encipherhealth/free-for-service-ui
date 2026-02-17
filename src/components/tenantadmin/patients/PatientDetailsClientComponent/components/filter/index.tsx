@@ -54,7 +54,6 @@ const Filter = React.memo(() => {
   return (
     <div className="h-full border-l border-gray-400 p-2 flex flex-col gap-6 bg-white py-5">
       {filterList?.map((item, index) => {
-        const key = item?.name.split(" ").join("").toLowerCase() as FilterKey;
         return (
           <Tooltip
             key={index}

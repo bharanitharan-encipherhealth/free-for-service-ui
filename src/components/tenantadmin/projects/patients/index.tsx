@@ -7,11 +7,13 @@ import { findMatchesByField } from "@/util/reusableFunction";
 import { patientProjectPageId } from "@/util/pageIds";
 import { patientCallingProps } from "@/models/tenantadmin/project/patient";
 import { connect, ConnectedProps } from "react-redux";
-import { productivitytabelResposne } from "@/models/tenantadmin/productivity/page";
-import TableViewType from "@/state/table/model";
+import {
+  productivityContentArrayType,
+  productivitytabelResposne,
+} from "@/models/tenantadmin/productivity/page";
+import TableViewType, { SortType } from "@/state/table/model";
 
 import { actions as tableAction } from "@/state/table";
-import { productivityContentArrayType } from "@/models/tenantadmin/tin/patients";
 import { notification } from "antd";
 import { useRouter } from "next/navigation";
 
@@ -34,7 +36,7 @@ function Patients({
   const route = useRouter();
   const tin = getStorage("tinNumber");
   const [pageNo, setPageNo] = useState(0);
-  const [sort, setSort] = useState({
+  const [sort, setSort] = useState<SortType>({
     computedDate: {
       sortDir: "DESC",
       sortField: "computedDate",
@@ -47,9 +49,9 @@ function Patients({
   });
   const [paginationFirst, setPaginationFirst] = useState(0);
   const [searchText, setSearchText] = useState<Record<string, string>>({});
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {},
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [selectedDates, setSelectedDates] = useState({});
   const [row, setRow] = useState<number>(15);

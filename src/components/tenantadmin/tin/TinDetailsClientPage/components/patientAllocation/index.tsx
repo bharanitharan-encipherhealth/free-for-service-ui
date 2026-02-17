@@ -11,7 +11,7 @@ import {
   tinPatientsTabType,
   tinPatientTableResposneType,
 } from "@/models/tenantadmin/tin/patients";
-import TableViewType from "@/state/table/model";
+import TableViewType, { SortType } from "@/state/table/model";
 import { patientAllocationPageId } from "@/util/pageIds";
 import { getStorage } from "@/util/storage";
 import ReusableFilters from "@/components/ReusbaleFilter";
@@ -49,13 +49,13 @@ function PatientAllocation({
   setAllocateModal,
 }: patientTabProps) {
   const tin = getStorage("tinNumber");
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {},
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [pageNo, setPageNo] = useState(0);
-  const [sort, setSort] = useState({
+  const [sort, setSort] = useState<SortType>({
     computedDate: {
       sortDir: "DESC",
       sortField: "computedDate",
@@ -137,7 +137,12 @@ function PatientAllocation({
   }, [getAllRolesTab]);
 
   const handleRowCheckboxChange = useCallback(
-    async ({ e, row, singleCheck, checked }: handleRowCheckboxChangeType) => {
+    async ({
+      e,
+      row,
+      singleCheck,
+      checked,
+    }: handleRowCheckboxChangeType<checkAllPatientIdType>) => {
       if (!singleCheck) {
         if (checked) {
           setCheckedLoader(true);
@@ -242,7 +247,10 @@ function PatientAllocation({
   }, [pageNo, selectedOption, searchText, selectedDateRanges, sort, activeTab]);
 
   useEffect(() => {
-    getAllRoles();
+    const getRole = () => {
+      getAllRoles();
+    };
+    getRole();
   }, []);
 
   useEffect(() => {
