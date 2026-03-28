@@ -1,6 +1,6 @@
 import PageHeaderLayout from "@/components/layout/pageHeaderLayout/page";
 import patinetMovebackReducerType from "@/state/tenantadmin/patients/details/model";
-import  {  useMemo } from "react";
+import { useMemo } from "react";
 import {
   FaCalendarAlt,
   FaClinicMedical,
@@ -11,16 +11,20 @@ import { IoDocumentTextOutline } from "react-icons/io5";
 import { RiIdCardLine } from "react-icons/ri";
 import { SlCalender } from "react-icons/sl";
 import { connect, ConnectedProps } from "react-redux";
+import YearStatusAction from "../yearStatus";
+import style from "../../../../../../components/layout/ContentLayout/style.module.css";
 
 type PatientDetailsHeaderReduxType = ConnectedProps<typeof connector>;
 
 type PatientDetailsHeaderProps = PatientDetailsHeaderReduxType & {
   onHandleBack: () => void;
+  getPatientDetails: ({ patientId }: { patientId: string }) => void;
 };
 function PatientDetailsHeader({
   patientOverallDetails,
   patientOverallDetailsLoading,
   onHandleBack,
+  getPatientDetails,
 }: PatientDetailsHeaderProps) {
   const headerData = useMemo(
     () => [
@@ -57,11 +61,13 @@ function PatientDetailsHeader({
   );
 
   return (
-    <PageHeaderLayout
-      loading={patientOverallDetailsLoading}
-      data={headerData}
-      onHandleBack={onHandleBack}
-    />
+      <PageHeaderLayout
+        loading={patientOverallDetailsLoading}
+        data={headerData}
+        onHandleBack={onHandleBack}
+      >
+        <YearStatusAction getPatientDetails={getPatientDetails} />
+      </PageHeaderLayout>
   );
 }
 

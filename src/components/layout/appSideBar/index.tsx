@@ -74,7 +74,11 @@ function AppSideBar({ selectedUserRole }: appSideBarType) {
 
         <Menu
           items={menuList}
-          selectedKeys={[pathName]}
+          selectedKeys={
+            menuList
+              ?.filter((item) => pathName?.startsWith(item?.key as string))
+              ?.map((item) => item?.key as string) || [pathName]
+          }
           onClick={({ key }) => router.push(key)}
         />
       </Sider>

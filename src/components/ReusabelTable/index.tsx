@@ -200,23 +200,21 @@ export default function ReusabelTable<
         : "";
     const rowStatus: string = getProcessStatusKey({ item: rawValue });
     return (
-      <div className="patient-status">
-        <div
-          className={style.roleStyle}
-          style={statusColorPick({ status: rowStatus })}
-        >
-          {rowStatus === "Processing" && (
-            <Spin
-              indicator={
-                <AiOutlineLoading3Quarters
-                  style={{ color: "white", fontSize: "12px" }}
-                />
-              }
-              style={{ color: "#452b90", margin: "0 10px 0 0" }}
-            />
-          )}
-          {rowStatus}
-        </div>
+      <div
+        className={style.roleStyle}
+        style={statusColorPick({ status: rowStatus })}
+      >
+        {rowStatus === "Processing" && (
+          <Spin
+            indicator={
+              <AiOutlineLoading3Quarters
+                style={{ color: "white", fontSize: "12px" }}
+              />
+            }
+            style={{ color: "#452b90", margin: "0 10px 0 0" }}
+          />
+        )}
+        {rowStatus}
       </div>
     );
   };
@@ -231,39 +229,51 @@ export default function ReusabelTable<
             handleAction?.(item);
           }}
         >
-          <Popover
-            content={content?.(item)}
-            title={
-              <div className="flex justify-between items-center">
-                <span>Change Role</span>
-                <IoClose
-                  className="cursor-pointer"
-                  onClick={onCloseIconClick}
-                  id={
-                    tableId
-                      ? CreateIdGens("closeIcon" + tableId + colIndex)
-                      : CreateIdGens("closeIcon" + colIndex)
-                  }
-                />
-              </div>
-            }
-            placement="bottom"
-            trigger="click"
-            open={visiblePopoverKey === record.id}
-            onOpenChange={(visible) => {
-              if (visible) {
-                if (setEditingUser) setEditingUser(item);
-                if (record.id !== undefined) setVisiblePopoverKey?.(record.id);
+          {content ? (
+            <Popover
+              content={content?.(item)}
+              title={
+                <div className="flex justify-between items-center">
+                  <span>Change Role</span>
+                  <IoClose
+                    className="cursor-pointer"
+                    onClick={onCloseIconClick}
+                    id={
+                      tableId
+                        ? CreateIdGens("closeIcon" + tableId + colIndex)
+                        : CreateIdGens("closeIcon" + colIndex)
+                    }
+                  />
+                </div>
               }
-            }}
-          >
+              placement="bottom"
+              trigger="click"
+              open={visiblePopoverKey === record.id}
+              onOpenChange={(visible) => {
+                if (visible) {
+                  if (setEditingUser) setEditingUser(item);
+                  if (record.id !== undefined) setVisiblePopoverKey?.(record.id);
+                }
+              }}
+            >
+              <div
+                onClick={() => handleAction?.(item)}
+                className="cursor-pointer editIcon"
+              >
+                <BiEdit className="text-md" size={16} />
+              </div>
+            </Popover>
+          ) : (
             <div
-              onClick={() => handleAction?.(item)}
+              onClick={() => {
+                handleAction?.(item);
+                if (setEditingUser) setEditingUser(item);
+              }}
               className="cursor-pointer editIcon"
             >
-              <BiEdit className="text-md" />
+              <BiEdit className="text-md" size={16} />
             </div>
-          </Popover>
+          )}
         </div>
       ) : (
         <div>
@@ -314,7 +324,8 @@ export default function ReusabelTable<
               }}
               checked={selectedRows?.some(
                 (row) =>
-                  valueKey !== undefined && row === (item as Record<string, unknown>)[valueKey],
+                  valueKey !== undefined &&
+                  row === (item as Record<string, unknown>)[valueKey],
               )}
               id={
                 tableId
@@ -360,14 +371,16 @@ export default function ReusabelTable<
       const value: string | undefined = columnItem?.value;
 
       const actualField = filed !== undefined ? record[filed] : undefined;
-      const cellValue =
-        value !== undefined ? record[value] : undefined;
+      const cellValue = value !== undefined ? record[value] : undefined;
 
       if (columnItem?.design?.includes("TOGGLE")) {
         return (
           <Switch
+            className="custom-switch"
             checked={
-              record?.userName ? switchStates?.[record.userName as string] : true
+              record?.userName
+                ? switchStates?.[record.userName as string]
+                : true
             }
             onChange={(checked) =>
               onSwitchToggle?.({ item: record?.userName as string, checked })

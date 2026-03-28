@@ -148,19 +148,7 @@ function ContentLayout({
               onClick={() => handleSelectedColumn({ item })}
             >
               <div
-                style={{
-                  width: 24,
-                  height: 24,
-                  borderRadius: "50%",
-                  border: item?.active ? "none" : "2px solid #d9d9d9",
-                  backgroundColor: item?.active ? "#0942C4" : "transparent",
-                  color: item?.active ? "#fff" : "transparent",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: "bold",
-                  userSelect: "none",
-                }}
+                className={`${style?.badge} ${item?.active ? style?.badgeActive : style?.badgeInactive}`}
               >
                 {item?.active && item?.orderValue}
               </div>
@@ -170,7 +158,7 @@ function ContentLayout({
 
           <div className="flex justify-center gap-2 bottom-0">
             <Button
-              className={style.headerBtnColor}
+              // className={style.headerBtnColor}
               onClick={handleTabelCustomizationRest}
             >
               Reset
@@ -214,23 +202,28 @@ function ContentLayout({
     if (activeFilters) {
       return (
         <>
-          <div className={`${style?.filterSelectAll} font-bold pb-1`}>
-            <Checkbox checked={activeFilters?.every((item) => item?.active)}>
+          <div className={`${style?.filterSelectAll} font-bold pb-2`}>
+            <Checkbox
+              className="custom-checkbox"
+              checked={activeFilters?.every((item) => item?.active)}
+            >
               Select All
             </Checkbox>
           </div>
-          {activeFilters?.map((item, index) => (
-            <div key={index} className="py-1">
-              <Checkbox
-                checked={item?.active}
-                onChange={() => handleFilterStatusChange({ item })}
-              >
+          <div className="py-1 px-1">
+            {activeFilters?.map((item, index) => (
+              <div key={index} className="py-1 flex gap-3 items-center">
+                <Checkbox
+                  className="custom-checkbox"
+                  checked={item?.active}
+                  onChange={() => handleFilterStatusChange({ item })}
+                />
                 {item?.headerName}
-              </Checkbox>
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
 
-          <div className="flex justify-between gap-2">
+          <div className="flex justify-between gap-2 py-3">
             <Button className={style.headerBtnColor}>Clear Filter</Button>
 
             <Button className={style.headerBtnColor} onClick={handleReset}>
@@ -256,10 +249,9 @@ function ContentLayout({
                   key={index}
                   onClick={() => tabList?.onClick({ item: item })}
                   className={`
-                    ${
-                      tabList?.activeTab == item?.value
-                        ? "activeContentTab cursor-pointer"
-                        : "cursor-pointer"
+                    ${tabList?.activeTab == item?.value
+                      ? "activeContentTab cursor-pointer"
+                      : "cursor-pointer"
                     }
                     capitalize `}
                 >

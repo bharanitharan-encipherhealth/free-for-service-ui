@@ -190,14 +190,16 @@ const DosStatusAction = React.memo(
                 disabled={isDisabledStatus}
               >
                 <Button
-                  className={`${style?.[`${status?.toLowerCase()}BgColor`]} rounded p-2 ${!isDisabledStatus ? "cursor-pointer" : "cursor-not-allowed"}`}
+                  className={`${style?.[`${status?.toLowerCase()}BgColor`]} flex items-center rounded p-0 overflow-hidden ${!isDisabledStatus ? "cursor-pointer" : "cursor-not-allowed"}`}
                 >
-                  {status}
-                  {patientDiseaseLoading || isLoading ? (
-                    <Spin size="small" />
-                  ) : (
-                    <MdOutlineKeyboardArrowDown />
-                  )}
+                  <span className="px-3 py-2">{status}</span>
+                  <span className="px-2 border-l border-white/50 border-gray-300 flex items-center self-stretch">
+                    {patientDiseaseLoading || isLoading ? (
+                      <Spin size="small" />
+                    ) : (
+                      <MdOutlineKeyboardArrowDown />
+                    )}
+                  </span>
                 </Button>
               </Dropdown>
             </div>

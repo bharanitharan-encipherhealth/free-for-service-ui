@@ -26,6 +26,7 @@ import { contentArrayType } from "@/models/tenantadmin/tin";
 import { useRouter } from "next/navigation";
 import PatientReAllocation from "./components/patientReAllocation";
 import MoveBack from "./components/moveback";
+import Batch from "../../projects/batch";
 
 type TinDetailsPropsType = ConnectedProps<typeof connector>;
 function TinDetailsClientPage({
@@ -172,7 +173,7 @@ function TinDetailsClientPage({
     return {
       isTab: true,
       tabList: generateHeaderTab({
-        tabList: tinDetailsTab,
+        tabList: [...tinDetailsTab, "Batch"],
       }).filter(
         (item: { label: string; value: string }) =>
           item?.value != "Query Approval",
@@ -325,6 +326,8 @@ function TinDetailsClientPage({
             setAllocateModal={setMoveBackModal}
           />
         )}
+
+        {activeTab?.toLowerCase() === "batch" && <Batch />}
       </div>
     </div>
   );

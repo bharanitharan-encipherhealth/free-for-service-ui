@@ -78,5 +78,5 @@ export default function Dashboard() {
     },
   ];
 
-  return <div>bhhbbhh</div>;
+  return <div>Dashboard</div>;
 }

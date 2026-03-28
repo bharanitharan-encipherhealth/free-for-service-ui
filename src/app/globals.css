@@ -4,9 +4,11 @@
   --background: #f0f6fe;
   --foreground: #171717;
 
+  --icon-color: #666;
+
   --app-header-color: #ffffff;
   --login-info-color: #3d5262;
-  --application-base-color: #0942c4;
+  --application-base-color: #03512E;
   --app-header-boder-color: #a8b3bd;
   --text-white-color: #ffff;
 
@@ -17,7 +19,7 @@
   --sidebar-arrow-color: #c8d8e5;
   --defaultColor: #fff;
   --tableBorder: #a0a0a0;
-  --opactiy-background: #f0f6ff;
+  --opactiy-background: #E0EFE8;
   --tab-background-color: #f3f3f4;
 
   --excel-error-color: #ff4d4f;
@@ -30,25 +32,26 @@
   --excel-pagination-border: #e8e8e8;
   --excel-white: #ffffff;
 
-  --processed-bg-color: #00a2d6;
-  --processing-bg-color: #5271fa;
-  --not-processed-bg-color: #7e5cad;
-  --failed-bg-color: #7e5cad;
+  --processed-bg-color: #9CFAD0;
+  --processing-bg-color: #A5BBB1;
+  --not-processed-bg-color: #02854A;
+  --failed-bg-color: #02854A;
 
   --chartIcon: #87d068;
 
   --allocateBgColor: #008fca;
-  --pedingBgColor: #1e8bdc;
+  --pedingBgColor: #03512E;
 
-  
-  --hcc-bg-color: #e6ecff;
+  --chart-tab-select-bg-color: #E6FEF3;
+
+  --hcc-bg-color: #E1F3FE;
   --care-gap-bg-color: #e9f8fb;
   --potential-bg-color: #e5f2ff;
-  --deleted-bg-color: #e7e7fd;
+  --deleted-bg-color: #F0FDFF;
 
   --care-gap-color: #009fb8;
-  --delete-color: #df0808;
-  --diagnosis-color: #1b56fd;
+  --delete-color: #009FB8;
+  --diagnosis-color: #0078CC;
   --suggest-color: #006bff;
 
   --hyper-link-popover-color: #0fa1bd;
@@ -74,7 +77,8 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --breakpoint-3xl: 100rem;
-  --breakpoint-4xl: 120rem; /* 1920px - for large desktop screens */
+  --breakpoint-4xl: 120rem;
+  /* 1920px - for large desktop screens */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -134,6 +138,7 @@ body {
 .select-divider .ant-select-selector {
   border: 1px solid black !important;
 }
+
 .select-divider .ant-select-selector {
   height: auto !important;
   border-radius: 10px !important;
@@ -244,6 +249,7 @@ img.login-logo {
 .login-account .social-btn {
   padding: 10px 10px;
 }
+
 .login-account .account-info-area .login-content .title {
   font-size: 45px;
 }
@@ -266,10 +272,12 @@ img.login-logo {
 .login-account .login-input {
   margin-bottom: 1.45rem;
 }
+
 .login-account .login-btn {
   margin-top: 2.55rem;
   margin-left: 0px !important;
 }
+
 .login-account .ant-select-selector {
   height: 40px !important;
 }
@@ -280,6 +288,7 @@ img.login-logo {
   align-items: center;
   justify-content: center;
 }
+
 .login-account .project-loding {
   min-height: 20rem;
   max-width: 28rem;
@@ -288,9 +297,11 @@ img.login-logo {
 .login-account .login-with {
   margin-bottom: 15px;
 }
+
 .social-login .login-option {
   font-size: 0.825rem;
 }
+
 .form-selected {
   margin-bottom: 1.8rem !important;
 }
@@ -320,55 +331,70 @@ img.login-logo {
     min-height: 15rem;
     max-width: 28rem;
   }
+
   .login-account .login-form {
     width: 19.75rem;
     min-height: auto;
     padding: 0.625rem 1.25rem;
   }
+
   .login-account .title {
     font-size: 0.9375rem;
   }
+
   .account-info-area img.login-logo {
     width: 50% !important;
     height: auto !important;
   }
+
   .login-account .login-form input {
     height: 1.375rem !important;
     font-size: 0.55rem;
   }
+
   .login-account .ant-select-selector {
     height: 1.55rem !important;
     font-size: 0.75rem;
   }
+
   .login-account .login-input {
     margin-bottom: 0.2125rem;
   }
+
   .login-account .ant-form-item-vertical .ant-form-item-label {
     padding: 0px 0px !important;
   }
+
   .login-account .login-input label {
     font-size: 0.625rem !important;
   }
+
   .login-account .btnColor {
     font-size: 0.625rem !important;
   }
+
   .social-login img.login-logo {
     width: 1.2625rem !important;
     height: 1.2625rem !important;
   }
+
   .social-login .login-option {
     font-size: 0.455rem;
   }
+
   .login-account .login-btn {
     margin-top: 0.75rem;
   }
+
   .login-account .login-btn button {
     font-size: 0.625rem !important;
     padding: 0.35rem !important;
   }
+
   .form-selected {
     margin-bottom: 0rem !important;
   }
+
   .login-account .ant-select-arrow {
     top: 0.7375rem;
     display: flex;
@@ -376,17 +402,21 @@ img.login-logo {
     justify-content: center;
     font-size: 0.625rem;
   }
+
   .login-footer {
     margin-left: 15px !important;
   }
+
   .login-footer p {
     font-size: 10px !important;
     padding-left: 20px !important;
   }
+
   .login-footer img {
     width: 55px !important;
     height: 55px !important;
   }
+
   /* Dropdown options for mobile */
   .responsive-dropdown .ant-select-item-option {
     font-size: 0.625rem !important;
@@ -394,14 +424,17 @@ img.login-logo {
     line-height: 1.2 !important;
     min-height: 1.5rem !important;
   }
+
   .responsive-dropdown .ant-select-item-option-content {
     font-size: 0.625rem !important;
     line-height: 1.2 !important;
   }
+
   .login-account .login-with {
     margin-bottom: 5px;
     font-size: 0.35rem;
   }
+
   .login-account .login-with .login-option {
     font-size: 0.55rem;
     margin-right: 2px !important;
@@ -413,48 +446,61 @@ img.login-logo {
     min-height: 22rem;
     max-width: 28rem;
   }
+
   .login-account .login-form {
     max-width: 28rem;
     min-height: auto;
     padding: 1.25rem 1.7875rem;
   }
+
   .login-account .login-form input {
     height: 2.1875rem !important;
   }
+
   .login-account .title {
     font-size: 1.8125rem;
   }
+
   .account-info-area img.login-logo {
     width: 70% !important;
     height: auto !important;
   }
+
   .social-login img.login-logo {
     width: 2.1875rem !important;
     height: 2.1875rem !important;
   }
+
   .login-account .btnColor {
     font-size: 0.75rem !important;
   }
+
   .login-account .login-input {
     margin-bottom: 1.25rem;
   }
+
   .login-account .login-input label {
     font-size: 0.85rem !important;
   }
+
   .form-selected {
     margin: 0.625rem 0 !important;
   }
+
   .login-account .ant-select-selector {
     height: 2.35rem !important;
     font-size: 0.95rem;
   }
+
   .form-selected {
     margin-bottom: 1.25rem !important;
   }
+
   .login-account .login-btn button {
     font-size: 0.75rem !important;
     padding: 0.75rem !important;
   }
+
   /* Dropdown options for 1440-1699px */
   .responsive-dropdown .ant-select-item-option {
     font-size: 0.95rem !important;
@@ -462,54 +508,68 @@ img.login-logo {
     line-height: 1.3 !important;
     min-height: 2rem !important;
   }
+
   .responsive-dropdown .ant-select-item-option-content {
     font-size: 0.95rem !important;
     line-height: 1.3 !important;
   }
+
   .login-account .login-btn {
     margin-top: 2.15rem;
     margin-left: 0px !important;
   }
+
   .login-account .login-with {
     margin-bottom: 10px;
   }
+
   .login-account .login-with .login-option {
     margin-right: 2px !important;
   }
 }
+
 @media screen and (min-width: 1200px) and (max-width: 1440px) {
   .login-account .project-loding {
     min-height: 20rem;
     max-width: 28rem;
   }
+
   .login-account .login-form {
     width: 27rem;
     min-height: auto;
     padding: 1.25rem 1.375rem;
   }
+
   .login-account .title {
     font-size: 1.5625rem;
   }
+
   .account-info-area img.login-logo {
     width: 70% !important;
     height: auto !important;
   }
+
   .login-account .login-form input {
     height: 1.875rem !important;
     font-size: 0.75rem;
   }
+
   .login-account .login-input {
     margin-bottom: 0.625rem;
   }
+
   .login-account .ant-form-item-vertical .ant-form-item-label {
     padding: 2px 3px !important;
   }
+
   .login-account .login-input label {
     font-size: 0.75rem !important;
   }
+
   .form-selected label {
     font-size: 0.75rem !important;
   }
+
   .login-account .ant-select-selector {
     height: 2.2875rem !important;
     font-size: 0.75rem;
@@ -518,57 +578,70 @@ img.login-logo {
   .login-account .btnColor {
     font-size: 0.625rem !important;
   }
+
   .social-login img.login-logo {
     width: 1.875rem !important;
     height: 1.875rem !important;
   }
+
   .social-login .login-option {
     font-size: 0.75rem;
   }
+
   .login-account .login-btn button {
     font-size: 0.75rem !important;
     padding: 0.75rem !important;
   }
+
   .form-selected {
     margin-bottom: 1.05rem !important;
   }
+
   .login-account .ant-select-arrow {
     top: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+
   .responsive-dropdown .ant-select-item-option {
     font-size: 0.75rem !important;
     padding: 0.3rem 0.625rem !important;
     line-height: 1.25 !important;
     min-height: 1.75rem !important;
   }
+
   .responsive-dropdown .ant-select-item-option-content {
     font-size: 0.75rem !important;
     line-height: 1.25 !important;
   }
+
   .login-account .login-with {
     margin-bottom: 10px;
   }
+
   .login-account .login-btn {
     margin-top: 1.85rem;
     margin-left: 0px !important;
   }
 }
+
 @media screen and (min-width: 1080px) and (max-width: 1200px) {
   .login-account .project-loding {
     min-height: 17rem;
     max-width: 28rem;
   }
+
   .login-account .login-form {
     width: 22.625rem;
     min-height: auto;
     padding: 0.9375rem 1.3225rem;
   }
+
   .login-account .title {
     font-size: 1.25rem;
   }
+
   .account-info-area img.login-logo {
     width: 60% !important;
     height: auto !important;
@@ -578,71 +651,89 @@ img.login-logo {
     height: 1.575rem !important;
     font-size: 0.65rem;
   }
+
   .login-account .ant-select-selector {
     height: 1.75rem !important;
     font-size: 0.55rem;
   }
+
   .login-account .login-input {
     margin-bottom: 0.625rem;
   }
+
   .login-account .login-input label {
     font-size: 0.65rem !important;
   }
+
   .login-account .ant-form-item-vertical .ant-form-item-label {
     padding: 2px 3px !important;
   }
+
   .login-account .btnColor {
     font-size: 0.625rem !important;
   }
+
   .social-login img.login-logo {
     width: 1.3625rem !important;
     height: 1.3625rem !important;
   }
+
   .social-login .login-option {
     font-size: 0.55rem;
   }
+
   .login-account .login-btn {
     margin-top: 1.25rem;
   }
+
   .login-account .login-btn button {
     font-size: 0.75rem !important;
     padding: 0.375rem !important;
   }
+
   .form-selected {
     margin-bottom: 0.125rem !important;
   }
+
   .login-account .ant-select-arrow {
     top: 0.9375rem;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+
   .login-footer p {
     font-size: 12px !important;
     padding-left: 15px !important;
   }
+
   .login-footer img {
     width: 75px !important;
     height: 75px !important;
   }
+
   .responsive-dropdown .ant-select-item-option {
     font-size: 0.65rem !important;
     padding: 0.25rem 0.5rem !important;
     line-height: 1.2 !important;
     min-height: 1.625rem !important;
   }
+
   .responsive-dropdown .ant-select-item-option-content {
     font-size: 0.65rem !important;
     line-height: 1.2 !important;
   }
+
   .login-account .login-with {
     margin-bottom: 5px;
     font-size: 0.45rem;
   }
+
   .login-account .login-with .login-option {
     font-size: 0.55rem;
     margin-right: 2px !important;
   }
+
   .login-account .login-btn {
     margin-top: 1.05rem;
     margin-left: 0px !important;
@@ -733,6 +824,7 @@ img.login-logo {
   border-radius: 10px;
   opacity: 0.5;
 }
+
 .input-group .search-area .form-control {
   height: 3rem;
 }
@@ -746,32 +838,43 @@ img.login-logo {
   background-color: var(--application-base-color);
 }
 
-.ant-menu-inline-collapsed > .ant-menu-item .ant-menu-item-icon {
+.ant-menu-inline-collapsed>.ant-menu-item .ant-menu-item-icon {
   font-size: 20px !important;
 }
 
-.ant-table-wrapper .ant-table-thead > tr > th {
+.ant-table-wrapper .ant-table-thead>tr>th {
   background: none !important;
   color: white !important;
 }
 
-.ant-table-thead > tr {
-  background: linear-gradient(
-    to right,
-    var(--app-table-secondary1),
-    var(--app-table-secondary2),
-    var(--app-table-secondary3)
-  ) !important;
+.ant-table-thead>tr {
+  background-color: var(--application-base-color) !important;
   transition: none !important;
   color: white !important;
 }
 
-.ant-table-wrapper
-  .ant-table-thead
-  > tr
-  > th:not(:last-child):not(.ant-table-selection-column):not(
-    .ant-table-row-expand-icon-cell
-  ):not([colspan])::before {
+/* Global Select Vertical Divider */
+.ant-select::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 32px;
+  width: 1px;
+  background-color: var(--app-header-boder-color);
+  opacity: 0.5;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Prevent long text overlapping with the vertical divider */
+.ant-select-single .ant-select-selector .ant-select-selection-item,
+.ant-select-single .ant-select-selector .ant-select-selection-placeholder,
+.ant-select-multiple .ant-select-selector {
+  padding-right: 40px !important;
+}
+
+.ant-table-wrapper .ant-table-thead>tr>th:not(:last-child):not(.ant-table-selection-column):not(.ant-table-row-expand-icon-cell):not([colspan])::before {
   background-color: transparent !important;
 }
 
@@ -826,11 +929,11 @@ img.login-logo {
   top: 50%;
   transform: translate(-50%, -50%);
   border-radius: 4px;
-  border: 4px solid var(--app-table-secondary2);
+  border: 4px solid var(--application-base-color);
   background: transparent;
   transition: all 0.3s ease;
   z-index: 1;
-  background-color: var(--app-table-secondary2) !important;
+  background-color: var(--application-base-color) !important;
   color: var(--defaultColor);
   display: flex;
   justify-content: center;
@@ -844,11 +947,9 @@ img.login-logo {
 }
 
 /* Checked outer halo */
-.custom-checkbox
-  .ant-checkbox.ant-checkbox-checked
-  .ant-checkbox-inner::before {
-  background: var(--app-table-secondary2) !important;
-  border-color: var(--app-table-secondary2) !important;
+.custom-checkbox .ant-checkbox.ant-checkbox-checked .ant-checkbox-inner::before {
+  background: var(--application-base-color) !important;
+  border-color: var(--application-base-color) !important;
   opacity: 0.4;
   height: 25px;
   width: 25px;
@@ -922,9 +1023,7 @@ img.login-logo {
 }
 
 /* Checked outer halo */
-.custom-table-checkbox
-  .ant-checkbox.ant-checkbox-checked
-  .ant-checkbox-inner::before {
+.custom-table-checkbox .ant-checkbox.ant-checkbox-checked .ant-checkbox-inner::before {
   background: var(--defaultColor) !important;
   border-color: var(--defaultColor) !important;
   opacity: 0.4;
@@ -939,11 +1038,12 @@ img.login-logo {
   align-items: center;
 }
 
-.pagination-container > .p-paginator.p-component {
+.pagination-container>.p-paginator.p-component {
   background: transparent !important;
   margin-right: 20px;
   gap: 10px;
 }
+
 .total-pages {
   color: #999696;
   font-family: Manrope;
@@ -1003,8 +1103,7 @@ img.login-logo {
 }
 
 .editIcon {
-  background-color: var(--app-table-secondary3);
-  color: var(--defaultColor);
+  color: var(--icon-color);
   width: fit-content;
   border-radius: 5px;
   padding: 5px;
@@ -1026,6 +1125,7 @@ img.login-logo {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -1064,12 +1164,12 @@ img.login-logo {
   padding: 10px 0px;
 }
 
-.widget-timeline .timeline > li > .timeline-badge {
+.widget-timeline .timeline>li>.timeline-badge {
   left: auto;
   right: 0px;
 }
 
-.widget-timeline .timeline > li > .timeline-panel:after {
+.widget-timeline .timeline>li>.timeline-panel:after {
   left: auto;
   right: -5px;
 }
@@ -1099,23 +1199,23 @@ img.login-logo {
   background: #e6e6e6;
 }
 
-.widget-timeline .timeline > li {
+.widget-timeline .timeline>li {
   margin-bottom: 0.9375rem;
   position: relative;
 }
 
-.widget-timeline .timeline > li:before {
+.widget-timeline .timeline>li:before {
   content: " ";
   display: table;
 }
 
-.widget-timeline .timeline > li:after {
+.widget-timeline .timeline>li:after {
   content: " ";
   display: table;
   clear: both;
 }
 
-.widget-timeline .timeline > li > .timeline-panel {
+.widget-timeline .timeline>li>.timeline-panel {
   border-radius: 0.625rem;
   padding: 10px;
   position: relative;
@@ -1125,24 +1225,24 @@ img.login-logo {
   border-style: solid;
 }
 
-.widget-timeline .timeline > li > .timeline-panel span {
+.widget-timeline .timeline>li>.timeline-panel span {
   display: block;
   opacity: 0.8;
   /* letter-spacing: 0.0625rem; */
   font-size: 11px;
 }
 
-.widget-timeline .timeline > li > .timeline-panel p {
+.widget-timeline .timeline>li>.timeline-panel p {
   font-size: 0.75rem;
   line-height: 1.125rem;
 }
 
-.widget-timeline .timeline > li > .timeline-panel h6,
-.widget-timeline .timeline > li > .timeline-panel .h6 {
+.widget-timeline .timeline>li>.timeline-panel h6,
+.widget-timeline .timeline>li>.timeline-panel .h6 {
   font-size: 13px !important;
 }
 
-.widget-timeline .timeline > li > .timeline-panel:after {
+.widget-timeline .timeline>li>.timeline-panel:after {
   content: "";
   width: 0.625rem;
   height: 0.625rem;
@@ -1157,7 +1257,7 @@ img.login-logo {
   top: 0.9375rem;
 }
 
-.widget-timeline .timeline > li > .timeline-badge {
+.widget-timeline .timeline>li>.timeline-badge {
   border-radius: 50%;
   height: 35px;
   left: 0;
@@ -1185,7 +1285,7 @@ img.login-logo {
   display: block;
 } */
 
-.widget-timeline .timeline-body > p {
+.widget-timeline .timeline-body>p {
   font-size: 0.75rem;
 }
 
@@ -1306,20 +1406,20 @@ img.login-logo {
   box-shadow: 0 0.3125rem 0.625rem 0 rgba(58, 155, 148, 0.2);
 }
 
-.MOVED_SUGGESTED_TO_VALID + .timeline-panel,
-.ENCOUNTER_FILE_UPDATED + .timeline-panel,
-.ENCOUNTER_FILE_ADDED + .timeline-panel,
-.MOVED_VALID_TO_SUGGESTED + .timeline-panel,
-.MOVED_INVALID_TO_VALID + .timeline-panel,
-.MOVED_VALID_TO_DELETED + .timeline-panel,
-.HOLD + .timeline-panel,
-.MOVED_SUGGESTED_TO_DELETED + .timeline-panel,
-.DECLINED + .timeline-panel,
-.MOVED_DELETED_TO_SUGGESTED + .timeline-panel,
-.MOVED_VALID_TO_DELETED + .timeline-panel,
-.VALID_DISEASE_ADDED + .timeline-panel,
-.COMPLETED + .timeline-panel,
-.MOVED_DELETED_TO_VALID + .timeline-panel {
+.MOVED_SUGGESTED_TO_VALID+.timeline-panel,
+.ENCOUNTER_FILE_UPDATED+.timeline-panel,
+.ENCOUNTER_FILE_ADDED+.timeline-panel,
+.MOVED_VALID_TO_SUGGESTED+.timeline-panel,
+.MOVED_INVALID_TO_VALID+.timeline-panel,
+.MOVED_VALID_TO_DELETED+.timeline-panel,
+.HOLD+.timeline-panel,
+.MOVED_SUGGESTED_TO_DELETED+.timeline-panel,
+.DECLINED+.timeline-panel,
+.MOVED_DELETED_TO_SUGGESTED+.timeline-panel,
+.MOVED_VALID_TO_DELETED+.timeline-panel,
+.VALID_DISEASE_ADDED+.timeline-panel,
+.COMPLETED+.timeline-panel,
+.MOVED_DELETED_TO_VALID+.timeline-panel {
   /* background: #f5f5f5; */
   border-color: #bbe6e3;
   line-height: 24px;
@@ -1334,8 +1434,20 @@ img.login-logo {
   box-shadow: 0 0.3125rem 0.625rem 0 rgba(58, 155, 148, 0.2);
 }
 
-.widget-timeline .timeline-badge.success + .timeline-panel {
+.widget-timeline .timeline-badge.success+.timeline-panel {
   background: #bbe6e3;
   border-color: #bbe6e3;
   line-height: 24px;
+}
+
+/* Custom Switch Styles */
+.custom-switch.ant-switch-checked {
+  background-color: var(--application-base-color) !important;
+}
+
+.custom-switch.ant-switch-checked .ant-switch-handle::before {
+  content: "";
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 12 12"><path fill="none" stroke="%2303512E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M2.5 6.5L5 9L9.5 3"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
 }

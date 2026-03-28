@@ -68,7 +68,7 @@ function SubHeader({
         <div className="flex gap-2 items-center">
           <Select
             options={ChartTabList}
-            className="w-25"
+            className={`w-25 ${style?.processedSelect}`}
             value={activeChartTab}
             onChange={(e) => onHandleChartChange({ e })}
           />

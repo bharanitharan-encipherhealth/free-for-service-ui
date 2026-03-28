@@ -147,10 +147,12 @@ const YearStatusAction = React.memo(
                 disabled={workFlowData?.status?.toLowerCase() === "completed"}
               >
                 <Button
-                  className={`${style?.[`${status?.toLowerCase()}BgColor`]} rounded p-2`}
+                  className={`${style?.[`${status?.toLowerCase()}BgColor`]} flex items-center rounded p-0 overflow-hidden`}
                 >
-                  {status}
-                  <MdOutlineKeyboardArrowDown />
+                  <span className="px-3 py-2">{status}</span>
+                  <span className="px-2 border-l border-white/50 border-gray-300 flex items-center self-stretch">
+                    <MdOutlineKeyboardArrowDown />
+                  </span>
                 </Button>
               </Dropdown>
             </div>

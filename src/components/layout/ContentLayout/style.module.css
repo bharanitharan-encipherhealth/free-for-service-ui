@@ -7,7 +7,7 @@
   background-color: var(--application-base-color);
   color: var(--defaultColor);
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .filterSelectAll {
@@ -21,7 +21,7 @@
 }
 
 .leftArrow {
-  background-color: var(--app-table-secondary2);
+  background-color: var(--application-base-color);
   color: var(--defaultColor);
   padding: 5px 8px;
   border-radius: 5px;
@@ -30,4 +30,32 @@
 .headerIcon {
   color: var(--app-header-boder-color);
   font-size: 20px;
+}
+
+.badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  user-select: none;
+}
+
+.badgeActive {
+  border: none;
+  background-color: var(--application-base-color);
+  color: #fff;
+}
+
+.badgeInactive {
+  border: 2px solid #d9d9d9;
+  background-color: transparent;
+  color: transparent;
+}
+
+.processedSelect :global(.ant-select-selector) {
+  background-color: var(--chart-tab-select-bg-color) !important;
+  border: none !important;
 }

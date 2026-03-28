@@ -240,7 +240,7 @@ function AllocationModal({
                 </Checkbox>
               </div>
 
-              <div className="max-h-[70vh] overflow-scroll pe-3">
+              <div className="max-h-[69vh] overflow-scroll pe-3">
                 {alocateUserListLoading ? (
                   <div className="skeleton-table my-4">
                     {Array.from({ length: 8 }).map((_, index) => (

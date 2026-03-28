@@ -67,18 +67,19 @@ const FileLayout = React.memo(
                       )}
                     </div>
                     <div className="flex gap-2 items-center">
-                      {item?.cardTitle === "Diagnosis" && (
-                        <div
-                          className={`${!isDisabledStatus ? "cursor-pointer" : "cursor-not-allowed"}`}
-                          onClick={() => {
-                            if (!isDisabledStatus) {
-                              setAddModaOpen({ isAdd: true });
-                            }
-                          }}
-                        >
-                          <IoMdAdd className="font-bold text-xl" />
-                        </div>
-                      )}
+                      {item?.cardTitle === "Diagnosis" &&
+                        collapse?.includes(item?.layout) && (
+                          <div
+                            className={`${!isDisabledStatus ? "cursor-pointer" : "cursor-not-allowed"}`}
+                            onClick={() => {
+                              if (!isDisabledStatus) {
+                                setAddModaOpen({ isAdd: true });
+                              }
+                            }}
+                          >
+                            <IoMdAdd className="font-bold text-xl" />
+                          </div>
+                        )}
                       {collapse?.includes(item?.layout) && (
                         <div
                           className="cursor-pointer"

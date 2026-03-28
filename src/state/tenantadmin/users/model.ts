@@ -17,6 +17,7 @@ export default class UserReducerType {
     loading: boolean;
   };
   userRoleEditLoading: boolean;
+  addUserLoading: boolean;
 
   constructor(
     allUserList: {
@@ -71,12 +72,14 @@ export default class UserReducerType {
       error: "";
       loading: false;
     },
-    userRoleEditLoading: boolean
+    userRoleEditLoading: false,
+    addUserLoading: false
   ) {
     this.allUserList = allUserList;
     this.allUserLoading = allUserLoading;
     this.alluserRoleLoading = alluserRoleLoading;
     this.alluserRoleList = alluserRoleList;
     this.userRoleEditLoading = userRoleEditLoading;
+    this.addUserLoading = addUserLoading;
   }
 }

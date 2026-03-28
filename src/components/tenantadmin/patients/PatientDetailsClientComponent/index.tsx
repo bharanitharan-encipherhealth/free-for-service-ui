@@ -67,8 +67,7 @@ function PatientDetailsClientComponent({
   const [activeTab, setActiveTab] = useState<number>(0);
   const [collapse, setCollapse] = useState<string[]>([
     "hccLayout",
-    "careGapLayout",
-    "potentialLayout",
+    "deletedLayout",
   ]);
 
   if (!patientId) {
@@ -311,9 +310,14 @@ function PatientDetailsClientComponent({
     if (activeTab == 2) setPdfView(false);
   }, [collapse]);
 
+  console.log(collapse.length, "collapse");
+
   return (
     <div>
-      <PatientDetailsHeader onHandleBack={onHandleBack} />
+      <PatientDetailsHeader
+        onHandleBack={onHandleBack}
+        getPatientDetails={getPatientDetails}
+      />
 
       <SubHeader
         yearOptions={patientYearOptions}
@@ -333,7 +337,7 @@ function PatientDetailsClientComponent({
         <div className="w-full flex h-full">
           {pdfView && (
             <div
-              className={`content h-full ${pdfView && activeTab != 1 ? "w-2/5" : collapse?.length > 2 ? "w-1/2" : collapse?.length > 1 ? "w-3/5" : collapse?.length == 1 ? "w-3/4" : "w-4/5"}`}
+              className={`content h-full ${pdfView && activeTab != 1 ? "w-2/5" : collapse?.length > 1 ? "w-1/2" : collapse?.length == 1 ? "w-3/5" : "w-5/6"}`}
             >
               <PdfViewer activeTab={activeTab} />
             </div>
@@ -345,13 +349,11 @@ function PatientDetailsClientComponent({
                 ? "w-3/5"
                 : !pdfView
                   ? "w-full"
-                  : collapse?.length > 2
+                  : collapse?.length > 1
                     ? "w-1/2"
-                    : collapse?.length > 1
+                    : collapse?.length == 1
                       ? "w-2/5"
-                      : collapse?.length == 1
-                        ? "w-1/4"
-                        : "w-1/5"
+                      : "w-1/6"
             } overflow-scroll`}
           >
             {addMoadlOpen?.isAdd ||

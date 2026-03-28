@@ -57,50 +57,6 @@ function DiagnosisFile({
       },
       {
         id: 2,
-        cardTitle: "Care Gap",
-        children: (
-          <HccCard
-            diseaseData={getDiseaseData({
-              diseaseList: patientDiseaseDetails?.suggestedHccDiseases,
-              activeTab: activeTab || 0,
-              diseaseType: "suggestedHccDiseases",
-            })}
-            cardTitle="CargeGap"
-            dragId="caregap"
-          />
-        ),
-        length: getDiseaseData({
-          diseaseList: patientDiseaseDetails?.suggestedHccDiseases,
-          activeTab: activeTab || 0,
-          diseaseType: "suggestedHccDiseases",
-        })?.length,
-        layout: "careGapLayout",
-        dropId: "caregap",
-      },
-      {
-        id: 3,
-        cardTitle: "Suggested",
-        children: (
-          <HccCard
-            diseaseData={getDiseaseData({
-              diseaseList: patientDiseaseDetails?.potentialDiseases,
-              activeTab: activeTab || 0,
-              diseaseType: "potentialDiseases",
-            })}
-            cardTitle="Suggested"
-            dragId="suggested"
-          />
-        ),
-        length: getDiseaseData({
-          diseaseList: patientDiseaseDetails?.potentialDiseases,
-          activeTab: activeTab || 0,
-          diseaseType: "potentialDiseases",
-        })?.length,
-        layout: "potentialLayout",
-        dropId: "suggested",
-      },
-      {
-        id: 4,
         cardTitle: "Delete",
         children: (
           <HccCard
