@@ -568,8 +568,8 @@ export default function ReusabelTable<
                       "tableCheckbox" + pathname.replaceAll("/", " "),
                     )
               }
-              checked={checkedHeader}
-              disabled={disabled}
+              checked={data?.length > 0 && !loader && checkedHeader}
+              disabled={data?.length === 0 || disabled || loader}
             />
             <span>{item.name}</span>
           </div>
@@ -609,20 +609,31 @@ export default function ReusabelTable<
 
   return (
     <div>
-      {loader ? (
+      {loader || data === undefined || data === null ? (
         <Table
           key={"tableLoader"}
-          columns={antdColumns.map((col) => ({
-            ...col,
+          columns={Array.from({ length: 5 }).map((_, i) => ({
+            key: `dummy-col-${i}`,
+            title: (
+              <div className="flex items-center justify-center">
+                <Skeleton.Button
+                  active
+                  size="small"
+                  style={{ width: 80, height: 20 }}
+                />
+              </div>
+            ),
             render: () => (
-              <Skeleton.Input
-                active
-                size="small"
-                style={{ width: col.width || 100, height: 20 }}
-              />
+              <div className="flex items-center justify-center">
+                <Skeleton.Input
+                  active
+                  size="small"
+                  style={{ width: 100, height: 20 }}
+                />
+              </div>
             ),
           }))}
-          dataSource={Array.from({ length: row || 15 }, (_, index) => ({
+          dataSource={Array.from({ length: 10 }, (_, index) => ({
             key: `skeleton-${index}`,
           }))}
           pagination={false}

@@ -81,12 +81,7 @@
   /* 1920px - for large desktop screens */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Removed system dark mode preference to force light theme */
 
 body {
   /* background: var(--background); */
@@ -97,16 +92,7 @@ body {
     color 0.3s ease;
 }
 
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-}
-
-.dark .content {
-  background: var(--background);
-  color: var(--foreground);
-  padding: 10px;
-}
+/* Deleted all .dark class overrides */
 
 .content {
   background: var(--background);
@@ -122,10 +108,6 @@ body {
   background-color: var(--background);
 }
 
-.dark .ant-layout-content {
-  background-color: var(--foreground);
-}
-
 .ant-layout-sider,
 .ant-menu {
   height: 90dvh;
@@ -137,9 +119,6 @@ body {
 
 .select-divider .ant-select-selector {
   border: 1px solid black !important;
-}
-
-.select-divider .ant-select-selector {
   height: auto !important;
   border-radius: 10px !important;
 }

@@ -60,7 +60,7 @@ function AppSideBar({ selectedUserRole }: appSideBarType) {
     <div className={`${style.appSideBar}`}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className={`${style.arrowBoder}`}>
-          <div className="p-2 flex justify-end">
+          <div className="p-2 flex justify-center">
             <div
               className={`${style.sideNavArrow} rounded-full cursor-pointer`}
               onClick={() => {

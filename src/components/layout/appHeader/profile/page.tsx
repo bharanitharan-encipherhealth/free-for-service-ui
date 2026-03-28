@@ -65,7 +65,7 @@ function HeaderProfile({
             <div className="flex justify-between gap-5 border-b px-2 border-[#a8b3bd]">
               <div className="flex gap-2 items-center py-2 ">
                 <div
-                  className={`rounded-full border ${style.loginInfo} text-lg font-bold text-center dark:text-white text-white uppercase w-10 h-10 flex items-center justify-center`}
+          className={`rounded-full border ${style.loginInfo} text-lg font-bold text-center text-white uppercase w-10 h-10 flex items-center justify-center`}
                 >
                   {firstNameInitial + secondNameInitial}
                 </div>
@@ -103,7 +103,7 @@ function HeaderProfile({
         trigger={"click"}
       >
         <div
-          className={`rounded-full border ${style.loginInfo} text-sm font-bold text-center dark:text-white text-white uppercase cursor-pointer`}
+          className={`rounded-full border ${style.loginInfo} text-sm font-bold text-center text-white uppercase cursor-pointer`}
         >
           {firstNameInitial + secondNameInitial}
         </div>

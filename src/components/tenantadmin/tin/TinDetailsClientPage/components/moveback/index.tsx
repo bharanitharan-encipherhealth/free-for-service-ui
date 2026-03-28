@@ -7,13 +7,12 @@ import React, {
 } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { actions as productivityAction } from "@/state/tenantadmin/productivity";
-import { MovebackParamsType } from "@/models/tenantadmin/tin/moveback";
-import { moveBackPageId } from "@/util/pageIds";
+import { moveBackPageId, moveInPatientPageId, moveOutPatientId } from "@/util/pageIds";
 import productivityReducerType from "@/state/tenantadmin/productivity/model";
 import { generateHeaderTab } from "@/util/reusableFunction";
 import ContentLayout from "@/components/layout/ContentLayout/page";
 import TableViewType, { SortType } from "@/state/table/model";
-import { tinPatientReAllocationTableResposneType } from "@/models/tenantadmin/tin/patientReAllocation";
+import { MovebackParamsType } from "@/models/tenantadmin/tin/moveback";
 import { actions as tableAction } from "@/state/table";
 import { getStorage } from "@/util/storage";
 import ReusableFilters from "@/components/ReusbaleFilter";
@@ -21,25 +20,36 @@ import ReusableTable from "@/components/ReusabelTable";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
 import { handleRowCheckboxChangeType } from "@/models/ReusabelTable";
 import { getTable } from "@/state/table/network";
+import {
+  tinPatientsTabType,
+  tinPatientTableResposneType,
+} from "@/models/tenantadmin/tin/patients";
 import { checkAllPatientIdType } from "@/models/tenantadmin/tin/patientAllocation";
 import MoveBackModal from "./components/movebackModal";
 
 type patientMoveBackTabReduxType = ConnectedProps<typeof connector>;
-type patientMoveBackTabProps = MovebackParamsType & patientMoveBackTabReduxType;
+type patientMoveBackTabProps = MovebackParamsType &
+  patientMoveBackTabReduxType & {
+    subActiveTab: string;
+    setSubActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  };
+
 function MoveBack({
   activeFilters,
   setActiveFilters,
   triggerTableCustomization,
   setTriggerTableCustomization,
+  getAllRolesTab,
   onSelectionChange,
   allocateModal,
   setAllocateModal,
-  getRolesTab,
   allAllocationRoleData,
   allAllocationRoleLoading,
   getTableView,
   tableData,
   tableLoader,
+  subActiveTab,
+  setSubActiveTab,
 }: patientMoveBackTabProps) {
   const prevMoveBackModalRef = useRef<boolean | undefined>(undefined);
   const tin = getStorage("tinNumber");
@@ -66,46 +76,54 @@ function MoveBack({
 
   const handleTabChange = useCallback(
     ({ item }: { item: { label: string; value: string } }) => {
-      setActiveTab(item?.value);
-      setRoleAliasName(item?.label);
+      if (item?.value === "Inpatient" || item?.value === "Outpatient") {
+        setSubActiveTab(item?.value);
+      } else {
+        setActiveTab(item?.value);
+        setRoleAliasName(item?.label);
+      }
       setSelectedDates({});
       setSelectedDateRanges({});
       setSelectedOption({});
       setSearchText({});
     },
-    [],
+    [setSubActiveTab],
   );
   const tabList = useMemo(() => {
+    const dynamicRoles = generateHeaderTab({
+      tabList:
+        allAllocationRoleData?.allocationRoles?.filter(
+          (item) => item?.aliasName?.toUpperCase() !== "MASTER_AUDIT",
+        ) || [],
+      value: "aliasName",
+      id: "roleId",
+    });
+
+    const primaryTabs = [
+      { label: "Inpatient", value: "Inpatient" },
+      { label: "Outpatient", value: "Outpatient" },
+    ];
+
+    const secondaryTabs = dynamicRoles;
+
     return {
       isTab: true,
-      tabList: generateHeaderTab({
-        tabList: allAllocationRoleData?.allocationRoles,
-        value: "aliasName",
-        id: "roleId",
-      }),
+      tabList: primaryTabs,
+      secondaryTabList: secondaryTabs,
       loading: allAllocationRoleLoading,
-      activeTab: activeTab,
+      activeTab: subActiveTab,
+      secondaryActiveTab: activeTab,
       onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
       value: "aliasName",
     };
   }, [
     activeTab,
+    subActiveTab,
     allAllocationRoleData,
     allAllocationRoleLoading,
     handleTabChange,
   ]);
-
-  const getAllRoles = useCallback(async () => {
-    try {
-      const res = await getRolesTab({ pageId: moveBackPageId });
-      if (res?.status == "SUCCESS") {
-        setActiveTab(res?.response?.allocationRoles?.[0]?.roleId);
-      }
-    } catch (e) {
-      console.error("Error Occur while role api in the moveback");
-    }
-  }, [getRolesTab]);
 
   const onPageChange = useCallback(
     (e: PaginatorPageChangeEvent) => {
@@ -128,20 +146,27 @@ function MoveBack({
     }
   };
 
-  const getMoveBack = useCallback(async () => {
+  const getAllPatientsMoveBack = useCallback(async () => {
+    let currentPageId = moveBackPageId;
+    if (subActiveTab === "Inpatient") {
+      currentPageId = moveInPatientPageId;
+    } else if (subActiveTab === "Outpatient") {
+      currentPageId = moveOutPatientId;
+    }
     try {
       await getTableView({
-        pageId: moveBackPageId,
+        pageId: activeTab || currentPageId,
         pageNo,
         pageSize: 15,
         roleId: activeTab,
         tin,
+        isAdmin: true,
         selectedOption,
+        selectedDateRanges,
         searchText,
         sort,
-        selectedDateRanges,
       });
-      setTriggerTableCustomization((prev) => ({
+      setTriggerTableCustomization((prev: Record<string, boolean>) => ({
         ...prev,
         moveback: false,
       }));
@@ -152,11 +177,11 @@ function MoveBack({
     getTableView,
     pageNo,
     activeTab,
+    subActiveTab,
     selectedOption,
     selectedDateRanges,
     searchText,
     sort,
-    roleAliasName,
     setTriggerTableCustomization,
     tin,
   ]);
@@ -222,44 +247,36 @@ function MoveBack({
   );
 
   useEffect(() => {
-    if (activeTab) getMoveBack();
+    getAllRolesTab();
+  }, [getAllRolesTab]);
+
+  useEffect(() => {
+    getAllPatientsMoveBack();
   }, [
-    selectedOption,
-    selectedDateRanges,
-    searchText,
     pageNo,
+    selectedOption,
+    searchText,
+    selectedDateRanges,
     sort,
     paginationFirst,
     activeTab,
+    subActiveTab,
   ]);
 
   useEffect(() => {
-    const getRole = () => {
-      getAllRoles();
-    };
-    getRole();
-  }, []);
-
-  useEffect(() => {
-    const hasSelection = selectedRows && selectedRows.length > 0;
-    onSelectionChange?.(hasSelection);
-  }, [selectedRows, onSelectionChange]);
-
-  useEffect(() => {
     if (triggerTableCustomization?.moveback) {
-      getMoveBack();
+      getAllPatientsMoveBack();
     }
   }, [triggerTableCustomization]);
 
   useEffect(() => {
-    if (!allocateModal && activeTab && prevMoveBackModalRef.current === true)
-      getMoveBack();
+    if (prevMoveBackModalRef.current === true && !allocateModal) {
+      getAllPatientsMoveBack();
+    }
     prevMoveBackModalRef.current = allocateModal;
   }, [allocateModal]);
   return (
-    <>
-      <ContentLayout tabList={tabList} />
-
+    <ContentLayout tabList={tabList}>
       <div className="content">
         <ReusableFilters
           showFilter={false}
@@ -311,25 +328,25 @@ function MoveBack({
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
       />
-    </>
+    </ContentLayout>
   );
 }
 
 const connector = connect(
   (state: {
+    tableView: TableViewType<tinPatientTableResposneType>;
     productivityReducer: productivityReducerType;
-    tableView: TableViewType<tinPatientReAllocationTableResposneType>;
   }) => ({
+    tableData: state?.tableView?.tableView?.data?.response,
+    tableLoader: state?.tableView?.tableViewLoading,
     allAllocationRoleData:
       state?.productivityReducer?.allRolesAllocation?.data?.response,
     allAllocationRoleLoading:
       state?.productivityReducer?.allRolesAllocationLoading,
-    tableLoader: state?.tableView?.tableViewLoading,
-    tableData: state?.tableView?.tableView?.data?.response,
   }),
   {
-    getRolesTab: productivityAction?.getAllRoles,
     getTableView: tableAction?.tabelViewCall,
+    getAllRolesTab: productivityAction?.getAllRoles,
   },
 );
 

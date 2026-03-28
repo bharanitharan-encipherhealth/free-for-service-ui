@@ -113,8 +113,8 @@ function Login({ getMFAValidation, loginResponse }: loginTypes) {
       {
         <div className="page-wraper">
           <div className={`login-account`}>
-            <div className={`flex flex-column justify-center gap-1`}>
-              <div className="align-self-center">
+            <div className={`flex flex-col justify-center gap-1`}>
+              <div className="self-center">
                 <div className="account-info-area">
                   <div
                     className="login-content"
@@ -124,7 +124,7 @@ function Login({ getMFAValidation, loginResponse }: loginTypes) {
                   </div>
                 </div>
 
-                <div className="align-self-center">
+                <div className="self-center">
                   <div className="login-form">
                     <div className="flex items-center justify-center">
                       <h2 className="title font-bold">Welcome</h2>
@@ -132,7 +132,7 @@ function Login({ getMFAValidation, loginResponse }: loginTypes) {
                     {!isClickAuth && (
                       <form onSubmit={onLogin} autoComplete="off">
                         <div className="login-input">
-                          <label className="mb-1 text-dark">
+                          <label className="mb-1 text-slate-800">
                             Your Username
                           </label>
                           <div id="select-email" data-name="select-email">
@@ -150,13 +150,13 @@ function Login({ getMFAValidation, loginResponse }: loginTypes) {
                             />
                           </div>
                           {emailErro?.email && (
-                            <div className="text-danger fs-12 mt-3">
+                            <div className="text-red-500 text-[12px] mt-3">
                               {emailErro?.email}
                             </div>
                           )}
                         </div>
                         <div className="login-input">
-                          <label className="mb-1 text-dark">
+                          <label className="mb-1 text-slate-800">
                             Your Password
                           </label>
                           <div id="select-password" data-name="select-password">
@@ -171,7 +171,7 @@ function Login({ getMFAValidation, loginResponse }: loginTypes) {
                             />
                           </div>
                           {errors?.password && (
-                            <div className="text-danger fs-12">
+                            <div className="text-red-500 text-[12px]">
                               {errors?.password}
                             </div>
                           )}
@@ -194,18 +194,18 @@ function Login({ getMFAValidation, loginResponse }: loginTypes) {
 
                         <div className="social-login mt-1 text-center">
                           <div className="flex items-center justify-center or-divider mb-1">
-                            <div className={`grow ${styles.line}`}></div>
-                            <span className="mx-2 text-muted login-option">
+                            <div className={`flex-grow ${styles.line}`}></div>
+                            <span className="mx-2 text-slate-500 login-option">
                               Or
                             </span>
-                            <div className={`grow ${styles.line}`}></div>
+                            <div className={`flex-grow ${styles.line}`}></div>
                           </div>
                           <div className="login-with">
-                            <small className="mx-2 text-muted login-option">
+                            <small className="mx-2 text-slate-500 login-option">
                               Login With
                             </small>
                           </div>
-                          <div className="flex justify-center gap-1">
+                          <div className="flex justify-center gap-2">
                             <div
                               id="click-ms-login"
                               className="cursor-pointer"
@@ -215,9 +215,9 @@ function Login({ getMFAValidation, loginResponse }: loginTypes) {
                               }}
                             >
                               <Image
-                                className="login-logo mx-3 mx-md-0"
+                                className="login-logo mx-3 md:mx-0"
                                 src={MS_Logo}
-                                style={{ width: "40px", height: "40px" }}
+                                style={{ width: "30px", height: "30px" }}
                                 alt="mslogo"
                               />
                             </div>
@@ -232,7 +232,7 @@ function Login({ getMFAValidation, loginResponse }: loginTypes) {
                               <Image
                                 className="login-logo"
                                 src={GoogleLogo}
-                                style={{ width: "40px", height: "40px" }}
+                                style={{ width: "30px", height: "30px" }}
                                 alt="google"
                               />
                             </div>

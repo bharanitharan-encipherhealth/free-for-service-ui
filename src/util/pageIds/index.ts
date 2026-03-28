@@ -72,5 +72,26 @@ export const projectCreationPageId = "7e57d004-2b97-0e7a-b45f-5387367791cd";
 //Client Creation Page ID
 export const clientCreationPageId = "1b4e28ba-2fa1-11d2-883f-0016d3cca427";
 
+// patient tab inpatient pageid
+export const patientInPatientPageId = "d80f80fd-aab8-496e-a9fc-89677d5ac175";
+
+export const patientOutPatientPageId = "d80f80fd-aab8-496e-a9fc-89677d5ac176";
+
+export const patienAllocationInPatientPageId =
+  "6cd166eb-79ac-4c12-ab0f-07be2983ca71";
+
+export const patienAllocationOutPatientPageId =
+  "6cd166eb-79ac-4c12-ab0f-07be2983ca72";
+
+export const moveInPatientPageId = "937b0477-f0cd-46e7-b8ab-fefb38f91860";
+
+export const moveOutPatientId = "937b0477-f0cd-46e7-b8ab-fefb38f91861";
+
+export const patienReAllocationInPatientPageId =
+  "21235203-2ce0-4ebc-b6d3-05a9d8e8fc76";
+
+export const patienReAllocationOutPatientPageId =
+  "21235203-2ce0-4ebc-b6d3-05a9d8e8fc77";
+
 //Create User Page ID
 export const userCreatePageId = "1406dafa-46fa-4f69-ac1b-e354ebc03dad";
