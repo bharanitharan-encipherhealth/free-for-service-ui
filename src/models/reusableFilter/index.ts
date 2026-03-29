@@ -17,16 +17,16 @@ export interface filterType {
   searchText?: Record<string, string>;
   setPageNo?: React.Dispatch<React.SetStateAction<number>>;
   setSelectedOption?: React.Dispatch<
-    React.SetStateAction<Record<string, string>>
+    React.SetStateAction<Record<string, string | string[]>>
   >;
-  selectedOption?: Record<string, string>;
+  selectedOption?: Record<string, string | string[]>;
   setSelectedDateRanges?: React.Dispatch<
     React.SetStateAction<Record<string, DateRange>>
   >;
   setSelectedDates?: React.Dispatch<
     React.SetStateAction<Record<string, string | Dayjs[] | null>>
   >;
-  selectedDates?: Record<string, string>;
+  selectedDates?: Record<string, string | Dayjs[] | null>;
   activeFilters: metaDataType[];
   setActiveFilters: React.Dispatch<React.SetStateAction<metaDataType[]>>;
   setClear?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,18 +40,21 @@ export interface filterType {
 }
 
 export interface inputType {
-  setPageNumber: React.Dispatch<React.SetStateAction<number>>;
+  setPageNumber?: React.Dispatch<React.SetStateAction<number>>;
   disabled?: boolean;
   placeholder: string;
   value: string;
   isSearch: boolean;
   handleInputStr?: (val: string) => void;
-  setSearchText?: React.Dispatch<
-    React.SetStateAction<Record<string, string | null> | string | unknown>
-  >;
+  setSearchText?:
+    | ((value: string | null) => void)
+    | React.Dispatch<
+        React.SetStateAction<Record<string, string | null> | string | unknown>
+      >;
   props?: string[];
   testId?: string;
   id?: string;
-  isMrnNumber?: false;
-  isIntAllow?: false;
+  isMrnNumber?: boolean;
+  isIntAllow?: boolean;
+  autoComplete?: string;
 }

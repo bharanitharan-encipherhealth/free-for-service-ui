@@ -25,3 +25,8 @@ export const userEditRoles = createActionThunk(
   "EDIT_USERS_ROLES",
   network.editRoles
 );
+
+export const createUser = createActionThunk(
+  "CREATE_USER_DETAILS",
+  network.createUser
+);

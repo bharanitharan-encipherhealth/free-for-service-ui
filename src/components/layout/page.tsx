@@ -25,14 +25,13 @@ const LayoutPage = ({ children }: LayoutPageProps) => {
   // Memoize theme config to prevent recreation on every render
   const themeConfig = useMemo(
     () => ({
-      algorithm:
-        theme === "dark" ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
+      algorithm: antdTheme.defaultAlgorithm,
       token: {
-        colorBgContainer: theme === "dark" ? "#1f2937" : "#ffffff",
-        colorText: theme === "dark" ? "#f3f4f6" : "#111827",
+        colorBgContainer: "#ffffff",
+        colorText: "#111827",
       },
     }),
-    [theme]
+    [],
   );
 
   if (!mounted) return null;

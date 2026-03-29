@@ -19,12 +19,12 @@ export async function usersList({
     `dbservice/user/get/role?roleId=${roleId}&searchString=${search}&masterAudit=${
       masterAudit || false
     }`,
-    options
+    options,
   );
   return res;
 }
 
-export const allocateUsers = async ({ data }) => {
+export const allocateUsers = async ({ data }: { data: unknown }) => {
   const url = `management/allocation/manual`;
   const options = {
     method: "POST",

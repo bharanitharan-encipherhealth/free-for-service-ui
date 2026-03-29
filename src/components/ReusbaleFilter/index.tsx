@@ -41,11 +41,15 @@ const ReusableFilters = ({
   columns,
   tableLoader,
 }: filterType) => {
-  const pickerRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const pickerRefs = useRef<
+    Record<string, HTMLInputElement | { focus?: () => void } | null>
+  >({});
   const router = useRouter();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const [multiSelect, setMultiSelect] = useState<Record<string, string>>();
+  const [multiSelect, setMultiSelect] = useState<
+    Record<string, string | string[]> | undefined
+  >();
 
   // Stabilized state variables for overflow detection
   const [containerWidth, setContainerWidth] = useState(0);
@@ -55,11 +59,11 @@ const ReusableFilters = ({
 
   const isFilterOperation = useRef(false);
   const filterOperationTimeout = useRef<ReturnType<typeof setTimeout> | null>(
-    null
+    null,
   );
 
   const handleFocusPicker = (title: string) => {
-    setTimeout(() => pickerRefs.current[title]?.focus(), 100);
+    setTimeout(() => pickerRefs.current[title]?.focus?.(), 100);
   };
 
   const savedFocus = useRef<{ id: string | number; pos: number } | null>(null);
@@ -90,28 +94,25 @@ const ReusableFilters = ({
   }, []);
 
   useEffect(() => {
+    const focus = savedFocus.current;
     if (
       !tableLoader &&
       prevLoader.current &&
-      savedFocus.current &&
+      focus &&
       !isFilterOperation.current
     ) {
       setTimeout(() => {
         const input =
-          document.querySelector(
-            `input[data-testid="${savedFocus.current.id}"]`
-          ) ||
+          document.querySelector(`input[data-testid="${focus.id}"]`) ||
           document
-            .querySelector(`[data-testid="${savedFocus.current.id}"]`)
+            .querySelector(`[data-testid="${focus.id}"]`)
             ?.querySelector("input");
-        if (input) {
-          input.focus();
-          const pos = Math.min(
-            savedFocus.current.pos,
-            input.value?.length || 0
-          );
+        const inputEl = input as HTMLInputElement | null;
+        if (inputEl) {
+          inputEl.focus();
+          const pos = Math.min(focus.pos, inputEl.value?.length || 0);
           try {
-            input.setSelectionRange(pos, pos);
+            inputEl.setSelectionRange(pos, pos);
           } catch {}
         }
       }, 100);
@@ -149,22 +150,22 @@ const ReusableFilters = ({
   const handleRangePicker = (
     dates: Dayjs[] | null,
     dateString: string[],
-    tabName: string
+    tabName: string,
   ) => {
     markFilterOperation();
     const formattedDates = dateString?.map((date, index) =>
-      formatDateForIndex({ date: date, index: index })
+      formatDateForIndex({ date: date, index: index }),
     );
 
-    setSelectedDates((prevOptions) => ({
+    setSelectedDates?.((prevOptions) => ({
       ...prevOptions,
       [tabName]: dates,
     }));
-    setSelectedDateRanges((prevOptions) => ({
+    setSelectedDateRanges?.((prevOptions) => ({
       ...prevOptions,
       [tabName]: { startDate: formattedDates[0], endDate: formattedDates[1] },
     }));
-    setPageNo && setPageNo(0);
+    setPageNo?.(0);
   };
 
   // FIXED: Move activeFilterItems declaration BEFORE getInitialFiltersPerLine
@@ -334,7 +335,7 @@ const ReusableFilters = ({
     const filtersPerLine = Math.floor(availableWidth / filterWidthWithMargin);
     const result = Math.max(
       1,
-      Math.min(filtersPerLine, activeFilterItems?.length || 0)
+      Math.min(filtersPerLine, activeFilterItems?.length || 0),
     );
 
     return result;
@@ -383,11 +384,14 @@ const ReusableFilters = ({
 
   // Update multiSelect when selectedOption changes, but only if different
   useEffect(() => {
-    const currentStr = JSON.stringify(selectedOption);
-    const multiSelectStr = JSON.stringify(multiSelect);
-    if (currentStr !== multiSelectStr) {
-      setMultiSelect(selectedOption);
-    }
+    const multiSelect = () => {
+      const currentStr = JSON.stringify(selectedOption);
+      const multiSelectStr = JSON.stringify(multiSelect);
+      if (currentStr !== multiSelectStr) {
+        setMultiSelect(selectedOption);
+      }
+    };
+    multiSelect();
   }, [selectedOption]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -438,12 +442,12 @@ const ReusableFilters = ({
                         placeholder={`Search ${item?.headerName}`}
                         value={searchText ? searchText[item?.actualField] : ""}
                         isSearch={true}
-                        setSearchText={(val: string) => {
+                        setSearchText={(val: string | null) => {
                           markFilterOperation();
                           if (setSearchText)
                             setSearchText((prev) => ({
                               ...prev,
-                              [item?.actualField]: val,
+                              [item?.actualField]: val ?? "",
                             }));
                           if (setPageNo) setPageNo(1);
                         }}
@@ -475,12 +479,15 @@ const ReusableFilters = ({
                                 .toLowerCase()
                                 .includes(input.toLowerCase())
                             }
-                            showSearch={item?.showSearch || false}
+                            showSearch={
+                              (item as typeof item & { showSearch?: boolean })
+                                ?.showSearch || false
+                            }
                             className="custom-react-select-audit"
                             options={
                               item?.filter?.nameOptions
                                 ? generateOptionsObject(
-                                    item?.filter?.nameOptions
+                                    item?.filter?.nameOptions,
                                   )
                                 : generateOptions(item?.filter?.options) || []
                             }
@@ -520,12 +527,15 @@ const ReusableFilters = ({
                                 .toLowerCase()
                                 .includes(input.toLowerCase())
                             }
-                            showSearch={item?.showSearch || false}
+                            showSearch={
+                              (item as typeof item & { showSearch?: boolean })
+                                ?.showSearch || false
+                            }
                             className="custom-react-select-audit w-100"
                             options={
                               item?.filter?.nameOptions
                                 ? generateOptionsObject(
-                                    item?.filter?.nameOptions
+                                    item?.filter?.nameOptions,
                                   )
                                 : generateOptions(item?.filter?.options) || []
                             }
@@ -548,7 +558,7 @@ const ReusableFilters = ({
                                       if (setSelectedOption)
                                         setSelectedOption((prev) => ({
                                           ...prev,
-                                          [item?.actualField]: [],
+                                          [item?.actualField ?? ""]: [],
                                         }));
                                     }}
                                   >
@@ -557,8 +567,9 @@ const ReusableFilters = ({
                                   <Button
                                     onClick={() => {
                                       if (setSelectedOption)
-                                        setSelectedOption(multiSelect);
-                                      document.activeElement?.blur();
+                                        setSelectedOption(multiSelect ?? {});
+                                      (document.activeElement as HTMLElement)
+                                        ?.blur();
                                     }}
                                   >
                                     Apply
@@ -584,36 +595,51 @@ const ReusableFilters = ({
                       <div>
                         <RangePicker
                           ref={(node) => {
-                            if (node)
-                              pickerRefs.current[item?.actualField] = node;
+                            if (node && item?.actualField)
+                              pickerRefs.current[item.actualField] = node as
+                                | HTMLInputElement
+                                | { focus?: () => void };
                           }}
                           className="custom-range-picker my-3"
                           format="MM-DD-YYYY"
-                          value={selectedDates?.[item?.actualField]}
+                          value={
+                            selectedDates?.[item?.actualField] as
+                              | [Dayjs, Dayjs]
+                              | null
+                              | undefined
+                          }
                           onChange={(
-                            date: Dayjs[] | null,
-                            dateString: string[]
+                            date:
+                              | [Dayjs | null, Dayjs | null]
+                              | null,
+                            dateString: [string, string],
                           ) => {
-                            if (!date || date.length === 0) {
+                            const dates = date as Dayjs[] | null;
+                            const dateStrings = dateString as string[];
+                            if (!dates || dates.length === 0) {
                               handleFocusPicker(item?.actualField);
                             }
                             handleRangePicker(
-                              date,
-                              dateString,
-                              item?.actualField
+                              dates,
+                              dateStrings,
+                              item?.actualField,
                             );
                           }}
                           allowClear={true}
                           disabledDate={(currentDate) =>
                             disabledDate(
                               currentDate,
-                              selectedDates?.[item?.actualField],
+                              (Array.isArray(
+                                selectedDates?.[item?.actualField],
+                              )
+                                ? selectedDates?.[item?.actualField]
+                                : []) as unknown[],
                               item?.actualField === "coder1DueDate" ||
                                 item?.actualField == "coder2DueDate" ||
                                 item?.actualField == "qaDueDate" ||
                                 item?.actualField == "downloaderDueDate" ||
                                 item?.actualField == "ownerDueDate" ||
-                                item?.actualField == "projectEndDate"
+                                item?.actualField == "projectEndDate",
                             )
                           }
                           inputReadOnly
@@ -624,7 +650,10 @@ const ReusableFilters = ({
                 case "SEARCH_INT":
                   return (
                     <div
-                      key={item?.title}
+                      key={
+                        (item as typeof item & { title?: string })?.title ??
+                        item?.headerName
+                      }
                       className={filterClass}
                       style={filterStyle} // FIXED: Apply stable styling
                     >
@@ -635,17 +664,16 @@ const ReusableFilters = ({
                         placeholder={`Search ${item?.headerName}`}
                         value={search ? search[item?.actualField] : ""}
                         isSearch={true}
-                        setSearchText={(val) => {
+                        setSearchText={(val: string | null) => {
                           markFilterOperation();
                           if (setSearch)
                             setSearch((prev) => ({
                               ...prev,
-                              [item?.actualField]: val,
+                              [item?.actualField]: val ?? "",
                             }));
                           if (setPageNo) setPageNo(1);
                         }}
-                        autoComplete="off"
-                        setPageNumber={setPageNo && setPageNo}
+                        setPageNumber={setPageNo ?? undefined}
                       />
                     </div>
                   );

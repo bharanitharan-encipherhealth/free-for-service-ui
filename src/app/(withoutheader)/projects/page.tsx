@@ -214,7 +214,7 @@ function Projects({
   return (
     <div className="page-wraper">
       <div className="login-account">
-        <div className="align-self-center">
+        <div className="self-center">
           <div
             className="login-content"
             style={{ position: "relative", textAlign: "center" }}
@@ -223,25 +223,25 @@ function Projects({
             {getLogo()}
           </div>
 
-          <div className="align-self-center">
+          <div className="self-center">
             <div className="login-form">
               {isLoading ? (
                 <div>
                   <Skeleton.Input
-                    className="d-flex align-items-center justify-content-center project-loding"
+                    className="flex items-center justify-center project-loding"
                     active
                     block={true}
                   />
                 </div>
               ) : (
-                <div className="align-self-center">
-                  <div className="d-flex align-items-center justify-content-center">
-                    <h2 className="title fontWeight2">
+                <div className="self-center">
+                  <div className="flex items-center justify-center">
+                    <h2 className="title font-bold">
                       {companyDeatils === "encipher" || companyDeatils == "abha"
                         ? "Welcome"
                         : companyDeatils == " riskgenai"
-                        ? "Your Gateway to RiskGen-i"
-                        : "Your Gateway To CogentAI!"}
+                          ? "Your Gateway to RiskGen-i"
+                          : "Your Gateway To CogentAI!"}
                     </h2>
                   </div>
                   {/* <h6 className="login-title">
@@ -274,7 +274,7 @@ function Projects({
                         options={clientOptions}
                         notFoundContent={
                           clientLoading ? (
-                            <div className="d-flex justify-content-center align-items-center">
+                            <div className="flex justify-center items-center">
                               <Spin size="small" />
                             </div>
                           ) : null
@@ -306,7 +306,7 @@ function Projects({
                         disabled={!form.getFieldValue("client")}
                         notFoundContent={
                           projectLoading ? (
-                            <div className="d-flex justify-content-center align-items-center">
+                            <div className="flex justify-center items-center">
                               <Spin size="small" />
                             </div>
                           ) : null
@@ -336,7 +336,7 @@ function Projects({
                         disabled={!form.getFieldValue("project")}
                         notFoundContent={
                           roleLoading ? (
-                            <div className="d-flex justify-content-center align-items-center">
+                            <div className="flex justify-center items-center">
                               <Spin size="small" />
                             </div>
                           ) : null
@@ -349,7 +349,7 @@ function Projects({
                         showSearch
                       />
                     </Form.Item>
-                    <div className="d-flex justify-content-between login-btn">
+                    <div className="flex justify-between login-btn">
                       <RegularButton
                         type="submit"
                         name="Submit"

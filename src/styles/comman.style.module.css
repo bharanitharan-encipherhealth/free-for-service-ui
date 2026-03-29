@@ -1,0 +1,64 @@
+.timelineheading {
+  font-size: 13px !important;
+  color: #000 !important;
+  font-weight: 500;
+  margin-bottom: -5px;
+}
+
+.invalidColor {
+  color: #fada5e;
+  padding: 0 5px;
+}
+
+.validColor {
+  color: #04b700;
+  padding: 0 5px;
+}
+
+.suggestedColor {
+  color: #ff9209;
+  padding: 0 5px;
+}
+
+.deletedColor {
+  color: #be3144;
+  padding: 1px 5px;
+}
+
+.potentialColor {
+  color: #beb531;
+  padding: 0 5px;
+}
+
+.audited {
+  color: #4aa1ab;
+  padding: 0 5px;
+}
+
+.audithold {
+  color: #ebae00;
+  padding: 0 5px;
+}
+
+.auditpending {
+  color: #bd3a79;
+  padding: 0 5px;
+}
+
+.auditdeclined {
+  color: #c21807;
+  padding: 0 5px;
+}
+
+.completedColor {
+  color: #00bc13;
+  padding: 1px 5px;
+}
+
+.timelineDate {
+  display: flex !important;
+  justify-content: space-between;
+  color: #6b6b6b;
+  font-size: 11px !important;
+  font-weight: 500;
+}

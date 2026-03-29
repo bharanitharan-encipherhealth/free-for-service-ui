@@ -1,16 +1,21 @@
 import ReusableFilters from "@/components/ReusbaleFilter";
 import ReusableTable from "@/components/ReusabelTable";
-import { getStorage } from "@/util/storage";
+import { getStorage, setStorage } from "@/util/storage";
 import { useCallback, useEffect, useState } from "react";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
 import { findMatchesByField } from "@/util/reusableFunction";
 import { patientProjectPageId } from "@/util/pageIds";
 import { patientCallingProps } from "@/models/tenantadmin/project/patient";
 import { connect, ConnectedProps } from "react-redux";
-import { productivitytabelResposne } from "@/models/tenantadmin/productivity/page";
-import TableViewType from "@/state/table/model";
+import {
+  productivityContentArrayType,
+  productivitytabelResposne,
+} from "@/models/tenantadmin/productivity/page";
+import TableViewType, { SortType } from "@/state/table/model";
 
 import { actions as tableAction } from "@/state/table";
+import { notification } from "antd";
+import { useRouter } from "next/navigation";
 
 type PatientReduxProps = ConnectedProps<typeof connector>;
 
@@ -26,10 +31,12 @@ function Patients({
   insertTable,
 
   getTableView,
+  getRoutedData,
 }: Props) {
+  const route = useRouter();
   const tin = getStorage("tinNumber");
   const [pageNo, setPageNo] = useState(0);
-  const [sort, setSort] = useState({
+  const [sort, setSort] = useState<SortType>({
     computedDate: {
       sortDir: "DESC",
       sortField: "computedDate",
@@ -42,9 +49,9 @@ function Patients({
   });
   const [paginationFirst, setPaginationFirst] = useState(0);
   const [searchText, setSearchText] = useState<Record<string, string>>({});
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {}
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [selectedDates, setSelectedDates] = useState({});
   const [row, setRow] = useState<number>(15);
@@ -54,7 +61,7 @@ function Patients({
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
 
   const handleRowChange = ({ value }: { value: number }) => {
@@ -69,6 +76,35 @@ function Patients({
       setPaginationFirst((newTotalPages - 1) * value);
     }
   };
+
+  const params = {
+    pageNo,
+    selectedDates,
+    paginationFirst,
+    sort,
+    activeFilters,
+    searchText,
+    selectedOption,
+    selectedDateRanges,
+  };
+
+  const goToPatientDetails = useCallback(
+    ({ record }: { record: productivityContentArrayType }) => {
+      if (record?.computing === 2) {
+        const controller = new AbortController();
+        controller.abort();
+        setStorage("patientId", record?.patientId);
+        setStorage("routeBackTo", "/tenantadmin/project");
+        getRoutedData(params);
+        route.push("/tenantadmin/project/details");
+      } else {
+        notification.warning({
+          message: record?.patientName + " file not processed. Please wait!",
+        });
+      }
+    },
+    [getRoutedData, params, route],
+  );
 
   const getPatients = useCallback(async () => {
     const pageId = patientProjectPageId;
@@ -110,12 +146,12 @@ function Patients({
       !findMatchesByField(activeFilters, tableData?.metaDataDTO)
     ) {
       const a = tableData?.metaDataDTO.filter(
-        (item) => item.active && item?.filter?.style
+        (item) => item.active && item?.filter?.style,
       );
       setActiveFilters(
         tableData?.metaDataDTO.filter(
-          (item) => item.active && item?.filter?.style
-        )
+          (item) => item.active && item?.filter?.style,
+        ),
       );
       setSelectedColumns(tableData?.metaDataDTO);
       // setIsFilter(false);
@@ -147,7 +183,7 @@ function Patients({
       <ReusableTable
         data={tableData?.pageResponse?.content}
         column={tableData?.metaDataDTO?.filter(
-          (item) => item?.active && item?.columnActive
+          (item) => item?.active && item?.columnActive,
         )}
         loader={tableLoader}
         setSort={setSort}
@@ -160,6 +196,7 @@ function Patients({
         isRowSizabel={true}
         count={30}
         handleRowChange={handleRowChange}
+        onRowClick={goToPatientDetails}
       />
     </>
   );
@@ -172,7 +209,8 @@ const connector = connect(
   }),
   {
     getTableView: tableAction?.tabelViewCall,
-  }
+    getRoutedData: tableAction?.getReportTable,
+  },
 );
 
 export default connector(Patients);

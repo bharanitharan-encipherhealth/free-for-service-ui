@@ -27,6 +27,8 @@ import ReusableFilters from "@/components/ReusbaleFilter";
 import { getStorage } from "@/util/storage";
 import { Button, Select } from "antd";
 import UserReducerType from "@/state/tenantadmin/users/model";
+import AddUser from "@/components/tenantadmin/users/addUser";
+import EditUser from "@/components/tenantadmin/users/editUser";
 
 function Users({
   getTableView,
@@ -38,6 +40,8 @@ function Users({
   getAllRole,
   setUserEditRoles,
   editUsersLoader,
+  createUser,
+  addUserLoading,
 }: userPropsType) {
   const aliasName = getStorage("aliasName");
   const [sort, setSort] = useState<SortType>({
@@ -63,7 +67,7 @@ function Users({
   const [pageSize, setPageSize] = useState(15);
   const [paginationFirst, setPaginationFirst] = useState(0);
   const [switchStates, setSwitchStates] = useState<{ [key: string]: boolean }>(
-    {}
+    {},
   );
   const [activeFilters, setActiveFilters] = useState<metaDataType[]>([]);
 
@@ -78,14 +82,17 @@ function Users({
   const [selectedRole, setSelectedRole] = useState<string[] | null>(null);
 
   const [visiblePopoverKey, setVisiblePopoverKey] = useState<boolean | string>(
-    ""
+    "",
   );
 
   const [editingUser, setEditingUser] = useState<UserContentType | null>(null);
 
   const [selectedRoleList, setSelectedRoleList] = useState<string[] | null>(
-    null
+    null,
   );
+
+  const [addUser, setAddUserModal] = useState<boolean>(false);
+
   const layoutList = useMemo(
     () => [
       {
@@ -99,10 +106,16 @@ function Users({
         onClick: () => setTableCustomization(!tableCustomization),
         loading: tableLoader,
       },
+      // {
+      //   isBtn: true,
+      //   btnTitle: "Assign User",
+      //   onClick: () => setAssignUserModal(!assignUserModal),
+      //   loading: tableLoader,
+      // },
       {
         isBtn: true,
-        btnTitle: "Assign User",
-        onClick: () => setAssignUserModal(!assignUserModal),
+        btnTitle: "Add User",
+        onClick: () => setAddUserModal(!addUser),
         loading: tableLoader,
       },
     ],
@@ -113,7 +126,9 @@ function Users({
       setAssignUserModal,
       assignUserModal,
       tableLoader,
-    ]
+      addUser,
+      setAddUserModal
+    ],
   );
 
   const getUserRole = useCallback(async () => {
@@ -126,7 +141,7 @@ function Users({
       setPageNo(e.page);
       setPageSize(e.rows);
     },
-    [setPaginationFirst, setPageNo, setPageSize]
+    [setPaginationFirst, setPageNo, setPageSize],
   );
 
   const onSwitchToggle = async ({
@@ -191,7 +206,7 @@ function Users({
         await getUsersAPi();
       }
     },
-    [tableCustomizationCall, getUsersAPi]
+    [tableCustomizationCall, getUsersAPi],
   );
 
   const handleCloseMoadl = () => {
@@ -212,58 +227,24 @@ function Users({
     if (response?.status === "SUCCESS") {
       getUsersAPi();
       setVisiblePopoverKey(false);
+      setEditingUser(null);
       getResponePopup(response);
     } else {
       getResponePopup(response);
     }
   };
 
-  const onCloseIconClick = () => {
+  const handleEditUserClose = useCallback(() => {
+    setEditingUser(null);
     setSelectedRole(selectedRoleList);
     setVisiblePopoverKey(false);
+  }, [selectedRoleList]);
+
+  const onCloseIconClick = () => {
+    handleEditUserClose();
   };
 
-  const content = (item: UserContentType) => {
-    const FIXED_ROLE = item.currentUser && aliasName ? aliasName : null;
 
-    const updatedRoles = roles?.map((role) => ({
-      ...role,
-      disabled: role.value === FIXED_ROLE,
-    }));
-
-    const handleRoleChange = (value: string[]) => {
-      if (FIXED_ROLE && !value.includes(FIXED_ROLE)) {
-        value = [FIXED_ROLE, ...value];
-      }
-      setSelectedRole(value);
-    };
-
-    return (
-      <>
-        <Select
-          options={updatedRoles}
-          placeholder="Select the role"
-          style={{ width: 250 }}
-          dropdownStyle={{ width: 250 }}
-          value={selectedRole}
-          mode="multiple"
-          onChange={handleRoleChange}
-          data-testid={CreateIdGens("userEdit")}
-        />
-
-        <div className="flex justify-end mt-3 gap-2">
-          <Button
-            onClick={handleRoleSubmit}
-            className="btn btnColor"
-            data-testid={CreateIdGens("submitBtn")}
-            disabled={editUsersLoader}
-          >
-            {editUsersLoader ? "Loading..." : "Submit"}
-          </Button>
-        </div>
-      </>
-    );
-  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -272,37 +253,50 @@ function Users({
   }, [selectedOption, selectedDateRanges, searchText, pageSize, pageNo, sort]);
 
   useEffect(() => {
-    const accountStatus: { [key: string]: boolean } = {};
-    tabelData?.pageResponse?.content.forEach((user) => {
-      accountStatus[user.userName] = user.accountStatus;
-    });
-    setSwitchStates(accountStatus);
+    const switchStatus = () => {
+      const accountStatus: { [key: string]: boolean } = {};
+      tabelData?.pageResponse?.content.forEach((user) => {
+        accountStatus[user.userName] = user.accountStatus;
+      });
+      setSwitchStates(accountStatus);
+    };
+    switchStatus();
   }, [tabelData?.pageResponse?.content]);
 
   useEffect(() => {
-    if (
-      tabelData?.metaDataDTO ||
-      !findMatchesByField(activeFilters, tabelData?.metaDataDTO)
-    ) {
-      setActiveFilters(
-        tabelData?.metaDataDTO.filter(
-          (item) => item.active && item?.filter?.style
-        )
-      );
-      setSelectedColumns(tabelData?.metaDataDTO);
-      // setIsFilter(false);
-    }
+    const callActiveFilter = () => {
+      if (
+        tabelData?.metaDataDTO ||
+        !findMatchesByField(activeFilters, tabelData?.metaDataDTO)
+      ) {
+        setActiveFilters(
+          tabelData?.metaDataDTO.filter(
+            (item) => item.active && item?.filter?.style,
+          ),
+        );
+        setSelectedColumns(tabelData?.metaDataDTO);
+        // setIsFilter(false);
+      }
+    };
+    callActiveFilter();
   }, [tabelData?.metaDataDTO]);
+
+  const handleCloseUser = useCallback(() => {
+    setAddUserModal(false);
+  }, [setAddUserModal, addUser])
 
   useEffect(() => {
     getUserRole();
   }, []);
 
   useEffect(() => {
-    if (editingUser) {
-      setSelectedRole(editingUser.roleNames ?? null);
-      setSelectedRoleList(editingUser.roleNames ?? null);
-    }
+    const setRole = () => {
+      if (editingUser) {
+        setSelectedRole(editingUser.roleNames ?? null);
+        setSelectedRoleList(editingUser.roleNames ?? null);
+      }
+    };
+    setRole();
   }, [editingUser]);
 
   return (
@@ -341,7 +335,7 @@ function Users({
         <ReusabelTable
           data={tabelData?.pageResponse?.content}
           column={tabelData?.metaDataDTO?.filter(
-            (item) => item?.active && item?.columnActive
+            (item) => item?.active && item?.columnActive,
           )}
           switchStates={switchStates}
           onSwitchToggle={onSwitchToggle}
@@ -360,7 +354,6 @@ function Users({
             value: "patientId",
           }}
           handleAction={handleAction}
-          content={content}
           visiblePopoverKey={visiblePopoverKey}
           setVisiblePopoverKey={setVisiblePopoverKey}
           setEditingUser={setEditingUser}
@@ -375,6 +368,27 @@ function Users({
         setAssignUserModal={setAssignUserModal}
         getUsersAPi={getUsersAPi}
       />
+
+      <AddUser
+         openAddUser={addUser}
+         handleCloseModal={handleCloseUser}
+         roles={roles}
+         createUser={createUser}
+         addUserLoading={addUserLoading}
+         getUsersAPi={getUsersAPi}
+       />
+       
+       <EditUser
+         editingUser={editingUser}
+         handleEditUserClose={handleEditUserClose}
+         roles={roles || []}
+         aliasName={aliasName || ""}
+         selectedRole={selectedRole}
+         setSelectedRole={setSelectedRole}
+         handleRoleSubmit={handleRoleSubmit}
+         editUsersLoader={editUsersLoader}
+       />
+
     </>
   );
 }
@@ -388,6 +402,7 @@ const connector = connect(
     tabelData: state?.tableView?.tableView?.data?.response,
     allRoles: state?.userReducer?.alluserRoleList?.data?.response?.content,
     editUsersLoader: state?.userReducer?.userRoleEditLoading,
+    addUserLoading: state?.userReducer?.addUserLoading,
   }),
   {
     getTableView: tableAction?.tabelViewCall,
@@ -395,7 +410,8 @@ const connector = connect(
     tableCustomizationCall: tableAction?.tableDynamicColumn,
     getAllRole: usersAction?.getRole,
     setUserEditRoles: usersAction?.userEditRoles,
-  }
+    createUser: usersAction?.createUser,
+  },
 );
 
 export default connector(Users);

@@ -6,7 +6,8 @@ import {
 } from "@/state/table/model";
 import { TrackingContentArrayType } from "../../tracking";
 
-export interface productivityContentArrayType extends TrackingContentArrayType {
+export interface productivityContentArrayType
+  extends TrackingContentArrayType, Record<string, unknown> {
   admNo: string;
   admDate: string;
   batchDate: string;
@@ -31,5 +32,4 @@ export interface tinPatientsTabType {
   setTriggerTableCustomization: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
   >;
-
 }

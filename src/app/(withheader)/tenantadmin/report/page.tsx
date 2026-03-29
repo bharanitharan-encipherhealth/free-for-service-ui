@@ -8,11 +8,12 @@ import { actions as ReportAction } from "@/state/tenantadmin/report";
 import {
   getReportTableCallResponseType,
   ReportPropsType,
+  resposeDataArrayType,
 } from "@/models/tenantadmin/report";
 import reportReducerType from "@/state/tenantadmin/report/model";
 import { findMatchesByField, generateHeaderTab } from "@/util/reusableFunction";
 import { actions as tableAction } from "@/state/table";
-import TableViewType, { metaDataType } from "@/state/table/model";
+import TableViewType, { metaDataType, SortType } from "@/state/table/model";
 import ReusableFilters from "@/components/ReusbaleFilter";
 import { DateRange } from "@/models/reusableFilter";
 import ReusableTable from "@/components/ReusabelTable";
@@ -35,9 +36,9 @@ function Report({
 }: ReportPropsType) {
   const [activeTab, setActiveTab] = useState<string>("");
   const [pageNo, setPageNo] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {}
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
 
   const [activeFilters, setActiveFilters] = useState<metaDataType[]>([]);
@@ -47,15 +48,15 @@ function Report({
   const [checkedLoader, setCheckedLoader] = useState<boolean>(false);
 
   const handleTabChange = useCallback(
-    ({ item }: { item: { lable: string; value: string } }) => {
+    ({ item }: { item: { label: string; value: string } }) => {
       setActiveTab(item?.value);
     },
-    [setActiveTab]
+    [activeTab, setActiveTab],
   );
   const [selectedDateRanges, setSelectedDateRanges] = useState<
     Record<string, DateRange>
   >({});
-  const [sort, setSort] = useState({
+  const [sort, setSort] = useState<SortType>({
     computedDate: {
       sortDir: "DESC",
       sortField: "computedDate",
@@ -126,7 +127,7 @@ function Report({
       tabList: generateHeaderTab({ tabList: reportTabList?.tabMenuList2 }),
       loading: reportTabListLoading,
       activeTab,
-      onClick: ({ item }: { item: { lable: string; value: string } }) =>
+      onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
     };
   }, [reportTabList, handleTabChange, reportTabListLoading, activeTab]);
@@ -156,7 +157,7 @@ function Report({
     row,
     singleCheck,
     checked,
-  }: handleRowCheckboxChangeType) => {
+  }: handleRowCheckboxChangeType<resposeDataArrayType>) => {
     if (!singleCheck) {
       if (checked) {
         setCheckedLoader(true);
@@ -172,7 +173,7 @@ function Report({
         if (response?.status === "SUCCESS") {
           const result = response?.response?.data[0]?.allAzureBlobPath.map(
             (azureBlobPath: { azureBlobPath: string }) =>
-              azureBlobPath?.azureBlobPath
+              azureBlobPath?.azureBlobPath,
           );
           setSelectedRows(result);
         }
@@ -185,7 +186,7 @@ function Report({
         setSelectedRows((prev) => [...prev, row.azureBlobPath]);
       } else {
         setSelectedRows((prev) =>
-          prev.filter((item) => item != row?.azureBlobPath)
+          prev.filter((item) => item !== row?.azureBlobPath),
         );
       }
     }
@@ -264,7 +265,7 @@ function Report({
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
 
   useEffect(() => {
@@ -274,8 +275,8 @@ function Report({
     ) {
       setActiveFilters(
         tableData?.amMetaData.filter(
-          (item) => item.columnActive && item?.filter?.style
-        )
+          (item) => item.columnActive && item?.filter?.style,
+        ),
       );
     }
   }, [tableData?.amMetaData]);
@@ -317,10 +318,10 @@ function Report({
           tableLoader={tableLoader}
         />
 
-        <ReusableTable
+        <ReusableTable<resposeDataArrayType>
           data={tableData?.data}
           column={tableData?.amMetaData?.filter(
-            (item) => item?.active && item?.columnActive
+            (item) => item?.active && item?.columnActive,
           )}
           loader={tableLoader}
           setSort={setSort}
@@ -464,6 +465,6 @@ const connector = connect(
     getReportTableCall: tableAction?.getReportTable,
     getReportDownload: ReportAction?.getReportDownload,
     getReportCall: ReportAction?.getReportCall,
-  }
+  },
 );
 export default connector(Report);

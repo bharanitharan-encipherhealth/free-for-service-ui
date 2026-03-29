@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 
 import { actions as tableAction } from "@/state/table";
@@ -15,10 +15,20 @@ import ReusableTable from "@/components/ReusabelTable";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
 import { useRouter } from "next/navigation";
 import { notification } from "antd";
+import ContentLayout from "@/components/layout/ContentLayout/page";
+import { generateHeaderTab } from "@/util/reusableFunction";
+import {
+  patientInPatientPageId,
+  patientOutPatientPageId,
+} from "@/util/pageIds";
 
 type patientTabReduxType = ConnectedProps<typeof connector>;
 
-type patientTabProps = tinPatientsTabType & patientTabReduxType;
+type patientTabProps = tinPatientsTabType &
+  patientTabReduxType & {
+    subActiveTab: string;
+    setSubActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  };
 function PatientsTab({
   activeFilters,
   setActiveFilters,
@@ -28,12 +38,14 @@ function PatientsTab({
   triggerTableCustomization,
   setTriggerTableCustomization,
   getRoutedData,
+  subActiveTab,
+  setSubActiveTab,
 }: patientTabProps) {
   const route = useRouter();
   const tin = getStorage("tinNumber");
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {},
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [pageNo, setPageNo] = useState(0);
@@ -70,7 +82,10 @@ function PatientsTab({
 
   const getAllPatients = useCallback(async () => {
     await getTableView({
-      pageId: patientPageId,
+      pageId:
+        subActiveTab === "Inpatient"
+          ? patientInPatientPageId
+          : patientOutPatientPageId,
       pageNo,
       pageSize: 15,
       roleId: "",
@@ -106,14 +121,13 @@ function PatientsTab({
 
   const goToPatientDetails = useCallback(
     ({ record }: { record: productivityContentArrayType }) => {
-      console.log(record, "record");
       if (record?.computing === 2) {
         const controller = new AbortController();
         controller.abort();
         setStorage("patientId", record?.patientId);
         setStorage("routeBackTo", "/tenantadmin/tin/tindetails?tab=Patients");
         getRoutedData(params);
-        route.push("/tenantadmin/patients/details");
+        route.push("/tenantadmin/tin/details");
       } else {
         notification.warning({
           message: record?.patientName + " file not processed. Please wait!",
@@ -124,7 +138,14 @@ function PatientsTab({
   );
   useEffect(() => {
     getAllPatients();
-  }, [pageNo, selectedOption, searchText, selectedDateRanges, sort]);
+  }, [
+    pageNo,
+    selectedOption,
+    searchText,
+    selectedDateRanges,
+    sort,
+    subActiveTab,
+  ]);
 
   useEffect(() => {
     if (triggerTableCustomization?.patients) {
@@ -132,44 +153,59 @@ function PatientsTab({
     }
   }, [triggerTableCustomization?.patients]);
 
-  return (
-    <div className="content">
-      <ReusableFilters
-        showFilter={false}
-        setActiveFilters={setActiveFilters}
-        setSearchText={setSearchText}
-        searchText={searchText}
-        setSelectedOption={setSelectedOption}
-        selectedOption={selectedOption}
-        setSelectedDateRanges={setSelectedDateRanges}
-        // selectedDateRanges={selectedDateRanges}
-        FilterItems={activeFilters}
-        selectedDates={selectedDates}
-        setSelectedDates={setSelectedDates}
-        activeFilters={activeFilters}
-        setPageNo={setPageNo}
-        tableLoader={tableLoader}
-      />
+  const subTabList = useMemo(
+    () => ({
+      isTab: true,
+      tabList: generateHeaderTab({
+        tabList: ["Inpatient", "Outpatient"],
+      }),
+      activeTab: subActiveTab,
+      onClick: ({ item }: { item: { label: string; value: string } }) =>
+        setSubActiveTab(item?.value),
+    }),
+    [subActiveTab],
+  );
 
-      <ReusableTable<productivityContentArrayType>
-        data={tableData?.pageResponse?.content}
-        column={tableData?.metaDataDTO?.filter(
-          (item) => item?.active && item?.columnActive,
-        )}
-        loader={tableLoader}
-        setSort={setSort}
-        sort={sort}
-        first={pageNo === 0 ? 0 : paginationFirst}
-        totalRecords={tableData?.pageResponse?.totalElements}
-        row={row}
-        onPageChange={onPageChange}
-        isPagination={true}
-        isRowSizabel={true}
-        count={30}
-        handleRowChange={handleRowChange}
-        onRowClick={goToPatientDetails}
-      />
-    </div>
+  return (
+    <ContentLayout tabList={subTabList}>
+      <div className="content">
+        <ReusableFilters
+          showFilter={false}
+          setActiveFilters={setActiveFilters}
+          setSearchText={setSearchText}
+          searchText={searchText}
+          setSelectedOption={setSelectedOption}
+          selectedOption={selectedOption}
+          setSelectedDateRanges={setSelectedDateRanges}
+          // selectedDateRanges={selectedDateRanges}
+          FilterItems={activeFilters}
+          selectedDates={selectedDates}
+          setSelectedDates={setSelectedDates}
+          activeFilters={activeFilters}
+          setPageNo={setPageNo}
+          tableLoader={tableLoader}
+        />
+
+        <ReusableTable<productivityContentArrayType>
+          data={tableData?.pageResponse?.content}
+          column={tableData?.metaDataDTO?.filter(
+            (item) => item?.active && item?.columnActive,
+          )}
+          loader={tableLoader}
+          setSort={setSort}
+          sort={sort}
+          first={pageNo === 0 ? 0 : paginationFirst}
+          totalRecords={tableData?.pageResponse?.totalElements}
+          row={row}
+          onPageChange={onPageChange}
+          isPagination={true}
+          isRowSizabel={true}
+          count={30}
+          handleRowChange={handleRowChange}
+          onRowClick={goToPatientDetails}
+        />
+      </div>
+    </ContentLayout>
   );
 }
 

@@ -115,6 +115,7 @@ function MoveBackModal({
             id="revert"
             checked={isRevertChecked}
             onChange={() => setIsRevertChecked(!isRevertChecked)}
+            className="custom-switch"
           />
           <div className={`${style.enableOptions} text-xs px-1 my-2`}>
             Enabling this option will revert the changes done by previous coders

@@ -7,7 +7,7 @@ import {
 import { TrackingContentArrayType } from "../../tracking";
 
 export interface patientReAllocationContentArrayType
-  extends TrackingContentArrayType {
+  extends TrackingContentArrayType, Record<string, unknown> {
   admNo: string;
   admDate: string;
   batchDate: string;

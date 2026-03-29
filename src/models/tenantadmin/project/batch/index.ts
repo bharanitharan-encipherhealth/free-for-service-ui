@@ -1,6 +1,6 @@
 import { OtherTableType, pageableType } from "@/state/table/model";
 
-export interface bacthContentArrayType {
+export interface bacthContentArrayType extends Record<string, unknown> {
   id: string;
   name: string;
   uploadedFilePath: string;

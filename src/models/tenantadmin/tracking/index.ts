@@ -5,6 +5,7 @@ import {
   tableCustomizationResposnetype,
   OtherTableType,
 } from "@/state/table/model";
+import { productivityContentArrayType } from "../tin/patients";
 
 export interface TrackingContentArrayType {
   createdDate: string;
@@ -79,7 +80,7 @@ export interface WorkflowItem {
   allocatedOn: string | null;
   status: string;
   dueDate: string | null;
-  performedOn: string;
+  performedOn: string | null;
   reAssigned: boolean;
   query: string | null;
   queryDetails: string | null;
@@ -130,7 +131,7 @@ export interface FlagItem {
 }
 
 export interface pageResponsetype extends OtherTableType {
-  content: TrackingContentArrayType[];
+  content: productivityContentArrayType[];
   pageable: pageableType;
 }
 
@@ -145,7 +146,7 @@ export interface getTableViewResponse {
 }
 export interface TrackingPropsType {
   getTableView: (
-    tableApiParamsType: tableApiParamsType
+    tableApiParamsType: tableApiParamsType,
   ) => Promise<getTableViewResponse>;
   tableData: trackingTableView;
   tableCustomizationCall: ({
@@ -155,7 +156,7 @@ export interface TrackingPropsType {
   }) => Promise<tableCustomizationResposnetype>;
   tableLoader: boolean;
   getLogsReportDownload: (
-    tableApiParamsType: tableApiParamsType
+    tableApiParamsType: tableApiParamsType,
   ) => Promise<Response>;
   exportLoading: boolean;
 }

@@ -1,0 +1,29 @@
+.timelineFilter {
+  background-color: var(--application-base-color);
+  color: var(--defaultColor);
+}
+
+.pendingColor {
+  background-color: var(--pending-color);
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.completeColor {
+  background-color: var(--completed-color);
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.workqueueBorderColor {
+  border: 1px solid var(--select-border-color);
+}
+
+.commentsList {
+  background-color: var(--comments-bg-color);
+  
+}

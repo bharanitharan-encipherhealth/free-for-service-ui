@@ -20,7 +20,7 @@ export async function allBatches({
     }&createdDateStart=${startDate ? startDate : ""}&createdDateEnd=${
       endDate ? endDate : ""
     }`,
-    options
+    options,
   );
   return data;
 }
@@ -29,6 +29,10 @@ export async function batchDetails({
   batchId,
   page,
   search,
+}: {
+  batchId: string;
+  page: number;
+  search: string;
 }) {
   const options = {
     method: "GET",
@@ -41,7 +45,7 @@ export async function batchDetails({
   // }
   const data = await requestPortal(
     `dbservice/batch/batchuploaddetails?batchId=${batchId}&page=${page}&size=15&searchString=${search}`,
-    options
+    options,
   );
   return data;
 }

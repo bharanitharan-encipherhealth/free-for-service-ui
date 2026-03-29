@@ -1,5 +1,4 @@
-import { requestPortal, requestPortalExcel } from "@/util/network";
-import { getStorage } from "@/util/storage";
+import { requestPortal } from "@/util/network";
 
 export async function getmoveBackLevel({ roleId }: { roleId: string }) {
   const options = {
@@ -7,12 +6,12 @@ export async function getmoveBackLevel({ roleId }: { roleId: string }) {
   };
   const res = await requestPortal(
     `dbservice/v1/move-back/get-role-status-details?roleId=${roleId}`,
-    options
+    options,
   );
   return res;
 }
 
-export async function moveBack(data) {
+export async function moveBack(data: unknown) {
   const options = {
     method: "POST",
     body: JSON.stringify(data),

@@ -1,43 +1,36 @@
 import { notification, Tooltip } from "antd";
+import { getNotificationApi } from "@/util/notificationHolder";
 import momentTimezone from "moment-timezone";
 import moment from "moment";
 import Image from "next/image";
+import CryptoJS from "crypto-js";
 
 import { companyDeatils } from "@/util/config";
 import { salt } from "@/util/config";
 import dayjs from "dayjs";
+import isEqual from "lodash/isEqual";
 
 import { renderUserPrfoileAvatar } from "@/components/layout/appHeader/function";
 import { FaTriangleExclamation } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+
+const getNotification = () => getNotificationApi() || notification;
 
 export const getResponePopup = (res) => {
-  switch (res?.data?.status ? res?.data?.status : res?.status) {
+  const api = getNotification();
+  const description =
+    res?.data?.message != null ? res?.data?.message : res?.message;
+  switch (res?.data?.status ?? res?.status) {
     case "USER_DEFINED_ERROR":
-      return notification.warning({
-        description: res?.data?.message ? res?.data?.message : res?.message,
-        duration: 3,
-      });
+      return api.warning({ description, duration: 3 });
     case "SUCCESS":
-      return notification.success({
-        description: res?.data?.message ? res?.data?.message : res?.message,
-        duration: 2,
-      });
+      return api.success({ description, duration: 2 });
     case "FAILED":
-      return notification.error({
-        description: res?.data?.message ? res?.data?.message : res?.message,
-        duration: 2,
-      });
+      return api.error({ description, duration: 2 });
     case "EXCEPTION":
-      return notification.error({
-        description: res?.data?.message ? res?.data?.message : res?.message,
-        duration: 3,
-      });
+      return api.error({ description, duration: 3 });
     case "CUSTOM_EXCEPTION":
-      return notification.error({
-        description: res?.data?.message ? res?.data?.message : res?.message,
-        duration: 2,
-      });
+      return api.error({ description, duration: 2 });
     default:
       break;
   }
@@ -63,7 +56,7 @@ export const encyptingPass = (password) => {
   const encryptedData = encryptData(
     plaintextData,
     encryptionKey,
-    initializationVector
+    initializationVector,
   );
   const values = { pass: encryptedData, iv: initializationVector };
   return values;
@@ -118,7 +111,7 @@ export const findItemWithTrueOrFalse = (design, key) => {
 export const reusableEllipses = ({ str, count }) => {
   if (Array.isArray(str)) {
     return (
-      <div className="flex gap-2">
+      <div className="flex gap-1">
         {str.map((item, index) => {
           if (item?.length > count) {
             return (
@@ -150,7 +143,7 @@ export const convertToCustomParams = (obj) => {
   if (keys.length === 0) return "";
   const restParams = keys
     .filter(
-      (key) => obj[key] !== undefined && obj[key] !== null && key != "clientId"
+      (key) => obj[key] !== undefined && obj[key] !== null && key != "clientId",
     )
     .map((key) => `&${key}=${obj[key]}`)
     .join("");
@@ -183,7 +176,7 @@ export const convertToCustomParamsDatePicker = (obj) => {
 
 export const findMatchesByField = (arr1, arr2) => {
   return arr1?.some((obj1) =>
-    arr2?.some((obj2) => JSON.stringify(obj1) === JSON.stringify(obj2))
+    arr2?.some((obj2) => JSON.stringify(obj1) === JSON.stringify(obj2)),
   );
 };
 
@@ -211,7 +204,7 @@ export const formatDateTime = ({ date, formatType = "date" }) => {
 export const disabledDate = (
   currentDate,
   selectedDates = [],
-  allowFuture = false
+  allowFuture = false,
 ) => {
   const today = dayjs().endOf("day");
   const [startDate, endDate] = Array.isArray(selectedDates)
@@ -321,7 +314,7 @@ export const renderUserProfile = (data, columnItem) => {
             compareObj?.firstName || compareObj?.firstName,
             compareObj?.lastName || compareObj?.lastName,
             compareObj?.profileImage || compareObj?.profileImage,
-            "header"
+            "header",
           )}
         </span>
         <span>
@@ -336,7 +329,7 @@ export const renderUserProfile = (data, columnItem) => {
 
 export const generateHeaderTab = ({ tabList, value = "", id = "" }) => {
   const res = tabList?.map((item) => ({
-    lable: value ? item?.[value] : item,
+    label: value ? item?.[value] : item,
     value: id ? item?.[id] : item,
   }));
 
@@ -392,6 +385,228 @@ export const priorityOptions = [
 
 export const disablePastDate = (current) => {
   return current && current.isBefore(moment().subtract(1, "day"));
+};
+
+export const getDateFormat = (date, isFullData = false) => {
+  if (!date) return "---";
+  if (date && isFullData) {
+    return moment(date, "DD/MM/YYYY")?.format("DD-MM-YYYY");
+  }
+  if (date) {
+    return moment(date, "DD/MM/YYYY")?.format("MMM DD");
+  }
+};
+
+export const pdfEncrypt = (value) => {
+  const plaintextData = value;
+  let now = new Date();
+  let date = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+    now.getUTCHours(),
+    now.getUTCMinutes(),
+    now.getUTCSeconds(),
+    now.getUTCMilliseconds(),
+  );
+  const encryptionKey = salt; // Should be 16, 24, or 32 bytes
+  const initializationVector = date + ":" + "vg"; // Should be 16 bytes
+  const encryptedData = encryptData(
+    plaintextData,
+    encryptionKey,
+    initializationVector,
+  );
+  const values = { pass: encryptedData, iv: initializationVector };
+  return values;
+};
+
+export const timeLineDateAndTime = ({ inputDate }) => {
+  return moment(inputDate).format("MMMM D YYYY hh:mm A");
+};
+
+export const isStatusDisabled = (
+  patientIdDetailsData,
+  patientDetailsResult,
+  pathname,
+) => {
+  const dosWiseStatus =
+    patientDetailsResult?.data?.response?.workflow?.[0]?.status ||
+    patientDetailsResult?.data?.response?.masterAudit?.status;
+  const overAllStatus =
+    patientIdDetailsData?.data?.response?.workflow?.[0]?.status ||
+    patientIdDetailsData?.data?.response?.masterAudit?.status;
+
+  let disabled = dosWiseStatus !== "PENDING" || overAllStatus === "COMPLETED";
+  const pathDisbaled =
+    pathname.endsWith("/tenantadmin/tin/details") ||
+    pathname.endsWith("/tenantadmin/project/details") ||
+    pathname.endsWith("/tenantadmin/patientsync/batchfilesview");
+
+  if (pathDisbaled) {
+    return true;
+  }
+  if (pathname.endsWith("/tenantadmin/tin/tindetails/masteraudit")) {
+    const dosWiseStatus = patientDetailsResult?.data?.response?.masterAudit
+      ?.status
+      ? patientDetailsResult?.data?.response?.masterAudit?.status
+      : "PENDING";
+    disabled = dosWiseStatus !== "PENDING";
+    return disabled;
+  }
+  return disabled;
+};
+
+export const getStatusColors = (state) => {
+  let previousStateColor = "";
+  switch (state) {
+    case "COMPLETED":
+      previousStateColor = "#00BC13";
+      break;
+    case "PENDING":
+      previousStateColor = "#0078D4";
+      break;
+    case "HOLD":
+      previousStateColor = "#3C0AD2";
+      break;
+    case "DECLINED":
+      previousStateColor = "#EB5252";
+      break;
+    case "AUDITED":
+      previousStateColor = "#4AA1AB";
+      break;
+    case "REAUDIT":
+      previousStateColor = "#964B00";
+      break;
+    case "AUDITHOLD":
+      previousStateColor = "#EBAE00";
+      break;
+    case "AUDIT_PENDING":
+      previousStateColor = "#BD3A79";
+      break;
+    case "AUDIT_DECLINED":
+      previousStateColor = "#C21807";
+      break;
+    default:
+      previousStateColor = "";
+  }
+  return previousStateColor;
+};
+
+export const useFormSubmittable = (form, fields) => {
+  const initialValuesRef = useRef(null);
+
+  useEffect(() => {
+    initialValuesRef.current = form.getFieldsValue(true);
+  }, [form]);
+
+  const isDisabled = useCallback(() => {
+    if (!initialValuesRef.current) return true;
+
+    const hasErrors = form
+      .getFieldsError(fields)
+      .some(({ errors }) => errors.length > 0);
+
+    const currentValues = fields
+      ? form.getFieldsValue(fields)
+      : form.getFieldsValue(true);
+
+    const initialValues = fields
+      ? fields.reduce((acc, key) => {
+        acc[key] = initialValuesRef.current[key];
+        return acc;
+      }, {})
+      : initialValuesRef.current;
+
+    const isChanged = !isEqual(currentValues, initialValues);
+
+    const isTouched = fields
+      ? form.isFieldsTouched(fields, true)
+      : form.isFieldsTouched(true);
+
+    return hasErrors || !isChanged || !isTouched;
+  }, [form, fields]);
+
+  return isDisabled;
+};
+
+export const formValidate = ({ value, valueType }) => {
+  switch (valueType) {
+    case "allowNumber":
+      return /^[0-9]+$/.test(value);
+
+    case "allowDecimal":
+      return /^\d*\.?\d*$/.test(value);
+
+    case "allowAlphabet":
+      return /^[A-Za-z]+$/.test(value);
+
+    case "allowAlphanumeric":
+      return /^[A-Za-z0-9]+$/.test(value);
+
+    case "noSpecialChar":
+      return /^[A-Za-z0-9 ]+$/.test(value);
+
+    case "notEmpty":
+      return value?.trim()?.length > 0;
+    case "icdCode": {
+      if (value === "") return true;
+
+      const v = value.trim().toUpperCase();
+      return /^[A-Z][A-Z0-9]{0,6}(\.[A-Z0-9]{0,4})?$/.test(v);
+    }
+
+    default:
+      return true;
+  }
+};
+
+const lightColors = [
+  "#1B1B1B",
+  "#2C3E50",
+  "#3B3B98",
+  "#2E4053",
+  "#512E5F",
+  "#4A235A",
+  "#154360",
+  "#1C2833",
+  "#212F3D",
+  "#424949",
+  "#7B241C",
+  "#641E16",
+  "#873600",
+  "#784212",
+  "#4D5656",
+  "#17202A",
+  "#1A5276",
+  "#0E6655",
+  "#145A32",
+  "#186A3B",
+];
+
+export const stringToColour = (str) => {
+  if (!str) return lightColors[0];
+
+  let hash = 0;
+  str.split("").forEach((char) => {
+    hash = char.charCodeAt(0) + ((hash << 5) - hash);
+  });
+
+  // Pick from the 20 colors deterministically
+  let index = Math.abs(hash) % lightColors.length;
+  let colour = lightColors[index];
+
+  // Special overrides
+  if (str.toLowerCase() === "plan") {
+    colour = "#7e00ff";
+  }
+  if (str.toLowerCase() === "examination") {
+    colour = "#9eb875";
+  }
+  if (["assessments", "assessment"].includes(str.toLowerCase())) {
+    colour = "#f1a113";
+  }
+
+  return colour;
 };
 
 export const useWindowWidth = () => {
@@ -469,19 +684,19 @@ export const getFormattedChartData = (rawSeries, chartType) => {
   const formattedSeries =
     chartType === "bar" || chartType === "line"
       ? [
-          {
-            name: "Status",
-            data: values,
-            colorBy: "data",
-            itemStyle: {
-              color: (params) => colors[params.dataIndex],
-            },
+        {
+          name: "Status",
+          data: values,
+          colorBy: "data",
+          itemStyle: {
+            color: (params) => colors[params.dataIndex],
           },
-        ]
+        },
+      ]
       : rawSeries.map((item) => ({
-          ...item,
-          itemStyle: { color: item.color },
-        }));
+        ...item,
+        itemStyle: { color: item.color },
+      }));
 
   return {
     categories,

@@ -17,34 +17,19 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     setMounted(true);
-    // Check localStorage for saved theme preference
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setTheme(prefersDark ? "dark" : "light");
-    }
   }, []);
 
   useEffect(() => {
     if (!mounted) return;
     
-    // Apply theme to document
+    // Always light theme
     const root = document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-    
-    // Save to localStorage
-    localStorage.setItem("theme", theme);
-  }, [theme, mounted]);
+    root.classList.remove("dark");
+    localStorage.setItem("theme", "light");
+  }, [mounted]);
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    // Toggling disabled, always light
   }, []);
 
   // Memoize context value to prevent unnecessary re-renders

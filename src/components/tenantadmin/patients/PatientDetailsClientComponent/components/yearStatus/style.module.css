@@ -1,0 +1,42 @@
+.allocateBgColor,
+.allocateBgColor:hover,
+.allocateBgColor:focus,
+.allocateBgColor:active {
+  background: var(--allocateBgColor) !important;
+  color: var(--defaultColor);
+  border: none !important;
+  box-shadow: none;
+}
+.pendingBgColor,
+.pendingBgColor:hover,
+.pendingBgColor:focus,
+.pendingBgColor:active {
+  background: var(--pedingBgColor) !important;
+  color: var(--defaultColor) !important;
+  border: none !important;
+  box-shadow: none;
+}
+
+.completedBgColor,
+.completedBgColor:hover,
+.completedBgColor:focus,
+.completedBgColor:active {
+  color: #3a9b94 !important;
+  background: #daf1ef !important;
+  border: none !important;
+  box-shadow: none;
+}
+
+.pendingOverlay :global(.ant-dropdown-menu-item) {
+  background: #c2e1f9 !important;
+  color: #5da9e4 !important;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.completedOverlay :global(.ant-dropdown-menu-item) {
+  color: #3a9b94 !important;
+  background: #daf1ef !important;
+  font-weight: 900;
+  text-transform: uppercase;
+}

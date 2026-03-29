@@ -60,16 +60,16 @@ function Batch({ getBatchTable, tableData, tableLoader }: BatchReduxProps) {
         design: ["COMPUTATION_STATUS"],
       },
     ],
-    []
+    [],
   );
 
   const [activeFilters, setActiveFilters] =
     useState<metaDataType[]>(batchFilterColumn);
 
   const [searchText, setSearchText] = useState<Record<string, string>>({});
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {}
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState<
     Record<string, DateRange>
   >({});
@@ -93,7 +93,7 @@ function Batch({ getBatchTable, tableData, tableLoader }: BatchReduxProps) {
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
 
   const handleRowChange = ({ value }: { value: number }) => {
@@ -119,7 +119,7 @@ function Batch({ getBatchTable, tableData, tableLoader }: BatchReduxProps) {
     });
   }, [getBatchTable, selectedOption, searchText, pageNo, selectedDateRanges]);
 
-  const handleRowClick = (record: bacthContentArrayType) => {
+  const handleRowClick = ({ record }: { record: bacthContentArrayType }) => {
     setShowBatchDetails({ status: true, data: record });
   };
 
@@ -128,44 +128,47 @@ function Batch({ getBatchTable, tableData, tableLoader }: BatchReduxProps) {
   }, [searchText, selectedOption, selectedDateRanges, pageNo]);
 
   useEffect(() => {
-    const column = [
-      {
-        headerName: "Batch Name",
-        columnActive: true,
-        actualField: "name",
-        active: true,
-        design: [""],
-      },
-      {
-        headerName: "Count",
-        columnActive: true,
-        actualField: "totalFileCount",
-        active: true,
-        design: ["fileCount"],
-      },
-      {
-        headerName: "Initiated Date & Time",
-        columnActive: true,
-        actualField: "createdDate",
-        design: ["DATE_TIME"],
-        active: true,
-      },
-      {
-        headerName: "Processed Date & Time",
-        columnActive: true,
-        actualField: "endTime",
-        active: true,
-        design: ["DATE_TIME"],
-      },
-      {
-        headerName: "Status",
-        columnActive: true,
-        actualField: "batchUploadStatus",
-        design: ["COMPUTATION_STATUS"],
-        active: true,
-      },
-    ];
-    setColumnData(column);
+    const setColumn = () => {
+      const column = [
+        {
+          headerName: "Batch Name",
+          columnActive: true,
+          actualField: "name",
+          active: true,
+          design: [""],
+        },
+        {
+          headerName: "Count",
+          columnActive: true,
+          actualField: "totalFileCount",
+          active: true,
+          design: ["fileCount"],
+        },
+        {
+          headerName: "Initiated Date & Time",
+          columnActive: true,
+          actualField: "createdDate",
+          design: ["DATE_TIME"],
+          active: true,
+        },
+        {
+          headerName: "Processed Date & Time",
+          columnActive: true,
+          actualField: "endTime",
+          active: true,
+          design: ["DATE_TIME"],
+        },
+        {
+          headerName: "Status",
+          columnActive: true,
+          actualField: "batchUploadStatus",
+          design: ["COMPUTATION_STATUS"],
+          active: true,
+        },
+      ];
+      setColumnData(column);
+    };
+    setColumn();
   }, [tableData]);
 
   return (
@@ -220,7 +223,7 @@ const connector = connect(
   }),
   {
     getBatchTable: projectAction?.getAllBatches,
-  }
+  },
 );
 
 export default connector(Batch);

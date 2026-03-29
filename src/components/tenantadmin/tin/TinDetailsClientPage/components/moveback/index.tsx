@@ -7,13 +7,12 @@ import React, {
 } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { actions as productivityAction } from "@/state/tenantadmin/productivity";
-import { MovebackParamsType } from "@/models/tenantadmin/tin/moveback";
-import { moveBackPageId } from "@/util/pageIds";
+import { moveBackPageId, moveInPatientPageId, moveOutPatientId } from "@/util/pageIds";
 import productivityReducerType from "@/state/tenantadmin/productivity/model";
 import { generateHeaderTab } from "@/util/reusableFunction";
 import ContentLayout from "@/components/layout/ContentLayout/page";
-import TableViewType from "@/state/table/model";
-import { tinPatientReAllocationTableResposneType } from "@/models/tenantadmin/tin/patientReAllocation";
+import TableViewType, { SortType } from "@/state/table/model";
+import { MovebackParamsType } from "@/models/tenantadmin/tin/moveback";
 import { actions as tableAction } from "@/state/table";
 import { getStorage } from "@/util/storage";
 import ReusableFilters from "@/components/ReusbaleFilter";
@@ -21,37 +20,48 @@ import ReusableTable from "@/components/ReusabelTable";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
 import { handleRowCheckboxChangeType } from "@/models/ReusabelTable";
 import { getTable } from "@/state/table/network";
+import {
+  tinPatientsTabType,
+  tinPatientTableResposneType,
+} from "@/models/tenantadmin/tin/patients";
 import { checkAllPatientIdType } from "@/models/tenantadmin/tin/patientAllocation";
 import MoveBackModal from "./components/movebackModal";
 
 type patientMoveBackTabReduxType = ConnectedProps<typeof connector>;
-type patientMoveBackTabProps = MovebackParamsType & patientMoveBackTabReduxType;
+type patientMoveBackTabProps = MovebackParamsType &
+  patientMoveBackTabReduxType & {
+    subActiveTab: string;
+    setSubActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  };
+
 function MoveBack({
   activeFilters,
   setActiveFilters,
   triggerTableCustomization,
   setTriggerTableCustomization,
+  getAllRolesTab,
   onSelectionChange,
   allocateModal,
   setAllocateModal,
-  getRolesTab,
   allAllocationRoleData,
   allAllocationRoleLoading,
   getTableView,
   tableData,
   tableLoader,
+  subActiveTab,
+  setSubActiveTab,
 }: patientMoveBackTabProps) {
   const prevMoveBackModalRef = useRef<boolean | undefined>(undefined);
   const tin = getStorage("tinNumber");
   const [activeTab, setActiveTab] = useState<string>("");
   const [roleAliasName, setRoleAliasName] = useState("");
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {}
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [pageNo, setPageNo] = useState(0);
-  const [sort, setSort] = useState({
+  const [sort, setSort] = useState<SortType>({
     computedDate: {
       sortDir: "DESC",
       sortField: "computedDate",
@@ -65,54 +75,62 @@ function MoveBack({
   const [checkedHeader, setCheckedHeader] = useState(false);
 
   const handleTabChange = useCallback(
-    ({ item }: { item: { lable: string; value: string } }) => {
-      setActiveTab(item?.value);
-      setRoleAliasName(item?.lable);
+    ({ item }: { item: { label: string; value: string } }) => {
+      if (item?.value === "Inpatient" || item?.value === "Outpatient") {
+        setSubActiveTab(item?.value);
+      } else {
+        setActiveTab(item?.value);
+        setRoleAliasName(item?.label);
+      }
       setSelectedDates({});
       setSelectedDateRanges({});
       setSelectedOption({});
       setSearchText({});
     },
-    []
+    [setSubActiveTab],
   );
   const tabList = useMemo(() => {
+    const dynamicRoles = generateHeaderTab({
+      tabList:
+        allAllocationRoleData?.allocationRoles?.filter(
+          (item) => item?.aliasName?.toUpperCase() !== "MASTER_AUDIT",
+        ) || [],
+      value: "aliasName",
+      id: "roleId",
+    });
+
+    const primaryTabs = [
+      { label: "Inpatient", value: "Inpatient" },
+      { label: "Outpatient", value: "Outpatient" },
+    ];
+
+    const secondaryTabs = dynamicRoles;
+
     return {
       isTab: true,
-      tabList: generateHeaderTab({
-        tabList: allAllocationRoleData?.allocationRoles,
-        value: "aliasName",
-        id: "roleId",
-      }),
+      tabList: primaryTabs,
+      secondaryTabList: secondaryTabs,
       loading: allAllocationRoleLoading,
-      activeTab: activeTab,
-      onClick: ({ item }: { item: { lable: string; value: string } }) =>
+      activeTab: subActiveTab,
+      secondaryActiveTab: activeTab,
+      onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
       value: "aliasName",
     };
   }, [
     activeTab,
+    subActiveTab,
     allAllocationRoleData,
     allAllocationRoleLoading,
     handleTabChange,
   ]);
-
-  const getAllRoles = useCallback(async () => {
-    try {
-      const res = await getRolesTab({ pageId: moveBackPageId });
-      if (res?.status == "SUCCESS") {
-        setActiveTab(res?.response?.allocationRoles?.[0]?.roleId);
-      }
-    } catch (e) {
-      console.error("Error Occur while role api in the moveback");
-    }
-  }, [getRolesTab]);
 
   const onPageChange = useCallback(
     (e: PaginatorPageChangeEvent) => {
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
 
   const handleRowChange = ({ value }: { value: number }) => {
@@ -128,20 +146,27 @@ function MoveBack({
     }
   };
 
-  const getMoveBack = useCallback(async () => {
+  const getAllPatientsMoveBack = useCallback(async () => {
+    let currentPageId = moveBackPageId;
+    if (subActiveTab === "Inpatient") {
+      currentPageId = moveInPatientPageId;
+    } else if (subActiveTab === "Outpatient") {
+      currentPageId = moveOutPatientId;
+    }
     try {
       await getTableView({
-        pageId: moveBackPageId,
+        pageId: activeTab || currentPageId,
         pageNo,
         pageSize: 15,
         roleId: activeTab,
         tin,
+        isAdmin: true,
         selectedOption,
+        selectedDateRanges,
         searchText,
         sort,
-        selectedDateRanges,
       });
-      setTriggerTableCustomization((prev) => ({
+      setTriggerTableCustomization((prev: Record<string, boolean>) => ({
         ...prev,
         moveback: false,
       }));
@@ -152,17 +177,22 @@ function MoveBack({
     getTableView,
     pageNo,
     activeTab,
+    subActiveTab,
     selectedOption,
     selectedDateRanges,
     searchText,
     sort,
-    roleAliasName,
     setTriggerTableCustomization,
     tin,
   ]);
 
   const handleRowCheckboxChange = useCallback(
-    async ({ e, row, singleCheck, checked }: handleRowCheckboxChangeType) => {
+    async ({
+      e,
+      row,
+      singleCheck,
+      checked,
+    }: handleRowCheckboxChangeType<checkAllPatientIdType>) => {
       if (!singleCheck) {
         if (checked) {
           setCheckedLoader(true);
@@ -183,11 +213,11 @@ function MoveBack({
               (patient: checkAllPatientIdType) => ({
                 patientId: patient?.patientId,
                 patientName: patient.patientName,
-              })
+              }),
             );
 
             setSelectedRows(
-              result.map((patient: checkAllPatientIdType) => patient.patientId)
+              result.map((patient: checkAllPatientIdType) => patient.patientId),
             );
           }
         } else {
@@ -213,45 +243,40 @@ function MoveBack({
       setCheckedLoader,
       setCheckedHeader,
       setSelectedRows,
-    ]
+    ],
   );
 
   useEffect(() => {
-    if (activeTab) getMoveBack();
+    getAllRolesTab();
+  }, [getAllRolesTab]);
+
+  useEffect(() => {
+    getAllPatientsMoveBack();
   }, [
-    selectedOption,
-    selectedDateRanges,
-    searchText,
     pageNo,
+    selectedOption,
+    searchText,
+    selectedDateRanges,
     sort,
     paginationFirst,
     activeTab,
+    subActiveTab,
   ]);
 
   useEffect(() => {
-    getAllRoles();
-  }, []);
-
-  useEffect(() => {
-    const hasSelection = selectedRows && selectedRows.length > 0;
-    onSelectionChange?.(hasSelection);
-  }, [selectedRows, onSelectionChange]);
-
-  useEffect(() => {
     if (triggerTableCustomization?.moveback) {
-      getMoveBack();
+      getAllPatientsMoveBack();
     }
   }, [triggerTableCustomization]);
 
   useEffect(() => {
-    if (!allocateModal && activeTab && prevMoveBackModalRef.current === true)
-      getMoveBack();
+    if (prevMoveBackModalRef.current === true && !allocateModal) {
+      getAllPatientsMoveBack();
+    }
     prevMoveBackModalRef.current = allocateModal;
   }, [allocateModal]);
   return (
-    <>
-      <ContentLayout tabList={tabList} />
-
+    <ContentLayout tabList={tabList}>
       <div className="content">
         <ReusableFilters
           showFilter={false}
@@ -273,7 +298,7 @@ function MoveBack({
         <ReusableTable
           data={tableData?.pageResponse?.content}
           column={tableData?.metaDataDTO?.filter(
-            (item) => item?.active && item?.columnActive
+            (item) => item?.active && item?.columnActive,
           )}
           loader={tableLoader}
           setSort={setSort}
@@ -303,26 +328,26 @@ function MoveBack({
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
       />
-    </>
+    </ContentLayout>
   );
 }
 
 const connector = connect(
   (state: {
+    tableView: TableViewType<tinPatientTableResposneType>;
     productivityReducer: productivityReducerType;
-    tableView: TableViewType<tinPatientReAllocationTableResposneType>;
   }) => ({
+    tableData: state?.tableView?.tableView?.data?.response,
+    tableLoader: state?.tableView?.tableViewLoading,
     allAllocationRoleData:
       state?.productivityReducer?.allRolesAllocation?.data?.response,
     allAllocationRoleLoading:
       state?.productivityReducer?.allRolesAllocationLoading,
-    tableLoader: state?.tableView?.tableViewLoading,
-    tableData: state?.tableView?.tableView?.data?.response,
   }),
   {
-    getRolesTab: productivityAction?.getAllRoles,
     getTableView: tableAction?.tabelViewCall,
-  }
+    getAllRolesTab: productivityAction?.getAllRoles,
+  },
 );
 
 export default connector(MoveBack);

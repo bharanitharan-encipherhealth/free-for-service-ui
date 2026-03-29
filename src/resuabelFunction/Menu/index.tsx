@@ -3,9 +3,11 @@ import { getStorage } from "@/util/storage";
 import { MenuProps } from "antd";
 import { ReactNode } from "react";
 import { AiOutlineDashboard } from "react-icons/ai";
+import { CiLocationOn } from "react-icons/ci";
 import { FaRegUser, FaUserNurse } from "react-icons/fa6";
+import { HiOutlineDocumentReport } from "react-icons/hi";
 import { HiOutlineBars3BottomLeft } from "react-icons/hi2";
-import { MdGroups2 } from "react-icons/md";
+import { MdAnalytics, MdGroups2, MdOutlineAnalytics } from "react-icons/md";
 import { PiUserCircleDashedFill } from "react-icons/pi";
 import { TbReportAnalytics } from "react-icons/tb";
 import { TfiMapAlt } from "react-icons/tfi";
@@ -15,7 +17,7 @@ const createMenuItem = (
   label: ReactNode,
   key: string,
   icon?: ReactNode,
-  children?: MenuItem[]
+  children?: MenuItem[],
 ): MenuItem => ({
   key,
   icon,
@@ -24,7 +26,7 @@ const createMenuItem = (
 });
 
 export const PhysicanMenuList = (
-  data: accessListForPanel1[] = []
+  data: accessListForPanel1[] = [],
 ): MenuItem[] => {
   const items: MenuItem[] = [];
 
@@ -37,8 +39,8 @@ export const PhysicanMenuList = (
           createMenuItem(
             "Dashboard",
             "/reviewer/dashboard",
-            <AiOutlineDashboard />
-          )
+            <AiOutlineDashboard />,
+          ),
         );
         break;
 
@@ -47,26 +49,26 @@ export const PhysicanMenuList = (
           createMenuItem(
             "My Work Queue",
             "/reviewer/patients",
-            <HiOutlineBars3BottomLeft />
-          )
+            <HiOutlineBars3BottomLeft />,
+          ),
         );
         break;
 
       case "Report":
         items.push(
-          createMenuItem("Report", "/reviewer/report", <TbReportAnalytics />)
+          createMenuItem("Report", "/reviewer/report", <TbReportAnalytics />),
         );
         break;
 
       case "Tracking":
         items.push(
-          createMenuItem("Tracking", "/tenantadmin/tracking", <MdGroups2 />)
+          createMenuItem("Tracking", "/tenantadmin/tracking", <MdGroups2 />),
         );
         break;
 
       case "Logs":
         items.push(
-          createMenuItem("Logs", "/tenantadmin/tracking", <TfiMapAlt />)
+          createMenuItem("Logs", "/tenantadmin/tracking", <TfiMapAlt />),
         );
         break;
 
@@ -75,8 +77,8 @@ export const PhysicanMenuList = (
           createMenuItem(
             "Productivity",
             "/tenantadmin/productivity",
-            <MdGroups2 />
-          )
+            <MdGroups2 />,
+          ),
         );
         break;
     }
@@ -86,7 +88,7 @@ export const PhysicanMenuList = (
 };
 
 export const ProviderMenuList = (
-  data: accessListForPanel1[] = []
+  data: accessListForPanel1[] = [],
 ): MenuItem[] => {
   const items: MenuItem[] = [];
 
@@ -99,42 +101,46 @@ export const ProviderMenuList = (
           createMenuItem(
             "Dashboard",
             "/tenantadmin/dashboard",
-            <AiOutlineDashboard />
-          )
+            <AiOutlineDashboard />,
+          ),
         );
         break;
 
       case "Users":
         items.push(
-          createMenuItem("Users", "/tenantadmin/users", <FaRegUser />)
+          createMenuItem("Users", "/tenantadmin/users", <FaRegUser />),
         );
         break;
 
       case "TIN":
         items.push(
-          createMenuItem("Tenant", "/tenantadmin/tin", <FaUserNurse />)
+          createMenuItem("Tenant", "/tenantadmin/tin", <MdOutlineAnalytics />),
         );
         break;
 
-      case "Project":
-        items.push(
-          createMenuItem(
-            "Project",
-            "/tenantadmin/project",
-            <PiUserCircleDashedFill />
-          )
-        );
-        break;
+      // case "Project":
+      //   items.push(
+      //     createMenuItem(
+      //       "Project",
+      //       "/tenantadmin/project",
+      //       <PiUserCircleDashedFill />
+      //     )
+      //   );
+      //   break;
 
       case "Report":
         items.push(
-          createMenuItem("Report", "/tenantadmin/report", <TbReportAnalytics />)
+          createMenuItem(
+            "Report",
+            "/tenantadmin/report",
+            <HiOutlineDocumentReport />,
+          ),
         );
         break;
 
       case "Logs":
         items.push(
-          createMenuItem("Logs", "/tenantadmin/tracking", <TfiMapAlt />)
+          createMenuItem("Logs", "/tenantadmin/tracking", <CiLocationOn />),
         );
         break;
 
@@ -143,8 +149,8 @@ export const ProviderMenuList = (
           createMenuItem(
             "Productivity",
             "/tenantadmin/productivity",
-            <MdGroups2 />
-          )
+            <MdGroups2 />,
+          ),
         );
         break;
 
@@ -153,8 +159,8 @@ export const ProviderMenuList = (
           createMenuItem(
             "Notification",
             "/tenantadmin/notification",
-            <MdGroups2 />
-          )
+            <MdGroups2 />,
+          ),
         );
         break;
 
@@ -163,8 +169,8 @@ export const ProviderMenuList = (
           createMenuItem(
             "My Work Queue",
             "/tenantadmin/workqueue",
-            <MdGroups2 />
-          )
+            <MdGroups2 />,
+          ),
         );
         break;
     }
@@ -178,7 +184,7 @@ export const statusColorPick = ({ status }: { status: string }) => {
     case "processed":
       return {
         backgroundColor: "var(--processed-bg-color)",
-        color: "var(--defaultColor)",
+        color: "var(--foreground)",
       };
     case "processing":
       return {
@@ -202,20 +208,18 @@ export const getAccessTabItems = ({
   tab: "tabMenuList" | "tabMenuList2";
 }) => {
   const accessMenuList: accessListForPanel1[] = JSON.parse(
-    getStorage("accessMenuList")
+    getStorage("accessMenuList"),
   );
 
   const currentTabs: string[] = accessMenuList?.find(
-    (item) => item?.title === page
-  )?.[tab] ?? [""];
+    (item) => item?.title === page,
+  )?.[tab] ?? [];
 
   if (currentTabs) return currentTabs;
   return [];
 };
 
 export const getProcessStatusKey = ({ item }: { item: string | number }) => {
-  console.log(item, "titntjnjx");
-
   switch (item) {
     case 0:
     case "NOTPROCESSED":

@@ -7,8 +7,12 @@ import React, {
 } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { actions as tableAction } from "@/state/table";
-import TableViewType from "@/state/table/model";
-import { reAllocationPageId } from "@/util/pageIds";
+import TableViewType, { SortType } from "@/state/table/model";
+import {
+  patienReAllocationInPatientPageId,
+  patienReAllocationOutPatientPageId,
+  reAllocationPageId,
+} from "@/util/pageIds";
 import { getStorage } from "@/util/storage";
 import ReusableFilters from "@/components/ReusbaleFilter";
 import ReusableTable from "@/components/ReusabelTable";
@@ -24,12 +28,16 @@ import {
   tinPatientReAllocationTableResposneType,
   tinPatientReAllocationTabType,
   checkAllPatientIdType,
+  patientReAllocationContentArrayType,
 } from "@/models/tenantadmin/tin/patientReAllocation";
 
 type patientReAllocationTabReduxType = ConnectedProps<typeof connector>;
 
 type patientReAllocationTabProps = tinPatientReAllocationTabType &
-  patientReAllocationTabReduxType;
+  patientReAllocationTabReduxType & {
+    subActiveTab: string;
+    setSubActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  };
 function PatientReAllocation({
   activeFilters,
   setActiveFilters,
@@ -44,16 +52,18 @@ function PatientReAllocation({
   onSelectionChange,
   allocateModal,
   setAllocateModal,
+  subActiveTab,
+  setSubActiveTab,
 }: patientReAllocationTabProps) {
   const prevReAllocateModalRef = useRef<boolean | undefined>(undefined);
   const tin = getStorage("tinNumber");
-  const [selectedOption, setSelectedOption] = useState<Record<string, string>>(
-    {}
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    Record<string, string | string[]>
+  >({});
   const [selectedDateRanges, setSelectedDateRanges] = useState({});
   const [searchText, setSearchText] = useState<Record<string, string>>({});
   const [pageNo, setPageNo] = useState(0);
-  const [sort, setSort] = useState({
+  const [sort, setSort] = useState<SortType>({
     computedDate: {
       sortDir: "DESC",
       sortField: "computedDate",
@@ -72,35 +82,54 @@ function PatientReAllocation({
   >([]);
 
   const handleTabChange = useCallback(
-    ({ item }: { item: { lable: string; value: string } }) => {
-      setActiveTab(item?.value);
-      setRoleAliasName(item?.lable);
+    ({ item }: { item: { label: string; value: string } }) => {
+      if (item?.value === "Inpatient" || item?.value === "Outpatient") {
+        setSubActiveTab(item?.value);
+      } else {
+        setActiveTab(item?.value);
+        setRoleAliasName(item?.label);
+      }
       setSelectedDates({});
       setSelectedDateRanges({});
       setSelectedOption({});
       setSearchText({});
     },
-    []
+    [setSubActiveTab],
   );
 
   const tabList = useMemo(() => {
+    const dynamicRoles = generateHeaderTab({
+      tabList:
+        allAllocationRoleData?.allocationRoles?.filter(
+          (item) => item?.aliasName?.toUpperCase() !== "MASTER_AUDIT",
+        ) || [],
+      value: "aliasName",
+      id: "roleId",
+    });
+
+    const primaryTabs = [
+      { label: "Inpatient", value: "Inpatient" },
+      { label: "Outpatient", value: "Outpatient" },
+    ];
+
+    const secondaryTabs = dynamicRoles;
+
     return {
       isTab: true,
-      tabList: generateHeaderTab({
-        tabList: allAllocationRoleData?.allocationRoles,
-        value: "aliasName",
-        id: "roleId",
-      }),
+      tabList: primaryTabs,
+      secondaryTabList: secondaryTabs,
       loading: allAllocationRoleLoading,
-      activeTab: activeTab,
-      onClick: ({ item }: { item: { lable: string; value: string } }) =>
+      activeTab: subActiveTab,
+      secondaryActiveTab: activeTab,
+      onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
       value: "aliasName",
     };
   }, [
+    activeTab,
+    subActiveTab,
     allAllocationRoleData,
     allAllocationRoleLoading,
-    activeTab,
     handleTabChange,
   ]);
   const onPageChange = useCallback(
@@ -108,7 +137,7 @@ function PatientReAllocation({
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
   const handleRowChange = ({ value }: { value: number }) => {
     const totalRecords = tableData?.pageResponse?.totalElements || 0;
@@ -134,7 +163,12 @@ function PatientReAllocation({
   }, [getAllRolesTab]);
 
   const handleRowCheckboxChange = useCallback(
-    async ({ e, row, singleCheck, checked }: handleRowCheckboxChangeType) => {
+    async ({
+      e,
+      row,
+      singleCheck,
+      checked,
+    }: handleRowCheckboxChangeType<patientReAllocationContentArrayType>) => {
       if (!singleCheck) {
         if (checked) {
           setCheckedLoader(true);
@@ -158,10 +192,10 @@ function PatientReAllocation({
                 username: patient?.username,
                 roleId: patient?.roleId,
                 fileName: patient?.fileName,
-              })
+              }),
             );
             setSelectedRows(
-              result.map((patient: checkAllPatientIdType) => patient.patientId)
+              result.map((patient: checkAllPatientIdType) => patient.patientId),
             );
             setSelectedPatientDetails(result);
           }
@@ -178,13 +212,20 @@ function PatientReAllocation({
           const updatedSelection = e.target.checked
             ? [...prev, row.patientId]
             : prev.filter((id) => id !== row.patientId);
+          const current = row as patientReAllocationContentArrayType & {
+            currentStatus?: { allocatedTo?: string; roleId?: string };
+            fileName?: string;
+          };
           setSelectedPatientDetails(
-            updatedSelection.map((id) => ({
-              patientId: id,
-              username: row?.currentStatus?.allocatedTo,
-              roleId: row?.currentStatus?.roleId,
-              fileName: row?.fileName,
-            }))
+            updatedSelection.map(
+              (id) =>
+                ({
+                  patientId: id,
+                  username: current.currentStatus?.allocatedTo ?? "",
+                  roleId: current.currentStatus?.roleId ?? "",
+                  fileName: current.fileName,
+                }) as checkAllPatientIdType,
+            ),
           );
           return updatedSelection;
         });
@@ -200,13 +241,19 @@ function PatientReAllocation({
       setCheckedHeader,
       setSelectedRows,
       setSelectedPatientDetails,
-    ]
+    ],
   );
 
-  const getAllPatientsAllocation = useCallback(async () => {
+  const getAllPatientsReAllocation = useCallback(async () => {
+    let currentPageId = reAllocationPageId;
+    if (subActiveTab === "Inpatient") {
+      currentPageId = patienReAllocationInPatientPageId;
+    } else if (subActiveTab === "Outpatient") {
+      currentPageId = patienReAllocationOutPatientPageId;
+    }
     try {
       await getTableView({
-        pageId: reAllocationPageId,
+        pageId: activeTab || currentPageId,
         pageNo,
         pageSize: 15,
         roleId: activeTab,
@@ -219,7 +266,7 @@ function PatientReAllocation({
       });
       setTriggerTableCustomization((prev) => ({
         ...prev,
-        patientallocation: false,
+        patientreallocation: false,
       }));
     } catch (e) {
       console.error("Error Occur While table call in the Re Allocation page");
@@ -237,35 +284,32 @@ function PatientReAllocation({
     activeTab,
   ]);
   useEffect(() => {
-    getAllPatientsAllocation();
-  }, [pageNo, selectedOption, searchText, selectedDateRanges, sort, activeTab]);
+    getAllPatientsReAllocation();
+  }, [
+    pageNo,
+    selectedOption,
+    searchText,
+    selectedDateRanges,
+    sort,
+    activeTab,
+    subActiveTab,
+  ]);
 
   useEffect(() => {
-    getAllRoles();
-  }, []);
-
-  useEffect(() => {
-    const hasSelection = selectedRows && selectedRows.length > 0;
-    onSelectionChange?.(hasSelection);
-  }, [selectedRows, onSelectionChange]);
-
-  useEffect(() => {
-    if (triggerTableCustomization?.patientallocation) {
-      getAllPatientsAllocation();
+    if (triggerTableCustomization?.patientreallocation) {
+      getAllPatientsReAllocation();
     }
   }, [triggerTableCustomization]);
 
   useEffect(() => {
     if (prevReAllocateModalRef.current === true && !allocateModal) {
-      getAllPatientsAllocation();
+      getAllPatientsReAllocation();
     }
     prevReAllocateModalRef.current = allocateModal;
   }, [allocateModal]);
 
   return (
-    <>
-      <ContentLayout tabList={tabList} />
-
+    <ContentLayout tabList={tabList}>
       <div className="content">
         <ReusableFilters
           showFilter={false}
@@ -287,7 +331,7 @@ function PatientReAllocation({
         <ReusableTable
           data={tableData?.pageResponse?.content}
           column={tableData?.metaDataDTO?.filter(
-            (item) => item?.active && item?.columnActive
+            (item) => item?.active && item?.columnActive,
           )}
           loader={tableLoader}
           setSort={setSort}
@@ -318,7 +362,7 @@ function PatientReAllocation({
         selectedRows={selectedRows}
         selectedPatientDetails={selectedPatientDetails}
       />
-    </>
+    </ContentLayout>
   );
 }
 
@@ -337,6 +381,6 @@ const connector = connect(
   {
     getTableView: tableAction?.tabelViewCall,
     getAllRolesTab: productivityAction?.getAllRoles,
-  }
+  },
 );
 export default connector(PatientReAllocation);

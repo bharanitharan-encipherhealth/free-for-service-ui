@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import { handleActions } from "redux-actions";
 import { ReducerType } from "../../storeModal";
-import { getAllRoles, reportTabList, setViewLoad } from "./actions";
+import { reportTabList } from "./actions";
 
 const initialState: ReducerType = {
   loading: true,
@@ -30,7 +30,7 @@ const createReducer = (actionType: any) =>
       }),
     },
 
-    initialState
+    initialState,
   );
 const getUserLoading = (type: any) =>
   handleActions(
@@ -39,7 +39,7 @@ const getUserLoading = (type: any) =>
       [type.SUCCEEDED]: () => false,
       [type.FAILED]: () => false,
     },
-    false
+    false,
   );
 
 const localRedux = (action: any) =>
@@ -47,7 +47,7 @@ const localRedux = (action: any) =>
     {
       [action.toString()]: (state, { payload }) => payload,
     },
-    ""
+    "",
   );
 const reportReducer = combineReducers({
   reportTabsList: createReducer(reportTabList),

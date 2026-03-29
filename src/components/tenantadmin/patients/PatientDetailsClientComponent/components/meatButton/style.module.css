@@ -1,0 +1,30 @@
+.btnColor {
+  background-color: var(--meatFalse);
+  color: #fff;
+}
+.btnColor:hover {
+  color: #fff;
+}
+.containerBtnOld {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #063069;
+}
+.textColor {
+  color: #fff;
+}
+
+.textColor:hover {
+  opacity: 0.8;
+}
+
+.successActive {
+  opacity: 0.8;
+}
+
+.bgFill {
+  background-color: var(--meatTrue);
+}
+.bgFillOld {
+  background-color: #198754;
+}

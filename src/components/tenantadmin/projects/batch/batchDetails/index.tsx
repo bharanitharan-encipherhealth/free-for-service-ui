@@ -1,4 +1,4 @@
-import { metaDataType } from "@/state/table/model";
+import { metaDataType, SortType } from "@/state/table/model";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import ReusableFilters from "@/components/ReusbaleFilter";
 import { connect, ConnectedProps } from "react-redux";
@@ -12,6 +12,11 @@ import { PaginatorPageChangeEvent } from "primereact/paginator";
 import ReusableTable from "@/components/ReusabelTable";
 import { formatDateTime } from "@/util/reusableFunction";
 import PageHeaderLayout from "@/components/layout/pageHeaderLayout/page";
+import { productivityContentArrayType } from "@/models/tenantadmin/tin/patients";
+import { setStorage } from "@/util/storage";
+import { actions as tableAction } from "@/state/table";
+import { useRouter } from "next/navigation";
+import { notification } from "antd";
 
 type BatchReduxProps = ConnectedProps<typeof connector>;
 
@@ -22,20 +27,22 @@ function BatchDetails({
   tableData,
   tableLoader,
   setViewDetailedBatch,
+  getRoutedData,
 }: BacthPropsType) {
+  const route = useRouter();
   const batchFilterColumn: metaDataType[] = useMemo(
     () => [
       {
         active: true,
         actualField: "search",
         columnActive: true,
-        design: [],
+        design: [""],
         filter: { filter: "", style: "SEARCH", options: [], nameOptions: [] },
         headerName: "Search by Name",
         orderValue: 1,
       },
     ],
-    []
+    [],
   );
 
   const bactchInfoDetails = useMemo(
@@ -65,7 +72,7 @@ function BatchDetails({
           : "---",
       },
     ],
-    [bacthInfo]
+    [bacthInfo],
   );
 
   const [activeFilters, setActiveFilters] =
@@ -74,13 +81,14 @@ function BatchDetails({
   const [pageNo, setPageNo] = useState(0);
   const [columnData, setColumnData] = useState<metaDataType[]>([]);
   const [paginationFirst, setPaginationFirst] = useState(0);
+  const [sort, setSort] = useState<SortType>({});
 
   const onPageChange = useCallback(
     (e: PaginatorPageChangeEvent) => {
       setPaginationFirst(e.first);
       setPageNo(e.page);
     },
-    [setPaginationFirst, setPageNo]
+    [setPaginationFirst, setPageNo],
   );
 
   const getAllBatchInfo = useCallback(async () => {
@@ -100,47 +108,73 @@ function BatchDetails({
   }, [searchText, pageNo]);
 
   useEffect(() => {
-    const column = [
-      {
-        headerName: "MRN",
-        columnActive: true,
-        actualField: "mrNumber",
-        filter: null,
-        active: true,
-      },
-      {
-        headerName: "Patient Name",
-        columnActive: true,
-        actualField: "patientName",
-        filter: null,
-        active: true,
-      },
-      {
-        headerName: "Patient Type",
-        columnActive: true,
-        actualField: "patientType",
-        filter: null,
-        active: true,
-      },
-      {
-        headerName: "Processed Date & Time",
-        columnActive: true,
-        actualField: "createdDate",
-        filter: null,
-        active: true,
-        design: "DATE_TIME",
-      },
-      {
-        headerName: "Status",
-        columnActive: true,
-        actualField: "percentage",
-        design: ["PROGRESS_BAR"],
-        filter: null,
-        active: true,
-      },
-    ];
-    setColumnData(column);
+    const setColumn = () => {
+      const column = [
+        {
+          headerName: "MRN",
+          columnActive: true,
+          actualField: "mrNumber",
+          active: true,
+          design: [""],
+        },
+        {
+          headerName: "Patient Name",
+          columnActive: true,
+          actualField: "patientName",
+          active: true,
+          design: [""],
+        },
+        {
+          headerName: "Patient Type",
+          columnActive: true,
+          actualField: "patientType",
+          active: true,
+          design: [""],
+        },
+        {
+          headerName: "Processed Date & Time",
+          columnActive: true,
+          actualField: "createdDate",
+          active: true,
+          design: ["DATE_TIME"],
+        },
+        {
+          headerName: "Status",
+          columnActive: true,
+          actualField: "percentage",
+          design: ["PROGRESS_BAR"],
+          active: true,
+        },
+      ];
+      setColumnData(column);
+    };
+    setColumn();
   }, [tableData]);
+
+  const params = {
+    pageNo,
+    paginationFirst,
+    activeFilters,
+    searchText,
+  };
+
+  const goToPatientDetails = useCallback(
+    ({ record }: { record: productivityContentArrayType }) => {
+      if (record?.processStage === "FINISHED") {
+        const controller = new AbortController();
+        controller.abort();
+        setStorage("patientId", record?.patientId);
+        setStorage("routeBackTo", "/tenantadmin/project");
+        getRoutedData(params);
+        route.push("/tenantadmin/patientsync/batchfilesview");
+      } else {
+        notification.warning({
+          message: record?.patientName + " file not processed. Please wait!",
+        });
+      }
+    },
+    [getRoutedData, params, route],
+  );
 
   return (
     <>
@@ -160,15 +194,20 @@ function BatchDetails({
           tableLoader={false}
         />
 
-        <ReusableTable
-          data={tableData?.content}
+        <ReusableTable<productivityContentArrayType>
+          data={tableData?.content as unknown as productivityContentArrayType[]}
           column={columnData}
           loader={tableLoader}
+          row={15}
+          isRowSizabel={false}
+          setSort={setSort}
+          sort={sort}
           first={pageNo === 0 ? 0 : paginationFirst}
           totalRecords={tableData?.totalElements}
           onPageChange={onPageChange}
           isPagination
           count={30}
+          onRowClick={goToPatientDetails}
         />
       </div>
     </>
@@ -182,7 +221,8 @@ const connector = connect(
   }),
   {
     getBatchInfoDetails: projectAction.getBatchInfo,
-  }
+    getRoutedData: tableAction?.getReportTable,
+  },
 );
 
 export default connector(BatchDetails);

@@ -1,0 +1,194 @@
+.hccLayout {
+  background-color: var(--hcc-bg-color);
+  border-radius: 20px;
+}
+
+.careGapLayout {
+  background-color: var(--care-gap-bg-color);
+  border-radius: 20px;
+}
+
+.potentialLayout {
+  background-color: var(--potential-bg-color);
+  border-radius: 20px;
+}
+
+.deletedLayout {
+  background-color: var(--deleted-bg-color);
+  border-radius: 20px;
+}
+
+.hccLayoutTextColor {
+  color: var(--defaultColor);
+  background-color: var(--diagnosis-color);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.careGapLayoutTextColor {
+  color: var(--defaultColor);
+  background-color: var(--care-gap-color);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.potentialLayoutTextColor {
+  color: var(--defaultColor);
+  background-color: var(--suggest-color);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.deletedLayoutTextColor {
+  color: var(--defaultColor);
+  background-color: var(--delete-color);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.hccCard {
+  background-color: var(--defaultColor);
+  border-radius: 10px;
+}
+
+.iconBagColor {
+  color: var(--tableBorder) !important;
+}
+
+.comboCode {
+  color: var(--allocateBgColor);
+}
+
+.suggestMoveIcon {
+  color: var(--defaultColor);
+  background-color: var(--care-gap-color);
+  border-radius: 10px;
+  padding: 2px;
+}
+
+.deleteMoveIcon {
+  color: var(--defaultColor);
+  background-color: var(--delete-color);
+  border-radius: 10px;
+  padding: 2px;
+}
+
+.diagnosisMoveIcon {
+  color: var(--defaultColor);
+  background-color: var(--diagnosis-color);
+  border-radius: 10px;
+  padding: 2px;
+}
+
+.potientialMoveIcon {
+  color: var(--defaultColor);
+  background-color: var(--suggest-color);
+  border-radius: 10px;
+  padding: 2px;
+}
+
+.hyperLinkPopover {
+  color: var(--hyper-link-popover-color);
+  padding: 3px;
+  border: 1px solid var(--hyper-link-popover-color);
+  border-radius: 10px;
+}
+
+.providerColor {
+  color: var(--diagnosis-color);
+}
+
+.borderLast > div:not(:last-child) {
+  position: relative;
+  padding-right: 5px;
+}
+
+.borderLast > div:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0%;
+  height: 100%;
+  border-right: 1px solid #d1d5dc;
+}
+
+.restLength {
+  background-color: var(--processed-bg-color);
+  color: var(--defaultColor);
+}
+
+.dateOfServiceColor {
+  color: var(--processed-bg-color);
+}
+
+.captureSectionColor {
+  color: var(--capture-section-color);
+}
+
+.meatFound {
+  background-color: var(--meat-found-bg-color);
+  color: var(--defaultColor);
+}
+
+.meatNotFound {
+  background-color: var(--meat-not-found-bg-color);
+  color: var(--defaultColor);
+}
+
+.meatCreteria {
+  border-style: solid;
+  border-color: transparent;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-left-width: 5px;
+  border-right-width: 5px;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(
+        to right,
+        var(--app-table-secondary1),
+        var(--app-table-secondary2),
+        var(--app-table-secondary3)
+      )
+      border-box;
+  border-radius: 20px;
+}
+
+.deletedMeatCreteria {
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(to right, red) border-box;
+  border-style: solid;
+  border-color: transparent;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-left-width: 5px;
+  border-right-width: 5px;
+  border-radius: 20px;
+}
+
+.headerRow {
+  display: grid;
+  grid-template-columns: 2.2fr 2.8fr 2.8fr 2.8fr 2.8fr 0.3fr;
+  font-weight: 600;
+  border-style: solid;
+  background: linear-gradient(
+    to right,
+    var(--app-table-secondary1),
+    var(--app-table-secondary2),
+    var(--app-table-secondary3)
+  );
+  color: var(--defaultColor);
+  border-radius: 20px;
+}
+
+.headerCell {
+  padding: 8px;
+  font-weight: bold;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 2.2fr 2.8fr 2.8fr 2.8fr 2.8fr 0.3fr;
+  align-items: center;
+}

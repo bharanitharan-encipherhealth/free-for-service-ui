@@ -1,7 +1,7 @@
 import { metaDTOType, OtherTableType, pageableType } from "@/state/table/model";
 import { UserInfo } from "../tracking";
 
-export interface contentArrayType {
+export interface contentArrayType extends Record<string, unknown> {
   id: string;
   tinNumber: string;
   tinName: string;

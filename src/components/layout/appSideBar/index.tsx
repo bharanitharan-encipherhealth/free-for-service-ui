@@ -26,7 +26,7 @@ function AppSideBar({ selectedUserRole }: appSideBarType) {
   const getRoleMenuList = ({ userRole }: { userRole: string }) => {
     const allRoles = JSON?.parse(getStorage("userAllRoles"));
     const selectedRoleObj = allRoles?.find(
-      (res: userRolesTypes) => res.proxyRole === userRole
+      (res: userRolesTypes) => res.proxyRole === userRole,
     );
 
     const accessMenuList = selectedRoleObj?.panelList?.accessListForPanel1
@@ -60,7 +60,7 @@ function AppSideBar({ selectedUserRole }: appSideBarType) {
     <div className={`${style.appSideBar}`}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className={`${style.arrowBoder}`}>
-          <div className="p-2 flex justify-end">
+          <div className="p-2 flex justify-center">
             <div
               className={`${style.sideNavArrow} rounded-full cursor-pointer`}
               onClick={() => {
@@ -74,7 +74,11 @@ function AppSideBar({ selectedUserRole }: appSideBarType) {
 
         <Menu
           items={menuList}
-          selectedKeys={[pathName]}
+          selectedKeys={
+            menuList
+              ?.filter((item) => pathName?.startsWith(item?.key as string))
+              ?.map((item) => item?.key as string) || [pathName]
+          }
           onClick={({ key }) => router.push(key)}
         />
       </Sider>

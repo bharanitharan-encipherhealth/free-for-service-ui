@@ -69,3 +69,14 @@ export const editRoles = async (data: {
   const res = await requestPortal(`${url}`, options);
   return res;
 };
+
+export const createUser = async ({ data }: { data: any }) => {
+  const url = `securityservice/admin/getusers/createuser`;
+  const options = {
+    method: "POST",
+    body: JSON.stringify(data),
+  };
+
+  const res = await requestPortal(`${url}`, options);
+  return res;
+};

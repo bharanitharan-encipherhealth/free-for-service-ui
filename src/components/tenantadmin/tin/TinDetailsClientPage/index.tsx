@@ -17,15 +17,17 @@ import {
   patientAllocationPageId,
   patientPageId,
   reAllocationPageId,
+  userCreatePageId,
 } from "@/util/pageIds";
 import { tinPatientTableResposneType } from "@/models/tenantadmin/tin/patients";
 import PageHeaderLayout from "@/components/layout/pageHeaderLayout/page";
 import { getStorage } from "@/util/storage";
 import { getTable } from "@/state/table/network";
 import { contentArrayType } from "@/models/tenantadmin/tin";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import PatientReAllocation from "./components/patientReAllocation";
 import MoveBack from "./components/moveback";
+import Batch from "../../projects/batch";
 
 type TinDetailsPropsType = ConnectedProps<typeof connector>;
 function TinDetailsClientPage({
@@ -40,8 +42,12 @@ function TinDetailsClientPage({
       tab: "tabMenuList2",
     });
   }, []);
+  const searchParams = useSearchParams();
+  const pathName = usePathname();
+  const tabFromUrl = searchParams.get("tab");
 
   const [activeTab, setActiveTab] = useState<string>("");
+  const [subActiveTab, setSubActiveTab] = useState<string>("Inpatient");
 
   const [loading, setLoading] = useState<boolean>(false);
   const [activeFilters, setActiveFilters] = useState<metaDataType[]>([]);
@@ -106,11 +112,11 @@ function TinDetailsClientPage({
       } catch (e) {
         console.error(
           e,
-          "Error Occur while tableCustomization call in the tinDetails"
+          "Error Occur while tableCustomization call in the tinDetails",
         );
       }
     },
-    [setTriggerTableCustomization, activeTab, tableCustomizationCall]
+    [setTriggerTableCustomization, activeTab, tableCustomizationCall],
   );
 
   const handleTabsButton = useCallback(() => {
@@ -161,24 +167,27 @@ function TinDetailsClientPage({
   ]);
 
   const handleTabChange = useCallback(
-    ({ item }: { item: { lable: string; value: string } }) => {
+    ({ item }: { item: { label: string; value: string } }) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("tab", item.value);
+      router.push(`${pathName}?${params.toString()}`);
       setActiveTab(item?.value);
       setPatientAllocationHasSelection(false);
     },
-    []
+    [router, pathName, searchParams],
   );
   const [tableCustomization, setTableCustomization] = useState<boolean>(false);
   const tabList = useMemo(() => {
     return {
       isTab: true,
       tabList: generateHeaderTab({
-        tabList: tinDetailsTab,
+        tabList: [...tinDetailsTab, "Batch"],
       }).filter(
-        (item: { lable: string; value: string }) =>
-          item?.value != "Query Approval"
+        (item: { label: string; value: string }) =>
+          item?.value != "Query Approval" && item?.value != "Master Audit",
       ),
       activeTab,
-      onClick: ({ item }: { item: { lable: string; value: string } }) =>
+      onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
     };
   }, [handleTabChange, activeTab, tinDetailsTab]);
@@ -225,7 +234,7 @@ function TinDetailsClientPage({
       const tinId = getStorage("tinId");
       if (result?.status == "SUCCESS") {
         const headers = result?.response?.pageResponse?.content.filter(
-          (item: contentArrayType) => item?.id == tinId
+          (item: contentArrayType) => item?.id == tinId,
         )?.[0];
         const row = result?.response?.metaDataDTO;
 
@@ -233,7 +242,7 @@ function TinDetailsClientPage({
           row.map((h: metaDataType) => ({
             title: h.headerName,
             value: headers?.[h.actualField],
-          }))
+          })),
         );
         setLoading(false);
       }
@@ -243,8 +252,12 @@ function TinDetailsClientPage({
   }, []);
 
   useEffect(() => {
-    setActiveTab(tinDetailsTab?.[0]);
-  }, []);
+    if (tabFromUrl) {
+      setActiveTab(tabFromUrl);
+    } else if (tinDetailsTab?.length > 0) {
+      setActiveTab(tinDetailsTab[0]);
+    }
+  }, [tabFromUrl, tinDetailsTab]);
 
   useEffect(() => {
     if (
@@ -253,8 +266,8 @@ function TinDetailsClientPage({
     ) {
       setActiveFilters(
         tableData?.metaDataDTO.filter(
-          (item) => item.active && item?.filter?.style
-        )
+          (item) => item.active && item?.filter?.style,
+        ),
       );
       setSelectedColumns(tableData?.metaDataDTO);
       // setIsFilter(false);
@@ -283,15 +296,17 @@ function TinDetailsClientPage({
       />
 
       <div>
-        {activeTab.toLowerCase() === "patients" && (
+        {activeTab?.toLowerCase() === "patients" && (
           <PatientsTab
             activeFilters={activeFilters}
             setActiveFilters={setActiveFilters}
             triggerTableCustomization={triggerTableCustomization}
             setTriggerTableCustomization={setTriggerTableCustomization}
+            subActiveTab={subActiveTab}
+            setSubActiveTab={setSubActiveTab}
           />
         )}
-        {activeTab.toLowerCase() === "patient allocation" && (
+        {activeTab?.toLowerCase() === "patient allocation" && (
           <PatientAllocation
             activeFilters={activeFilters}
             setActiveFilters={setActiveFilters}
@@ -300,9 +315,11 @@ function TinDetailsClientPage({
             onSelectionChange={setPatientAllocationHasSelection}
             allocateModal={allocateModal}
             setAllocateModal={setAllocateModal}
+            subActiveTab={subActiveTab}
+            setSubActiveTab={setSubActiveTab}
           />
         )}
-        {activeTab.toLowerCase() === "reallocation" && (
+        {activeTab?.toLowerCase() === "reallocation" && (
           <PatientReAllocation
             activeFilters={activeFilters}
             setActiveFilters={setActiveFilters}
@@ -311,10 +328,12 @@ function TinDetailsClientPage({
             onSelectionChange={setPatientReAllocationHasSelection}
             allocateModal={reAllocateModal}
             setAllocateModal={setReAllocateModal}
+            subActiveTab={subActiveTab}
+            setSubActiveTab={setSubActiveTab}
           />
         )}
 
-        {activeTab.toLowerCase() === "moveback" && (
+        {activeTab?.toLowerCase() === "moveback" && (
           <MoveBack
             activeFilters={activeFilters}
             setActiveFilters={setActiveFilters}
@@ -323,8 +342,12 @@ function TinDetailsClientPage({
             onSelectionChange={setPatientMoveBackSelection}
             allocateModal={moveBackModal}
             setAllocateModal={setMoveBackModal}
+            subActiveTab={subActiveTab}
+            setSubActiveTab={setSubActiveTab}
           />
         )}
+
+        {activeTab?.toLowerCase() === "batch" && <Batch />}
       </div>
     </div>
   );
@@ -337,7 +360,7 @@ const connector = connect(
   }),
   {
     tableCustomizationCall: tableAction?.tableDynamicColumn,
-  }
+  },
 );
 
 export default connector(TinDetailsClientPage);

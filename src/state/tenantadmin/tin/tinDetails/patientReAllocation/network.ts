@@ -1,7 +1,6 @@
-import { requestPortal, requestPortalExcel } from "@/util/network";
-import { getStorage } from "@/util/storage";
+import { requestPortal } from "@/util/network";
 
-export async function reAllocateUsersList({ data }) {
+export async function reAllocateUsersList({ data }: { data: unknown }) {
   const options = {
     method: "POST",
     body: JSON.stringify(data),
@@ -10,11 +9,11 @@ export async function reAllocateUsersList({ data }) {
   return res;
 }
 
-export const reAllocateUser = async ({ data }) => {
+export const reAllocateUser = async ({ data }: { data: unknown }) => {
   const url = `dbservice/reallocation/update`;
   const options = {
     method: "POST",
-    body:JSON.stringify(data)
+    body: JSON.stringify(data),
   };
 
   const res = await requestPortal(`${url}`, options);

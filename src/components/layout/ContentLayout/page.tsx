@@ -23,7 +23,9 @@ function ContentLayout({
   tabelData,
   setTableCustomization,
   tabList,
+  children,
 }: {
+  children?: React.ReactNode;
   activeFilters?: metaDataType[];
   setActiveFilters?: React.Dispatch<React.SetStateAction<metaDataType[]>>;
   pageTitle?: string;
@@ -48,10 +50,12 @@ function ContentLayout({
   setTableCustomization?: React.Dispatch<React.SetStateAction<boolean>>;
   tabList?: {
     isTab: boolean;
-    tabList: { lable: string; value: string }[];
+    tabList: { label: string; value: string }[];
+    secondaryTabList?: { label: string; value: string }[];
+    activeTab?: string;
+    secondaryActiveTab?: string;
+    onClick: ({ item }: { item: { label: string; value: string } }) => void;
     loading?: boolean;
-    activeTab: string;
-    onClick: ({ item }: { item: { lable: string; value: string } }) => void;
   };
 }) {
   const handleTabelCustomizationRest = useCallback(() => {
@@ -74,10 +78,10 @@ function ContentLayout({
           prev.map((item) => ({
             ...item,
             active: status,
-          }))
+          })),
         );
     },
-    [setSelectedColumns]
+    [setSelectedColumns],
   );
 
   const handleSelectedColumn = useCallback(
@@ -95,25 +99,25 @@ function ContentLayout({
           });
           const activeCols = updated
             .filter(
-              (col) => col.active && col.actualField !== item?.actualField
+              (col) => col.active && col.actualField !== item?.actualField,
             )
             .sort((a, b) => a!.orderValue! - b!.orderValue!);
 
           const clickedActive = updated.find(
-            (col) => col.actualField === item?.actualField && col.active
+            (col) => col.actualField === item?.actualField && col.active,
           );
           if (clickedActive) activeCols.push(clickedActive);
 
           return updated.map((col) => {
             if (!col.active) return { ...col, order: null };
             const idx = activeCols.findIndex(
-              (c) => c.actualField === col.actualField
+              (c) => c.actualField === col.actualField,
             );
             return { ...col, orderValue: idx + 1 };
           });
         });
     },
-    [setSelectedColumns]
+    [setSelectedColumns],
   );
 
   const handleTableCustomization = useMemo(() => {
@@ -148,19 +152,7 @@ function ContentLayout({
               onClick={() => handleSelectedColumn({ item })}
             >
               <div
-                style={{
-                  width: 24,
-                  height: 24,
-                  borderRadius: "50%",
-                  border: item?.active ? "none" : "2px solid #d9d9d9",
-                  backgroundColor: item?.active ? "#0942C4" : "transparent",
-                  color: item?.active ? "#fff" : "transparent",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: "bold",
-                  userSelect: "none",
-                }}
+                className={`${style?.badge} ${item?.active ? style?.badgeActive : style?.badgeInactive}`}
               >
                 {item?.active && item?.orderValue}
               </div>
@@ -170,7 +162,7 @@ function ContentLayout({
 
           <div className="flex justify-center gap-2 bottom-0">
             <Button
-              className={style.headerBtnColor}
+              // className={style.headerBtnColor}
               onClick={handleTabelCustomizationRest}
             >
               Reset
@@ -196,17 +188,17 @@ function ContentLayout({
       if (setActiveFilters)
         setActiveFilters((prev: metaDataType[]) =>
           prev.map((x) =>
-            x.headerName === item.headerName ? { ...x, active: !x.active } : x
-          )
+            x.headerName === item.headerName ? { ...x, active: !x.active } : x,
+          ),
         );
     },
-    [setActiveFilters]
+    [setActiveFilters],
   );
 
   const handleReset = useCallback(() => {
     if (setActiveFilters)
       setActiveFilters((prev: metaDataType[]) =>
-        prev.map((item) => ({ ...item, active: true }))
+        prev.map((item) => ({ ...item, active: true })),
       );
   }, [setActiveFilters]);
 
@@ -214,23 +206,28 @@ function ContentLayout({
     if (activeFilters) {
       return (
         <>
-          <div className={`${style?.filterSelectAll} font-bold pb-1`}>
-            <Checkbox checked={activeFilters?.every((item) => item?.active)}>
+          <div className={`${style?.filterSelectAll} font-bold pb-2`}>
+            <Checkbox
+              className="custom-checkbox"
+              checked={activeFilters?.every((item) => item?.active)}
+            >
               Select All
             </Checkbox>
           </div>
-          {activeFilters?.map((item, index) => (
-            <div key={index} className="py-1">
-              <Checkbox
-                checked={item?.active}
-                onChange={() => handleFilterStatusChange({ item })}
-              >
+          <div className="py-1 px-1">
+            {activeFilters?.map((item, index) => (
+              <div key={index} className="py-1 flex gap-3 items-center">
+                <Checkbox
+                  className="custom-checkbox"
+                  checked={item?.active}
+                  onChange={() => handleFilterStatusChange({ item })}
+                />
                 {item?.headerName}
-              </Checkbox>
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
 
-          <div className="flex justify-between gap-2">
+          <div className="flex justify-between gap-2 py-3">
             <Button className={style.headerBtnColor}>Clear Filter</Button>
 
             <Button className={style.headerBtnColor} onClick={handleReset}>
@@ -244,10 +241,10 @@ function ContentLayout({
   return (
     <>
       <div
-        className={`${style?.contentLayout} h-[53px] px-2  flex items-center justify-between font-semibold`}
+        className={`${style?.contentLayout} h-13.25 px-2 flex items-center justify-between font-semibold`}
       >
         <div className="flex items-center gap-3">
-          <div className={`${style?.pageTitle}  text-lg`}>{pageTitle}</div>
+          <div className={`${style?.pageTitle} text-lg`}>{pageTitle}</div>
 
           {tabList?.isTab && (
             <div className="flex gap-4 contentTab text-xs items-center">
@@ -255,45 +252,83 @@ function ContentLayout({
                 <div
                   key={index}
                   onClick={() => tabList?.onClick({ item: item })}
-                  className={
-                    tabList?.activeTab == item?.value
-                      ? "activeContentTab cursor-pointer"
-                      : "cursor-pointer"
-                  }
+                  className={`
+                    ${
+                      tabList?.activeTab == item?.value
+                        ? "activeContentTab cursor-pointer"
+                        : "cursor-pointer"
+                    }
+                    capitalize `}
                 >
-                  {item?.lable}
+                  {item?.label}
                 </div>
               ))}
             </div>
           )}
         </div>
 
-        <div className="flex gap-2">
-          {layoutList &&
-            layoutList.map((item, index) => {
-              if (item?.isFilter) {
-                return (
-                  <Button
-                    key={index}
-                    className={`${style.headerBtnColor} no-loading-icon`}
-                    disabled={item?.loading}
-                  >
-                    <Popover
-                      placement="bottom"
-                      content={filterPopupContent()}
-                      trigger={["click"]}
-                    >
-                      <IoFilterSharp className="font-bold text-lg" />
-                    </Popover>
-                  </Button>
-                );
-              }
-
-              if (item?.isToolTip) {
-                return (
-                  <Tooltip title={item?.toolTip || ""} key={index}>
+        <div className="flex gap-4 items-center">
+          {tabList?.secondaryTabList && (
+            <div className="flex gap-4 contentTab text-xs items-center mr-4">
+              {tabList?.secondaryTabList?.map((item, index) => (
+                <div
+                  key={index}
+                  onClick={() => tabList?.onClick({ item: item })}
+                  className={`
+                    ${
+                      tabList?.secondaryActiveTab == item?.value
+                        ? "activeContentTab cursor-pointer"
+                        : "cursor-pointer"
+                    }
+                    capitalize `}
+                >
+                  {item?.label}
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="flex gap-2">
+            {layoutList &&
+              layoutList.map((item, index) => {
+                if (item?.isFilter) {
+                  return (
                     <Button
+                      key={index}
                       className={`${style.headerBtnColor} no-loading-icon`}
+                      disabled={item?.loading}
+                    >
+                      <Popover
+                        placement="bottom"
+                        content={filterPopupContent()}
+                        trigger={["click"]}
+                      >
+                        <IoFilterSharp className="font-bold text-lg" />
+                      </Popover>
+                    </Button>
+                  );
+                }
+
+                if (item?.isToolTip) {
+                  return (
+                    <Tooltip title={item?.toolTip || ""} key={index}>
+                      <Button
+                        className={`${style.headerBtnColor} no-loading-icon`}
+                        onClick={() => {
+                          if (item?.onClick) item?.onClick();
+                        }}
+                        disabled={item?.disable || item?.loading}
+                      >
+                        {item.btnTitle}
+                      </Button>
+                    </Tooltip>
+                  );
+                }
+
+                if (item?.isBtn) {
+                  return (
+                    <Button
+                      key={index}
+                      className={`${style.headerBtnColor}`}
                       onClick={() => {
                         if (item?.onClick) item?.onClick();
                       }}
@@ -301,25 +336,10 @@ function ContentLayout({
                     >
                       {item.btnTitle}
                     </Button>
-                  </Tooltip>
-                );
-              }
-
-              if (item?.isBtn) {
-                return (
-                  <Button
-                    key={index}
-                    className={`${style.headerBtnColor}`}
-                    onClick={() => {
-                      if (item?.onClick) item?.onClick();
-                    }}
-                    disabled={item?.disable || item?.loading}
-                  >
-                    {item.btnTitle}
-                  </Button>
-                );
-              }
-            })}
+                  );
+                }
+              })}
+          </div>
         </div>
       </div>
 
@@ -330,6 +350,7 @@ function ContentLayout({
       >
         {handleTableCustomization}
       </Drawer>
+      {children}
     </>
   );
 }
@@ -338,7 +359,7 @@ const connector = connect(
   (state: { tableView: metaDataType[] }) => ({
     tabelData: state?.tableView,
   }),
-  {}
+  {},
 );
 
 export default connector(ContentLayout);

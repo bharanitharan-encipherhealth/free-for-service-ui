@@ -26,7 +26,7 @@ export interface getReportTableCallType {
   allAzureBlobPath?: boolean;
 }
 
-export interface resposeDataArrayType {
+export interface resposeDataArrayType extends Record<string, unknown> {
   id: string;
   fileName: string;
   patientType: string;
@@ -55,7 +55,7 @@ export interface ReportPropsType {
   reportTabList: getReportTabsResponseType;
   reportTabListLoading: boolean;
   getReportTableCall: (
-    tabelParams: getReportTableCallType
+    tabelParams: getReportTableCallType,
   ) => Promise<getReportTableCallResponseType>;
   tableData: resposeType;
   tableLoader: boolean;
