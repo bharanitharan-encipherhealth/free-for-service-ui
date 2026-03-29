@@ -10,6 +10,7 @@ import dashboardTypes from "@/state/admin/dashboard/model";
 import { getRoleIdByRole } from "@/resuabelFunction/Menu";
 import { getLocalStored } from "@/util/storage";
 import Default from "../widgets/default";
+import moment from "moment";
 
 
 interface DateRange {
@@ -27,16 +28,14 @@ function DynamicDashboardClientComponent({
   dashboardData,
 }: ReduxProps) {
   
-  const [handleDateRange, setHandleDateRange] = useState<DateRange>({
-    startDate: "2024-01-01",
-    endDate: "2024-01-31"
-  });
+  const [handleDateRange, setHandleDateRange] = useState<DateRange>({startDate: "", endDate: ""});
 
   const [selectedDates, setSelectedDates] = useState<any>([]);
 
   const [activeBtn, setActiveBtn] = useState("Default");
   const [selectedRole, setSelectedRole] = useState("Admin");
-
+  const [selectedValue, setSelectedValue] = useState("")
+  const [customDate, setCustomDate] = useState<string[]>([]);
 
   const handleApiCalls = async ({
     actionType,
@@ -69,12 +68,38 @@ function DynamicDashboardClientComponent({
     } catch (error) {}
   };
 
-  useEffect(()=>{
-     handleGetWidgets();
-  },[]);
+  const getAllDatesInRange = ({dateRange}: {dateRange: DateRange}) => {
+    const dates = [];
+    let currentDate = moment(dateRange?.startDate);
 
-  console.log("handleDateRange", handleDateRange);
-  console.log("dashboardData", dashboardData);
+    while (currentDate.isSameOrBefore(dateRange?.endDate)) {
+      dates.push(currentDate.format("MMMDD"));
+      currentDate = currentDate.add(1, "days");
+    }
+
+    return dates;
+  };
+
+  // useEffect(() => {
+  //   if (selectedTab) {
+  //     handleGetWidgets();
+  //   }
+  // }, [selectedTab]);
+
+    useEffect(() => {
+    const customRange = getAllDatesInRange({dateRange:handleDateRange});
+    setCustomDate(customRange);
+  }, [handleDateRange]);
+
+  useEffect(() => {
+    if (!handleDateRange?.startDate || !handleDateRange?.endDate) return;
+    handleGetWidgets();
+  }, [handleDateRange?.startDate, handleDateRange?.endDate]);
+
+  useEffect(() => {
+    if (!handleDateRange?.startDate || !handleDateRange?.endDate) return;
+    handleGetWidgets();
+  }, []);
 
   return (
     <div>
@@ -83,8 +108,9 @@ function DynamicDashboardClientComponent({
         setActiveBtn={setActiveBtn}
         activeBtn={activeBtn}
         setSelectedDates={setSelectedDates}
+        setSelectedValue={setSelectedValue}
       />
-      <Default selectedRole={selectedRole} dataRange={selectedDates} />
+      <Default selectedRole={selectedRole} dateRange={handleDateRange} selectedValue={selectedValue} customRange={customDate}/>
     </div>
   );
 }

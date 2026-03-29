@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 
 import { renderUserPrfoileAvatar } from "@/components/layout/appHeader/function";
 import { FaTriangleExclamation } from "react-icons/fa6";
+import { useEffect, useState } from "react";
 
 export const getResponePopup = (res) => {
   switch (res?.data?.status ? res?.data?.status : res?.status) {
@@ -392,3 +393,156 @@ export const priorityOptions = [
 export const disablePastDate = (current) => {
   return current && current.isBefore(moment().subtract(1, "day"));
 };
+
+export const useWindowWidth = () => {
+  const [windowWidth, setWindowWidth] = useState(null);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+
+    // Set initial width
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return windowWidth;
+};
+
+export const formatKValue = (val) => {
+  if (typeof val !== "number" || isNaN(val)) return "0";
+
+  if (val >= 1_000_000_000) return (val / 1_000_000_000).toFixed(1) + "B";
+  if (val >= 1_000_000) return (val / 1_000_000).toFixed(1) + "M";
+  if (val >= 1_000) return (val / 1_000).toFixed(1) + "K";
+  return val.toFixed(0);
+};
+
+export const getColorValue = (key) => {
+  switch (key) {
+    case "primary":
+    case "1":
+      return "#064BAC";
+    case "secondary":
+    case "2":
+      return "#5271FA";
+    case "secondary2":
+    case "3":
+      return "#00C1FF";
+    case "secondary3":
+    case "4":
+      return "#006DDC";
+    case "secondary4":
+    case "5":
+      return "#008FCA";
+    case "secondary5":
+    case "6":
+      return "#0A5EB0";
+    case "secondary6":
+    case "7":
+      return "#8576FF";
+    default:
+      return null;
+  }
+};
+
+export const parseKValue = (val) => {
+  if (typeof val === "string") {
+    const num = parseFloat(val);
+    if (val.toUpperCase().includes("K")) return num * 1_000;
+    if (val.toUpperCase().includes("M")) return num * 1_000_000;
+    if (val.toUpperCase().includes("B")) return num * 1_000_000_000;
+    return num;
+  }
+  return typeof val === "number" ? val : 0;
+};
+
+export const getFormattedChartData = (rawSeries, chartType) => {
+  const categories = rawSeries.map((item) => item.name);
+  const values = rawSeries.map((item) => item.value);
+  const colors = rawSeries.map((item) => item.color);
+  const legendData = rawSeries.map((item) => ({
+    ...item,
+    itemStyle: { color: item.color || item.itemStyle?.color },
+  }));
+  const formattedSeries =
+    chartType === "bar" || chartType === "line"
+      ? [
+          {
+            name: "Status",
+            data: values,
+            colorBy: "data",
+            itemStyle: {
+              color: (params) => colors[params.dataIndex],
+            },
+          },
+        ]
+      : rawSeries.map((item) => ({
+          ...item,
+          itemStyle: { color: item.color },
+        }));
+
+  return {
+    categories,
+    formattedSeries,
+    legendData,
+    height: chartType === "donut" ? 180 : 220,
+  };
+};
+
+export function formatValues(values, dates) {
+  const formatobj = {};
+
+  if (Array.isArray(values)) {
+    values.forEach((obj) => {
+      const key = Object.keys(obj)[0];
+      const formattedKey = formatDate(key);
+      formatobj[formattedKey] = obj[key];
+    });
+  } else if (values && typeof values === "object") {
+    Object.keys(values).forEach((key) => {
+      const formattedKey = formatDate(key);
+      formatobj[formattedKey] = values[key];
+    });
+  }
+  let resultArray = [];
+  if (dates.length === 1) {
+    const singleDate = dates[0];
+    const nextDate = new Date(singleDate);
+    nextDate.setDate(nextDate.getDate() + 1);
+    const currentFormatted = formatDate(singleDate);
+    const nextFormatted = formatDate(nextDate);
+
+    resultArray = [
+      formatobj[currentFormatted] || 0,
+      formatobj[nextFormatted] || 0,
+    ];
+  } else {
+    resultArray = dates.map((date) => formatobj[formatDate(date)] || 0);
+  }
+
+  return resultArray;
+}
+
+export const toFixedNum = (value, precision = 2) => {
+  return typeof value === "number" ? parseFloat(value?.toFixed(precision)) : 0;
+};
+
+export const getChartTimeLine = (obj, plotConfig) => {
+  const { key, value } = plotConfig;
+  const tempObj = {};
+  if (obj) {
+    for (const i of obj) {
+      tempObj[i[key]] = toFixedNum(i[value], 2);
+    }
+  }
+  return tempObj;
+};
+
+export const statusFormate = (status) => {
+  return typeof status == "string"
+    ? status?.replace(/([a-z](?=[A-Z]))/g, "$1 ")
+    : status;
+};
+

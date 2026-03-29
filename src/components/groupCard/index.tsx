@@ -1,85 +1,39 @@
-"use client";
-
 import React from "react";
 import dynamic from "next/dynamic";
+const AppChart = dynamic(() => import("../appChart"), { ssr: false });
+import ChartHeader, { CustomHeader } from "../chartHeader";
+import StatCard from "../statCard";
 
-import ChartHeader from "../chartHeader";
-// import StatCard from "../statChart";
-
-/* =========================
-   Dynamic chart import
-========================= */
-
-const AppChart = dynamic(() => import("../appChart"), {
-  ssr: false,
-});
-
-/* =========================
-   TYPES
-========================= */
-
-export interface ChartSeries {
-  name: string;
-  data: any[];
-  color?: string;
-  area?: boolean;
-  step?: string;
-  plotConfig?: {
-    key: string;
-    value: string;
-    dates?: string[];
-  };
-}
-
-export interface CustomHeader {
-  label?: string;
-  header?: string;
-  value?: string | number;
-}
-
-export interface GroupChartItem {
-  type: "stat" | "bar" | "line" | "area" | "donut" | "pie" | "stepline";
-  size: string;
-
-  // chart
-  series?: ChartSeries[];
-  categories?: string[];
-  height?: number;
-  chartBackground?: string;
+interface ChartItem {
+  type: string; // "stat" or chart type
+  size?: string; // e.g., "col-6 row-2"
   title?: string;
-
-  // stat card
   mainTitle?: string;
-  icon?: React.ReactNode;
   value?: string | number;
+  icon?: string;
   bgColor?: string;
-
+  series?: any[]; // replace with your chart series type
+  categories?: any[]; // replace with your chart categories type
+  height?: number | string;
+  chartBackground?: string;
   customHeader?: CustomHeader;
 }
 
-export interface GroupCardProps {
-  charts: GroupChartItem[];
+interface GroupCardProps {
+  charts: ChartItem[];
   chartType?: string;
-  dates?: string[];
+  dates?: { startDate?: string; endDate?: string };
 }
 
-/* =========================
-   COMPONENT
-========================= */
-
-const GroupCard: React.FC<GroupCardProps> = ({
-  charts = [],
-  chartType,
-  dates,
-}) => {
-  const getColSpan = (cls = ""): number => {
+const GroupCard: React.FC<GroupCardProps> = ({ charts, chartType, dates }) => {
+  const getColSpan = (cls = "") => {
     const match = cls.split(" ").find((c) => c.startsWith("col-"));
-    return match ? Number(match.replace("col-", "")) : 1;
+    return match ? +match.replace("col-", "") : 1;
   };
 
-  const getRowSpan = (cls = ""): number => {
+  const getRowSpan = (cls = "") => {
     const match = cls.split(" ").find((c) => c.startsWith("row-"));
-    return match ? Number(match.replace("row-", "")) : 1;
+    return match ? +match.replace("row-", "") : 1;
   };
 
   return (
@@ -91,7 +45,7 @@ const GroupCard: React.FC<GroupCardProps> = ({
         height: "100%",
       }}
     >
-      {charts.map((item, index) => {
+      {charts?.map((item, id) => {
         const style: React.CSSProperties = {
           gridColumn: `span ${getColSpan(item.size)}`,
           gridRow: `span ${getRowSpan(item.size)}`,
@@ -99,19 +53,17 @@ const GroupCard: React.FC<GroupCardProps> = ({
         };
 
         return (
-          <div key={index} style={style}>
-            {item.customHeader && (
-              <ChartHeader customHeader={item.customHeader} />
-            )}
+          <div key={id} style={style}>
+            {item.customHeader && <ChartHeader customHeader={item.customHeader} />}
 
             {item.type === "stat" ? (
               <div>
                 {item.mainTitle && (
                   <div className="fw-medium fs-5">{item.mainTitle}</div>
                 )}
-
                 <div className="d-flex justify-content-center align-items-center mt-5 pt-4">
                   <StatCard
+                    key={item.title}
                     icon={item.icon}
                     title={item.title}
                     value={item.value}
@@ -134,15 +86,14 @@ const GroupCard: React.FC<GroupCardProps> = ({
               </div>
             ) : (
               <AppChart
+                key={id}
                 type={item.type === "chartType" ? chartType : item.type}
                 title={item.title}
                 series={item.series || []}
-                categories={item.categories}
+                categories={item.categories || []}
                 height={item.height}
                 chartBackground={item.chartBackground}
-                showLegendBarLine={
-                  index === 0 && (item.series?.length || 0) > 1
-                }
+                showLegendBarLine={id === 0 && (item.series?.length || 0) > 1}
                 dates={dates}
               />
             )}

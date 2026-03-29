@@ -68,7 +68,7 @@ export interface ChartSeries {
 }
 
 export interface AppChartProps {
-  type?: "line" | "bar" | "area" | "donut" | "pie" | "stepline" | "gauge";
+  type?: string;
   title?: string;
   categories?: string[];
   series?: ChartSeries[];
@@ -98,7 +98,7 @@ export interface AppChartProps {
 ========================= */
 
 const AppChart: React.FC<AppChartProps> = ({
-  type = "line",
+  type = "",
   title,
   categories = [],
   series = [],

@@ -13,6 +13,7 @@ interface HeaderFiltersProps {
   setActiveBtn: (btn: string) => void;
   activeBtn: string;
   setSelectedDates: (dates: [Dayjs | null, Dayjs | null] | null) => void;
+  setSelectedValue:(val:string) => void
 }
 
 export const formatDateForIndex = ({ date, index }: { date: moment.Moment, index: number }) => {
@@ -33,7 +34,7 @@ export const formatDateForIndex = ({ date, index }: { date: moment.Moment, index
   return adjustedTime.toISOString();
 };
 
-function HeaderFilters({ setDateRange, setActiveBtn, activeBtn, setSelectedDates,  }: HeaderFiltersProps) {
+function HeaderFilters({ setDateRange, setActiveBtn, activeBtn, setSelectedDates, setSelectedValue }: HeaderFiltersProps) {
 
   const [isCustom, setIsCustom] = useState(false);
   // const [selectedDates, setSelectedDates] = useState<any>([]);
@@ -60,18 +61,23 @@ function HeaderFilters({ setDateRange, setActiveBtn, activeBtn, setSelectedDates
         break;
     }
   };
+  const applyPresetRange = (preset: "last_1_week" | "last_1_month") => {
+    const days = preset === "last_1_week" ? 6 : 29; // 7 days = 6 days back + today, 30 days = 29 back + today
+    setDateRange({
+      startDate: formatDateForIndex({
+        date: moment().subtract(days, "days"),
+        index: 0,
+      }),
+      endDate: formatDateForIndex({ date: moment(), index: 1 }),
+    });
+  };
+
   const handleRange = ( e: [Dayjs | null, Dayjs | null] | null) => {
     setSelectedDates(e);
     if (!e || !e[0] || !e[1]) {
-      setDateRange({
-        startDate: formatDateForIndex({
-          date: moment().subtract(29, "days"),
-          index: 0,
-        }),
-        endDate: formatDateForIndex({ date: moment(), index: 1 }),
-      });
+      applyPresetRange("last_1_month");
       setTimeout(() => pickerRef.current?.focus(), 100);
-    }else{
+    } else {
       setDateRange({
         startDate: formatDateForIndex({ date: moment(e[0].toISOString()), index: 0 }),
         endDate: formatDateForIndex({ date: moment(e[1].toISOString()), index: 1 }),
@@ -83,14 +89,24 @@ function HeaderFilters({ setDateRange, setActiveBtn, activeBtn, setSelectedDates
     setTabs(getTabList());
   }, [aliasName]);
 
-  const handleDateChange = (value:string) => {
+  useEffect(() => {
+    applyPresetRange("last_1_month");
+  }, []);
+
+  const handleDateChange = (value: string) => {
     if (value === "custom") {
       setIsCustom(true);
+      setSelectedValue(value)
     } else {
       setIsCustom(false);
       setSelectedDates([]);
-      if (pickerRef && pickerRef.current) {
+      setSelectedValue(value)
+      if (pickerRef?.current) {
         pickerRef.current.picker.setValue([]);
+      }
+      if (value === "last_1_week" || value === "last_1_month") {
+        applyPresetRange(value);
+        setSelectedValue(value)
       }
     }
   };
@@ -123,7 +139,7 @@ function HeaderFilters({ setDateRange, setActiveBtn, activeBtn, setSelectedDates
                     // name="select-days"
                     size="large"
                     placeholder="Date"
-                    defaultValue="Last 30 days"
+                    defaultValue="last_1_month"
                     options={[
                       { label: "Last 7 days", value: "last_1_week" },
                       { label: "Last 30 days", value: "last_1_month" },
@@ -198,5 +214,5 @@ function HeaderFilters({ setDateRange, setActiveBtn, activeBtn, setSelectedDates
     </div>
   )
 }
-const enhancer = connect((state: any) => ({}),{})
+const enhancer = connect((state) => ({}),{})
 export default enhancer(HeaderFilters)
