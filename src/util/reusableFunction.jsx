@@ -12,7 +12,7 @@ import isEqual from "lodash/isEqual";
 
 import { renderUserPrfoileAvatar } from "@/components/layout/appHeader/function";
 import { FaTriangleExclamation } from "react-icons/fa6";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const getNotification = () => getNotificationApi() || notification;
 
