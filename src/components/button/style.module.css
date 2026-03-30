@@ -1,0 +1,57 @@
+.btnColor {
+  background-color: #0942C4 !important;
+  color: #fff !important;
+}
+
+.btnColor:disabled {
+  background-color: #0942C4  !important;
+  color: #fff !important;
+  cursor: not-allowed !important;
+}
+
+.btnColor:hover {
+  background-color: #6c9ddd !important;
+  color: #fff !important;
+}
+
+.outer {
+  border: 1px solid #043069 !important;
+  color: #043069 !important;
+}
+
+.outer:hover {
+  background-color: #6c9ddd !important;
+  color: #fff !important;
+}
+
+.both {
+  background-color: #241571 !important;
+  color: white !important;
+  border-color: #241571;
+}
+.code {
+  background-color: #f0f6fe !important;
+  color: black !important;
+  border-color: #f0f6fe !important;
+}
+.submitBtn {
+  height: 45px;
+  background: #04306f !important;
+  color: white !important;
+  width: 30%;
+}
+.subHeader {
+  font-weight: 500;
+  font-size: 18px;
+  margin: 10px 0 10px 0;
+}
+.inputField {
+  height: 42px;
+}
+.picker,
+.picker:hover,
+.picker:focus,
+.picker:active {
+  border: 1px solid #d9d9d9 !important;
+  box-shadow: none !important;
+}

@@ -252,7 +252,8 @@ export default function ReusabelTable<
               onOpenChange={(visible) => {
                 if (visible) {
                   if (setEditingUser) setEditingUser(item);
-                  if (record.id !== undefined) setVisiblePopoverKey?.(record.id);
+                  if (record.id !== undefined)
+                    setVisiblePopoverKey?.(record.id);
                 }
               }}
             >
@@ -414,7 +415,7 @@ export default function ReusabelTable<
                 })
               )
             ) : (
-              <div className="d-flex px-4">---</div>
+              <div className="flex px-4">---</div>
             )}
           </div>
         );
@@ -442,7 +443,7 @@ export default function ReusabelTable<
       if (columnItem?.design?.includes("PROGRESS_BAR")) {
         const percentField = columnItem?.actualField;
         return (
-          <div className="d-flex justify-content-start gap-3">
+          <div className="flex justify-start gap-3">
             <Progress
               percent={
                 percentField !== undefined

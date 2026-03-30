@@ -1,0 +1,27 @@
+.btnActive {
+    border: 2px solid #04306f;
+    color: #04306f
+}
+.maincontainer {
+  position: relative;
+  top: 70px;
+  height: auto;
+  margin-bottom: 40px;
+  padding-bottom: 10px;
+}
+.showHeight {
+  min-height: 90vh;
+}
+
+:global(.ant-modal.dynamicDashboardModal) {
+  max-width: 95% !important;
+  width: 95% !important;
+  top: 0 !important;
+  padding-bottom: 0 !important;
+  margin: 0 !important;
+}
+
+:global(.ant-modal.dynamicDashboardModal .ant-modal-content) {
+  width: 95% !important;
+  border-radius: 0 !important;
+}

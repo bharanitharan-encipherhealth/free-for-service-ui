@@ -512,9 +512,9 @@ export const useFormSubmittable = (form, fields) => {
 
     const initialValues = fields
       ? fields.reduce((acc, key) => {
-          acc[key] = initialValuesRef.current[key];
-          return acc;
-        }, {})
+        acc[key] = initialValuesRef.current[key];
+        return acc;
+      }, {})
       : initialValuesRef.current;
 
     const isChanged = !isEqual(currentValues, initialValues);
@@ -607,4 +607,237 @@ export const stringToColour = (str) => {
   }
 
   return colour;
+};
+
+export const capitalizeFirstLetter = (string) => {
+  const formattedString = string?.toLowerCase();
+  return formattedString?.charAt(0)?.toUpperCase() + formattedString?.slice(1);
+};
+
+export function formatDate(dateString) {
+  const date = new Date(dateString);
+  const month = date.toLocaleString("default", { month: "short" });
+  const day = date.getDate();
+  return month + day;
+}
+
+export const formatDateLabel = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleString("default", { month: "short" }) + date.getDate();
+};
+
+export function formatValues(values, dates) {
+  const formatobj = {};
+
+  if (Array.isArray(values)) {
+    values.forEach((obj) => {
+      const key = Object.keys(obj)[0];
+      const formattedKey = formatDate(key);
+      formatobj[formattedKey] = obj[key];
+    });
+  } else if (values && typeof values === "object") {
+    Object.keys(values).forEach((key) => {
+      const formattedKey = formatDate(key);
+      formatobj[formattedKey] = values[key];
+    });
+  }
+  let resultArray = [];
+  if (dates?.length === 1) {
+    const singleDate = dates[0];
+    const nextDate = new Date(singleDate);
+    nextDate.setDate(nextDate.getDate() + 1);
+    const currentFormatted = formatDate(singleDate);
+    const nextFormatted = formatDate(nextDate);
+
+    resultArray = [
+      formatobj[currentFormatted] || 0,
+      formatobj[nextFormatted] || 0,
+    ];
+  } else {
+    resultArray = dates?.map((date) => formatobj[formatDate(date)] || 0);
+  }
+
+  return resultArray;
+}
+
+export const getColorValue = (key) => {
+  switch (key) {
+    case "primary":
+    case "1":
+      return "#064BAC";
+    case "secondary":
+    case "2":
+      return "#7F91DE";
+    case "secondary2":
+    case "3":
+      return "#00C1FF";
+    case "secondary3":
+    case "4":
+      return "#006DDC";
+    case "secondary4":
+    case "5":
+      return "#008FCA";
+    case "secondary5":
+    case "6":
+      return "#0A5EB0";
+    case "secondary6":
+    case "7":
+      return "#8576FF";
+    default:
+      return null;
+  }
+};
+
+export function getLast30Days() {
+  const date_thirty_days = [];
+  const currentDate = new Date();
+
+  for (let i = 0; i < 30; i++) {
+    const pastDate = new Date(currentDate);
+    pastDate.setDate(currentDate.getDate() - i);
+    date_thirty_days.push(
+      pastDate.toLocaleString("default", { month: "short" }) +
+      pastDate.getDate(),
+    );
+  }
+
+  return date_thirty_days.reverse();
+}
+
+export function getLast7Days() {
+  const date_seven_days = [];
+  const currentDate = new Date();
+
+  for (let i = 0; i < 7; i++) {
+    const pastDate = new Date(currentDate);
+    pastDate.setDate(currentDate.getDate() - i);
+    date_seven_days.push(
+      pastDate.toLocaleString("default", { month: "short" }) +
+      pastDate.getDate(),
+    );
+  }
+
+  return date_seven_days.reverse();
+}
+
+export const getRoleColor = (key) => {
+  switch (key) {
+    case "1": // admin
+      return "#064BAC";
+    case "2": //coder 1
+      return "#5271FA";
+    case "3": //coder 2
+      return "#00C1FF";
+    case "4": //Qa
+      return "#006DDC";
+    case "5": //Qa lead
+      return "#008FCA";
+    case "6": //projectLead
+      return "#0A5EB0";
+    case "7": //owner
+      return "#8576FF";
+    default:
+      return null;
+  }
+};
+
+export const getRoleIdByRole = (role) => {
+  switch (role?.toUpperCase().replaceAll(" ", "_")) {
+    case "ADMIN":
+      return "0";
+    case "DOWNLOADER":
+      return "1";
+    case "OWNER":
+      return "2";
+    case "AI":
+      return "3";
+    case "CODER_1":
+    case "EH_CODER":
+      return "4";
+    case "CODER_2":
+    case "PHYSICIAN":
+      return "5";
+    case "QA":
+    case "CODER":
+      return "6";
+    case "QA_LEAD":
+      return "7";
+    case "PROJECT_LEAD":
+      return "8";
+    case "CLIENT":
+      return "9";
+    default:
+      return null;
+  }
+};
+
+export const getStatusColor = (key) => {
+  switch (key) {
+    case "1": // allocated
+      return "#064BAC";
+    case "2": //Not Allocated
+      return "#5271FA";
+    case "3": //Completed
+      return "#00C1FF";
+    case "4": //InProgress
+      return "#006DDC";
+    case "5": //Reassigned
+      return "#008FCA";
+    // case "secondary5":
+    // case "6":
+    //   return "#0A5EB0";
+    // case "secondary6":
+    // case "7":
+    //   return "#8576FF";
+    default:
+      return null;
+  }
+};
+
+export const statusFormate = (status) => {
+  return typeof status == "string"
+    ? status?.replace(/([a-z](?=[A-Z]))/g, "$1 ")
+    : status;
+};
+
+export const truncateString = (str, num) => {
+  if (str?.length > num) {
+    return str?.slice(0, num) + "...";
+  }
+  return str;
+};
+
+export const toFixedNum = (value, precision = 2) => {
+  return typeof value === "number" ? parseFloat(value?.toFixed(precision)) : 0;
+};
+
+export const parseKValue = (val) => {
+  if (typeof val === "string") {
+    const num = parseFloat(val);
+    if (val.toUpperCase().includes("K")) return num * 1_000;
+    if (val.toUpperCase().includes("M")) return num * 1_000_000;
+    if (val.toUpperCase().includes("B")) return num * 1_000_000_000;
+    return num;
+  }
+  return typeof val === "number" ? val : 0;
+};
+
+export const formatKValue = (val) => {
+  if (typeof val !== "number" || isNaN(val)) return "0";
+
+  if (val >= 1_000_000_000) return (val / 1_000_000_000).toFixed(1) + "B";
+  if (val >= 1_000_000) return (val / 1_000_000).toFixed(1) + "M";
+  if (val >= 1_000) return (val / 1_000).toFixed(1) + "K";
+  return val.toFixed(0);
+};
+
+export const getChartTimeLine = (obj, plotConfig) => {
+  const { key, value } = plotConfig;
+  const tempObj = {};
+  if (obj) {
+    for (const i of obj) {
+      tempObj[i[key]] = toFixedNum(i[value], 2);
+    }
+  }
+  return tempObj;
 };

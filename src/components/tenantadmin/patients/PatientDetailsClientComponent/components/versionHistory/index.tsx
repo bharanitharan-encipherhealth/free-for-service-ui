@@ -146,7 +146,7 @@ const VersionHistory = React.memo(
                   className={`timeline-panel cr-pointer text-muted ${isDisabledStatus && "opacity-80"}`}
                 >
                   <span
-                    className={`${commanStyle.timelineheading} ant-badge cursor-pointer d-flex`}
+                    className={`${commanStyle.timelineheading} ant-badge cursor-pointer flex`}
                   >
                     {item?.htmlContent
                       ? getHtmlContent({ htmlContent: item?.htmlContent })
@@ -175,7 +175,7 @@ const VersionHistory = React.memo(
                 style={{ cursor: "not-allowed", opacity: 0.5 }}
               >
                 <span
-                  className={`${commanStyle.timelineheading} ant-badge d-flex`}
+                  className={`${commanStyle.timelineheading} ant-badge flex`}
                 >
                   {item?.htmlContent
                     ? getHtmlContent({ htmlContent: item?.htmlContent })

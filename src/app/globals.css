@@ -12,6 +12,11 @@
   --app-header-boder-color: #a8b3bd;
   --text-white-color: #ffff;
 
+  --new-app-secondary: #5271fa;
+  --new-app-secondary2: #00c1ff;
+  --new-app-secondary3: #006ddc;
+  --new-app-secondary4: #008fca;
+
   --app-table-secondary1: #5271fa;
   --app-table-secondary2: #008fca;
   --app-table-secondary3: #006ddc;
@@ -1429,4 +1434,322 @@ img.login-logo {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 12 12"><path fill="none" stroke="%2303512E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M2.5 6.5L5 9L9.5 3"/></svg>');
   background-size: contain;
   background-repeat: no-repeat;
+}
+
+.ant-modal.dynamicDashboardModal {
+  max-width: 95% !important;
+  width: 95% !important;
+  margin: 0 auto !important;
+  top: 20px !important;
+  padding-bottom: 24px !important;
+}
+
+.ant-modal.dynamicDashboardModal .ant-modal-content {
+  width: 100% !important;
+  border-radius: 8px !important;
+}
+
+.ant-modal.dynamicDashboardModal .ant-modal-header {
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+/* Dashboard specific classes synced from legacy AM-CODING globals.css */
+.dashboard-icon-bac {
+  border-radius: 50px;
+}
+
+.card.dashboard-card {
+  border: 1px solid #dad8e4 !important;
+}
+
+.dashboardSwitch {
+  background-color: #e6eeff;
+  border-radius: 20px;
+}
+
+.dashboardSwitch .active {
+  background-color: #0561fc;
+  color: white;
+  border-radius: 20px;
+}
+
+.dynamicChart {
+  padding: 10px;
+}
+
+/* Top 10 Diseases Table (tenatTable) synced from legacy AM-CODING */
+.tenatTable tbody {
+  display: block;
+  max-height: 400px !important;
+  overflow-y: hidden;
+}
+
+.tenatTable tbody:hover {
+  overflow-y: scroll;
+}
+
+.tenatTable tbody::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tenatTable tbody::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+
+.tenatTable thead,
+.tenatTable tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.tenatTable>thead>tr {
+  height: 43px !important;
+  border-radius: 10px !important;
+  background: linear-gradient(to right,
+      var(--new-app-secondary4),
+      var(--new-app-secondary),
+      var(--new-app-secondary3));
+  font-weight: 700;
+  font-size: 16px;
+  color: white !important;
+}
+
+.tenatTable>tbody>tr {
+  height: 43px !important;
+  border-bottom: 1px solid #c7c7c7;
+}
+
+.tenatTable .midRow {
+  text-align: start;
+}
+
+.tenatTable thead td {
+  padding: 10px;
+}
+
+.tenatTable tbody td {
+  padding: 10px;
+}
+
+/* Legacy Bootstrap Bridge - Layout & Utilities */
+.font1 {
+  font-size: 12px;
+}
+
+.font2 {
+  font-size: 14px;
+}
+
+.font3 {
+  font-size: 16px;
+}
+
+.font4 {
+  font-size: 18px;
+}
+
+.font5 {
+  font-size: 20px;
+}
+
+.fontWeight1 {
+  font-weight: 500;
+}
+
+.fontWeight2 {
+  font-weight: 600;
+}
+
+.fontWeight3 {
+  font-weight: 700;
+}
+
+.btn-app-primary {
+  background-color: var(--new-app-secondary);
+  color: #ffffff;
+  text-transform: capitalize;
+}
+
+.btn-app-primary:hover {
+  background-color: var(--new-app-secondary3);
+  color: #fff;
+}
+
+.btn-app-outline-primary {
+  color: var(--new-app-secondary);
+  border: 1px solid var(--new-app-secondary);
+  background: transparent;
+  text-transform: capitalize;
+  padding: 6px;
+}
+
+.btn-app-outline-primary:hover {
+  background-color: var(--new-app-secondary);
+  color: #fff;
+}
+
+.container,
+.container-fluid {
+  --bs-gutter-x: 25px;
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.row {
+  --bs-gutter-x: 25px;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+}
+
+.row>* {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+}
+
+.col {
+  flex: 1 0 0%;
+}
+
+.col-auto {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.col-1 {
+  flex: 0 0 auto;
+  width: 8.33333%;
+}
+
+.col-2 {
+  flex: 0 0 auto;
+  width: 16.66667%;
+}
+
+.col-3 {
+  flex: 0 0 auto;
+  width: 25%;
+}
+
+.col-4 {
+  flex: 0 0 auto;
+  width: 33.33333%;
+}
+
+.col-5 {
+  flex: 0 0 auto;
+  width: 41.66667%;
+}
+
+.col-6 {
+  flex: 0 0 auto;
+  width: 50%;
+}
+
+.col-7 {
+  flex: 0 0 auto;
+  width: 58.33333%;
+}
+
+.col-8 {
+  flex: 0 0 auto;
+  width: 66.66667%;
+}
+
+.col-9 {
+  flex: 0 0 auto;
+  width: 75%;
+}
+
+.col-10 {
+  flex: 0 0 auto;
+  width: 83.33333%;
+}
+
+.col-11 {
+  flex: 0 0 auto;
+  width: 91.66667%;
+}
+
+.col-12 {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.g-0,
+.gx-0 {
+  --bs-gutter-x: 0;
+}
+
+.g-0,
+.gy-0 {
+  --bs-gutter-y: 0;
+}
+
+.g-1,
+.gx-1 {
+  --bs-gutter-x: 0.25rem;
+}
+
+.g-1,
+.gy-1 {
+  --bs-gutter-y: 0.25rem;
+}
+
+.g-2,
+.gx-2 {
+  --bs-gutter-x: 0.5rem;
+}
+
+.g-2,
+.gy-2 {
+  --bs-gutter-y: 0.5rem;
+}
+
+.g-3,
+.gx-3 {
+  --bs-gutter-x: 1rem;
+}
+
+.g-3,
+.gy-3 {
+  --bs-gutter-y: 1rem;
+}
+
+.g-4,
+.gx-4 {
+  --bs-gutter-x: 1.5rem;
+}
+
+.g-4,
+.gy-4 {
+  --bs-gutter-y: 1.5rem;
+}
+
+.g-5,
+.gx-5 {
+  --bs-gutter-x: 3rem;
+}
+
+.g-5,
+.gy-5 {
+  --bs-gutter-y: 3rem;
+}
+
+/* Prevent body scroll when modal is open */
+body.ant-modal-open,
+html.ant-modal-open {
+  overflow: hidden !important;
 }

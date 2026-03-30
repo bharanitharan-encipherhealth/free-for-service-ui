@@ -1,0 +1,32 @@
+.pickerBox {
+  display: flex;
+  border-radius: 12px;
+  width: 100px;
+  height: 35px;
+  margin-right: 10px;
+}
+.picker {
+  border: none !important;
+  width: 100%;
+  height: 100%;
+  box-shadow: none !important;
+}
+.suffixIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+.monthSelect {
+  width: 100px;
+  background-color: #E6EEFF;
+}
+@media screen and (max-width: 1280px) {
+  .pickerBox{
+    width: 87px;
+    margin-right:2px;
+  }
+  .monthSelect{
+    width:58px;
+  }
+}

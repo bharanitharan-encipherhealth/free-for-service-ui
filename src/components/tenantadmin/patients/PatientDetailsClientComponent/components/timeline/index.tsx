@@ -68,7 +68,7 @@ const Timeline = React.memo(
     //   ({ viewValue }: { viewValue: timeLineContentType }) => {
     //     const sectionMapArr = (
     //       <>
-    //         <div className="d-flex justify-content-end">
+    //         <div className="flex justify-end">
     //           <IoMdCloseCircle
     //             className={styles.deleteIcon}
     //             onClick={() => {
@@ -325,10 +325,10 @@ const Timeline = React.memo(
                   </span>
                 </div>
               )}
-              <div className="d-flex align-items-end justify-content-between mt-2">
+              <div className="flex items-end justify-between mt-2">
                 <div
                   style={{ fontSize: "11px" }}
-                  className="d-flex text-muted align-items-end justify-content-end mt-1"
+                  className="flex text-muted items-end justify-end mt-1"
                 >
                   {timeLineDateAndTime({ inputDate: item?.createdDate })}
                 </div>

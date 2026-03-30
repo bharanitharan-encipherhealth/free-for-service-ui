@@ -18,6 +18,7 @@ import { reducer as patientAllocationReducer } from "./tenantadmin/tin/tinDetail
 import { reducer as patinetReAllocationReducer } from "./tenantadmin/tin/tinDetails/patientReAllocation";
 import { reducer as patinetMoveBackReducer } from "./tenantadmin/tin/tinDetails/moveBack";
 import { reducer as patientDetailsReducer } from "./tenantadmin/patients/details";
+import { reducer as dashboardReducer } from "./tenantadmin/dashboard";
 
 // Import thunk middleware using require to handle module export issues
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -58,6 +59,7 @@ const rootReducer = combineReducers({
     patinetMoveBackReducer: patinetMoveBackReducer,
   }),
   patientDetailsReducer: patientDetailsReducer,
+  dashboardReducer: dashboardReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

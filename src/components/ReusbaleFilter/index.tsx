@@ -552,7 +552,7 @@ const ReusableFilters = ({
                             popupRender={(menu) => (
                               <>
                                 {menu}
-                                <div className="flex justify-content-end gap-2 border-top p-1">
+                                <div className="flex justify-end gap-2 border-top p-1">
                                   <Button
                                     onClick={() => {
                                       if (setSelectedOption)
@@ -568,8 +568,9 @@ const ReusableFilters = ({
                                     onClick={() => {
                                       if (setSelectedOption)
                                         setSelectedOption(multiSelect ?? {});
-                                      (document.activeElement as HTMLElement)
-                                        ?.blur();
+                                      (
+                                        document.activeElement as HTMLElement
+                                      )?.blur();
                                     }}
                                   >
                                     Apply
@@ -609,9 +610,7 @@ const ReusableFilters = ({
                               | undefined
                           }
                           onChange={(
-                            date:
-                              | [Dayjs | null, Dayjs | null]
-                              | null,
+                            date: [Dayjs | null, Dayjs | null] | null,
                             dateString: [string, string],
                           ) => {
                             const dates = date as Dayjs[] | null;
@@ -629,9 +628,7 @@ const ReusableFilters = ({
                           disabledDate={(currentDate) =>
                             disabledDate(
                               currentDate,
-                              (Array.isArray(
-                                selectedDates?.[item?.actualField],
-                              )
+                              (Array.isArray(selectedDates?.[item?.actualField])
                                 ? selectedDates?.[item?.actualField]
                                 : []) as unknown[],
                               item?.actualField === "coder1DueDate" ||

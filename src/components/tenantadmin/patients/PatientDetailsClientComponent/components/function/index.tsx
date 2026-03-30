@@ -42,7 +42,7 @@ export const getEditDeatils = ({
 }) => {
   const sectionMapArr = (
     <>
-      <div className="flex justify-content-end">
+      <div className="flex justify-end">
         <IoMdCloseCircle
           className={styles.deleteIcon}
           onClick={() => {

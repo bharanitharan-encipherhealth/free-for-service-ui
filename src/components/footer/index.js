@@ -16,15 +16,15 @@ const Footer = ({ isLogo = true }) => {
       <div
         className={
           currentPath === "/reviewer/patients/details"
-            ? `d-flex background-white`
-            : `d-flex`
+            ? `flex background-white`
+            : `flex`
         }
       >
         <div
-          className=" d-flex flex-column align-items-center justify-content-center"
+          className=" flex flex-col items-center justify-center"
           style={{ margin: "0 auto" }}
         >
-          <div className="d-flex align-items-center mb-3">
+          <div className="flex items-center mb-3">
             {isLogo && (
               <Image
                 src={Hcc_LOGO}

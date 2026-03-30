@@ -257,7 +257,7 @@ const AddEditDiseaseModal = React.memo(
               oldHcc: item?.oldValue?.toString() || 0,
               newHcc: item?.newValue?.toString() || 0,
               label: (
-                <div className="d-flex gap-1">
+                <div className="flex gap-1">
                   <span>{`${disease?.code} - ${disease?.description}`}</span>
                 </div>
               ),

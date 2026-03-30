@@ -1,0 +1,76 @@
+.cardBox {
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 16px;
+  padding: 8px;
+  width: 100px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
+}
+
+.headerFont {
+  font-size: 12px;
+}
+
+.labelFont{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.subtitleFont{
+    font-size: 12px;
+}
+
+/* @media screen and (min-width: 2135px) {
+  .cardBox {
+    width: 125px !important;
+  }
+  .headerFont {
+    font-size: 16px;
+  }
+  .labelFont{
+    font-size: 18px !important;
+}
+} */
+
+@media screen and (max-width: 1746px) {
+  .cardBox {
+    width: 92px !important;
+  }
+  .headerFont {
+    font-size: 12px;
+  }
+  .labelFont{
+    font-size: 14px !important;
+}
+}
+
+@media screen and (max-width: 1536px) {
+  .cardBox {
+    width: 100px !important;
+  }
+  .headerFont {
+    font-size: 9px !important;
+  }
+  .labelFont{
+    font-size: 12px !important;
+}
+}
+
+/* @media screen and (max-width: 1282px) {
+  .cardBox {
+    width: 60px !important;
+    height: 100px !important;
+  }
+  .headerFont {
+    font-size: 8px !important;
+  }
+  .labelFont{
+    font-size: 8px !important;
+}
+.subtitleFont{
+    font-size: 8px !important;
+}
+} */
