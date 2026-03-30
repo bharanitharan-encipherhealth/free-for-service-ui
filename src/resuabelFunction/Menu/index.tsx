@@ -208,7 +208,7 @@ export const getAccessTabItems = ({
   tab: "tabMenuList" | "tabMenuList2";
 }) => {
   const accessMenuList: accessListForPanel1[] = JSON.parse(
-    getStorage("accessMenuList"),
+    getStorage("accessMenuList") || "[]",
   );
 
   const currentTabs: string[] = accessMenuList?.find(

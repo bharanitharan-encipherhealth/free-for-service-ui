@@ -12,16 +12,31 @@
   --app-header-boder-color: #a8b3bd;
   --text-white-color: #ffff;
 
+  /* Modern Interface Vars (Kebab-case) */
   --app-table-secondary1: #5271fa;
   --app-table-secondary2: #008fca;
   --app-table-secondary3: #006ddc;
 
-  --sidebar-arrow-color: #c8d8e5;
-  --defaultColor: #fff;
-  --tableBorder: #a0a0a0;
-  --opactiy-background: #E0EFE8;
-  --tab-background-color: #f3f3f4;
+  --processed-bg-color: #9CFAD0;
+  --processing-bg-color: #A5BBB1;
+  --not-processed-bg-color: #02854A;
+  --failed-bg-color: #02854A;
 
+  /* Legacy AM-Coding Colors (CamelCase) */
+  --app-primary: #04306f;
+  --app-primary-hover: #6c9ddd;
+  --borderColor: #b6b6b6;
+  --new-app-primary: #064bac;
+  --new-app-secondary: #5271fa;
+  --new-app-secondary2: #00c1ff;
+  --new-app-secondary3: #006ddc;
+  --new-app-secondary4: #008fca;
+  --new-app-secondary5: #0a5eb0;
+  --new-app-secondary6: #8576ff;
+  --queryBtnColor: #4c4c9d;
+  --newBtnColor: #0942c4;
+
+  /* Legacy Excel/Reports Component Colors */
   --excel-error-color: #ff4d4f;
   --excel-text-muted: #999;
   --excel-text-secondary: #666;
@@ -32,14 +47,22 @@
   --excel-pagination-border: #e8e8e8;
   --excel-white: #ffffff;
 
-  --processed-bg-color: #9CFAD0;
-  --processing-bg-color: #A5BBB1;
-  --not-processed-bg-color: #02854A;
-  --failed-bg-color: #02854A;
+  /* Legacy batchProcessing */
+  --processedBgColor: #cceeff;
+  --processedColor: #285563;
+  --processingBgColor: #dfd8f3;
+  --processingColor: #452b90;
+  --notComputedBgColor: #e88d8d;
+  --notComputedColor: #ff4d4f;
+
+  --sidebar-arrow-color: #c8d8e5;
+  --defaultColor: #fff;
+  --tableBorder: #a0a0a0;
+  --opactiy-background: #E0EFE8;
+  --tab-background-color: #f3f3f4;
 
   --chartIcon: #87d068;
-
-  --allocateBgColor: #008fca;
+  --allocateBgColor: var(--new-app-secondary4);
   --pedingBgColor: #03512E;
 
   --chart-tab-select-bg-color: #E6FEF3;
@@ -64,7 +87,6 @@
   --pending-color: #093fb4;
 
   --select-border-color: #d9d9d9;
-
   --comments-bg-color: #f0f6fe;
 
   --meatFalse: #ca0003;
@@ -1429,4 +1451,182 @@ img.login-logo {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 12 12"><path fill="none" stroke="%2303512E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M2.5 6.5L5 9L9.5 3"/></svg>');
   background-size: contain;
   background-repeat: no-repeat;
+}
+
+/* Legacy Table Styles Sync from AM-CODING */
+.tenatTable {
+  width: 100%;
+  margin: 20px 0px !important;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.tenatTable tr:first-child td:first-child {
+  border-top-left-radius: 20px;
+}
+.tenatTable tr:first-child td:last-child {
+  border-top-right-radius: 20px;
+}
+.tenatTable tr:last-child td:first-child {
+  border-bottom-left-radius: 20px;
+}
+.tenatTable tr:last-child td:last-child {
+  border-bottom-right-radius: 20px;
+}
+
+.tenatTable thead {
+  background-color: #f3f3f3;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-radius: 20px !important;
+}
+
+.tenatTable tbody {
+  display: block;
+  max-height: 400px !important;
+  overflow-y: hidden;
+}
+.tenatTable tbody:hover {
+  overflow-y: scroll;
+}
+
+.tenatTable tbody::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tenatTable tbody::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+
+.tenatTable thead,
+.tenatTable tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.tenatTable > thead > tr {
+  height: 43px !important;
+  border-radius: 10px !important;
+  background: linear-gradient(
+    to right,
+    var(--app-table-secondary1),
+    var(--app-table-secondary2),
+    var(--app-table-secondary3)
+  );
+  font-weight: 700;
+  font-size: 16px;
+  color: white !important;
+}
+.tenatTable > tbody > tr {
+  height: 43px !important;
+  border-bottom: 1px solid #c7c7c7;
+}
+.tenatTable .midRow {
+  text-align: start;
+}
+
+/* Additional Dashboard Styles Sync from AM-CODING */
+.dashboard-icon-bac {
+  border-radius: 50px;
+}
+
+.card.dashboard-card {
+  border: 1px solid #dad8e4 !important;
+}
+
+.tenantSelector .ant-select-outlined {
+  width: 100%;
+  height: 48px !important;
+}
+.tenantSelector .ant-select-selector {
+  width: 100%;
+  height: 48px !important;
+  border: none !important;
+  border-radius: 0px 10px 10px 0px !important;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 0px 10px !important;
+}
+.tenantSelector .ant-picker-range {
+  width: 100%;
+  height: 48px !important;
+  border: none !important;
+  border-radius: 0px 10px 10px 0px !important;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 0px 10px !important;
+}
+.tenantSelectorCustom .ant-select-outlined {
+  width: 100%;
+  height: 38px !important;
+}
+.tenantSelectorCustom .ant-select-selector {
+  width: 100%;
+  height: 38px !important;
+  border: none !important;
+  border-radius: 0px 10px 10px 0px !important;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 0px 10px !important;
+}
+.tenantSelectorCustom .ant-picker-range {
+  width: 80%;
+  height: 38px !important;
+  border: none !important;
+  border-radius: 0px 10px 10px 0px !important;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 0px 10px !important;
+}
+
+@media only screen and (min-width: 1200px) {
+  .tenantPie > div > div > canvas {
+    position: absolute;
+    left: -25px !important;
+    top: -21px !important;
+    width: 255px !important;
+    height: 226px !important;
+  }
+}
+@media only screen and (min-width: 600px) {
+  .tenantPie > div > div > canvas {
+    position: absolute;
+    left: 0px !important;
+    top: 0px !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .tenantPie > div {
+    height: 209px !important;
+    position: relative;
+    width: 100%;
+    margin-left: -10px;
+    margin-top: -20px !important;
+    width: 292px;
+  }
+}
+
+.tenant_count {
+  font-size: 16px !important;
+  width: 70%;
+}
+@media (min-width: 1024px) and (max-width: 1309px) {
+  .tenant_count {
+    font-size: 12px !important;
+  }
+}
+
+.dashboardSwitch {
+  background-color: #e6eeff;
+  border-radius: 20px;
+}
+
+.dashboardSwitch .active {
+  background-color: #0561fc;
+  color: white;
+  border-radius: 20px;
+}
+
+.dynamicChart .ant-card-bordered {
+  height: 100% !important;
+  padding: 20px !important;
+}
+
+.dynamicChart .ant-card-body {
+  background-color: white;
+  padding: 2px;
 }

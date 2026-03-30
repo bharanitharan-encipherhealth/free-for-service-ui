@@ -72,7 +72,11 @@ function PatientDetailsClientComponent({
 
   if (!patientId) {
     const routerBackTo = getStorage("routeBackTo");
-    router.push(routerBackTo || router.back);
+    if (routerBackTo) {
+      router.push(routerBackTo);
+    } else {
+      router.back();
+    }
   }
 
   const onHandleChartChange = useCallback(
@@ -88,7 +92,7 @@ function PatientDetailsClientComponent({
     setSelectedYear("");
     getPatientOverallYear({ dataEmpty: true });
     const routerBackTo = getStorage("routeBackTo");
-    router?.push(routerBackTo);
+    router?.push(routerBackTo || "/");
   }, [
     router,
     setSelectDos,
@@ -268,7 +272,7 @@ function PatientDetailsClientComponent({
 
   useEffect(() => {
     const patientId = getStorage("patientId");
-    getPatientDetails({ patientId });
+    getPatientDetails({ patientId: patientId || "" });
   }, []);
 
   useEffect(() => {

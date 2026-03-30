@@ -118,7 +118,7 @@ export const onDiseaseMove = async ({
       admNo?: string;
       diagnosisCode: string;
     } = {
-      patientId,
+      patientId: patientId || "",
       processedYear,
       dateOfServices: [selectedDos],
       chartProcessType: selectedDos ? "DATE_OF_SERVICE" : "YEAR",

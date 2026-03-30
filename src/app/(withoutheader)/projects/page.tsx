@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { getLogo, getResponePopup } from "@/util/reusableFunction";
 import { Form, Modal, notification, Select, Skeleton, Spin } from "antd";
-import { companyDeatils } from "@/util/config";
+import { companyDetails } from "@/util/config";
 import { removeStorage, setStorage } from "@/util/storage";
 import RegularButton from "@/components/regularButton";
 import Footer from "@/components/footer";
@@ -237,9 +237,9 @@ function Projects({
                 <div className="self-center">
                   <div className="flex items-center justify-center">
                     <h2 className="title font-bold">
-                      {companyDeatils === "encipher" || companyDeatils == "abha"
+                      {companyDetails === "encipher" || companyDetails == "abha"
                         ? "Welcome"
-                        : companyDeatils == " riskgenai"
+                        : companyDetails == " riskgenai"
                           ? "Your Gateway to RiskGen-i"
                           : "Your Gateway To CogentAI!"}
                     </h2>

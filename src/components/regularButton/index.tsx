@@ -1,6 +1,6 @@
 import React from "react";
 import Style from "./style.module.css";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { RegularButtonType } from "@/models/components/regularButton";
 // import { createIdGen } from "../../utils/reusable";
 

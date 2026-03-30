@@ -123,10 +123,10 @@ function UserAssignModal({
       userNames: userEmail,
       authorizedDetails: [
         {
-          clientId: clientId,
+          clientId: clientId || "",
           projects: [
             {
-              projectId: projectId,
+              projectId: projectId || "",
               roles: userRoleId,
             },
           ],

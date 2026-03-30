@@ -1,6 +1,6 @@
 import { timeLineContentType } from "@/models/tenantadmin/patients/details";
 import commanStyle from "@/styles/comman.style.module.css";
-import { getStatusColors } from "@/util/reusableFunction";
+import { getStatusColor } from "@/util/reusableFunction";
 import { Popover, Tooltip } from "antd";
 import { IoMdCloseCircle } from "react-icons/io";
 import styles from "../timeline/style.module.css";
@@ -337,7 +337,7 @@ export const getTimelineHeading = ({
           Changed from{" "}
           <span
             style={{
-              color: getStatusColors(item?.previousProcessedState),
+              color: getStatusColor(item?.previousProcessedState || ""),
               fontSize: "12px",
               padding: "0 5px",
             }}
@@ -353,7 +353,7 @@ export const getTimelineHeading = ({
           Changed from{" "}
           <span
             style={{
-              color: getStatusColors(item?.previousProcessedState),
+              color: getStatusColor(item?.previousProcessedState || ""),
               fontSize: "12px",
               padding: "0 5px",
             }}
@@ -369,7 +369,7 @@ export const getTimelineHeading = ({
           Changed from{" "}
           <span
             style={{
-              color: getStatusColors(item?.previousProcessedState),
+              color: getStatusColor(item?.previousProcessedState || ""),
               fontSize: "12px",
               padding: "0 5px",
             }}
@@ -385,7 +385,7 @@ export const getTimelineHeading = ({
           Changed from{" "}
           <span
             style={{
-              color: getStatusColors(item?.previousProcessedState),
+              color: getStatusColor(item?.previousProcessedState || ""),
               fontSize: "12px",
               padding: "0 5px",
             }}
@@ -401,7 +401,7 @@ export const getTimelineHeading = ({
           Changed from{" "}
           <span
             style={{
-              color: getStatusColors(item?.previousProcessedState),
+              color: getStatusColor(item?.previousProcessedState || ""),
               fontSize: "12px",
               padding: "0 5px",
             }}
@@ -419,7 +419,7 @@ export const getTimelineHeading = ({
           Changed from{" "}
           <span
             style={{
-              color: getStatusColors(item?.previousProcessedState),
+              color: getStatusColor(item?.previousProcessedState || ""),
               fontSize: "12px",
               padding: "0 5px",
             }}
@@ -533,7 +533,7 @@ export const getTimelineHeading = ({
           Changed from{" "}
           <span
             style={{
-              color: getStatusColors(item?.previousProcessedState),
+              color: getStatusColor(item?.previousProcessedState || ""),
               fontSize: "12px",
               padding: "0 5px",
             }}
@@ -549,7 +549,7 @@ export const getTimelineHeading = ({
           Changed from{" "}
           <span
             style={{
-              color: getStatusColors(item?.previousProcessedState),
+              color: getStatusColor(item?.previousProcessedState || ""),
               fontSize: "12px",
               padding: "0 5px",
             }}
@@ -565,7 +565,7 @@ export const getTimelineHeading = ({
           Changed from{" "}
           <span
             style={{
-              color: getStatusColors(item?.previousProcessedState),
+              color: getStatusColor(item?.previousProcessedState || ""),
               fontSize: "12px",
               padding: "0 5px",
             }}
@@ -697,7 +697,7 @@ export const getTimelineHeading = ({
           Changed from
           <span
             style={{
-              color: getStatusColors(item?.previousProcessedState),
+              color: getStatusColor(item?.previousProcessedState || ""),
               fontSize: "12px",
               padding: "0 5px",
             }}

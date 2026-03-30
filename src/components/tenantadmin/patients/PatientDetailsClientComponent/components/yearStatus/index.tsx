@@ -77,8 +77,8 @@ const YearStatusAction = React.memo(
           processedStatus: string;
           masterAudit: boolean;
         } = {
-          patientId,
-          roleId,
+          patientId: patientId || "",
+          roleId: roleId || "",
           processedStatus: status?.toUpperCase(),
           masterAudit,
         };
@@ -88,7 +88,7 @@ const YearStatusAction = React.memo(
           if (res?.status === "SUCCESS") {
             onClearValue();
             getResponePopup(res);
-            getPatientDetails({ patientId });
+            getPatientDetails({ patientId: patientId || "" });
           } else {
             getResponePopup(res);
             onClearValue();

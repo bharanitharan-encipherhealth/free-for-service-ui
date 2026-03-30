@@ -9,7 +9,7 @@ export const serverControl = process.env.NEXT_PUBLIC_NODE_ENV as string;
 export const pdfControl = (process.env.NEXT_PUBLIC_PORTAL_BASE_URL +
   "management/patient/report/getfile/bytes") as string;
 export const salt = process.env.NEXT_PUBLIC_SALT as string;
-export const companyDeatils = (process.env.NEXT_PUBLIC_COMPANY_LOGO ||
+export const companyDetails = (process.env.NEXT_PUBLIC_COMPANY_LOGO ||
   "abha") as string;
 export const isLocalEdit = true as boolean;
 export const portalMockoon = process.env

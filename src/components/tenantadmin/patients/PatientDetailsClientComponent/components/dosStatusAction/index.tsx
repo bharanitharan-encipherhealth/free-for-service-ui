@@ -108,11 +108,11 @@ const DosStatusAction = React.memo(
           masterAudit: boolean;
           admNo?: string;
         } = {
-          patientId,
+          patientId: patientId || "",
           notes: reasonValue,
           processedYear: selectedPatientYear,
           dateOfService: selectedDos,
-          roleId,
+          roleId: roleId || "",
           processedStatus: status?.toUpperCase(),
           masterAudit,
         };

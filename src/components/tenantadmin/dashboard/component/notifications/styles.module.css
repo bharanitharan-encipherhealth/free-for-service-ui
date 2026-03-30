@@ -1,0 +1,84 @@
+.card4 {
+  width: 100%;
+  height: 245px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 20px;
+  color: #000;
+}
+.msgDiv {
+  display: flex;
+  /* height:500px;
+  overflow-y: scroll; */
+}
+.msgCOntainer {
+  width: 100%;
+  margin: 10px;
+}
+.Image {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.description {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+}
+.time{
+  font-size: 12px;
+  font-weight: 400;
+  color: #000;
+  margin-top: 5px;
+}
+.anchor {
+  color: #133dd4;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.container {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.no_notificarion_container{
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.no_notificarion_container img {
+  height: 150px;
+  width: 150px;
+}
+
+
+
+.container:hover {
+  overflow-y: scroll;
+}
+
+.container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+
+.notifyIconColor{
+  color :#04306f;
+}
+.img{
+  width:300px;
+  height:300px;
+}

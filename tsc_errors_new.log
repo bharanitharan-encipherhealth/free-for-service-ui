@@ -1,0 +1,466 @@
+src/components/buttonSroller/index.tsx(37,7): error TS2322: Type '{ children: Element[]; id: string; name: string; className: string; style: { backgroundColor: string | undefined; }; }' is not assignable to type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>'.
+src/components/buttonSroller/index.tsx(48,13): error TS2322: Type '{ children: string; id: string; name: string; key: number; className: string; style: { backgroundColor: string | undefined; color: string | undefined; }; onClick: () => void; }' is not assignable to type 'DetailedHTMLProps<LabelHTMLAttributes<HTMLLabelElement>, HTMLLabelElement>'.
+  Property 'name' does not exist on type 'DetailedHTMLProps<LabelHTMLAttributes<HTMLLabelElement>, HTMLLabelElement>'.
+src/components/layout/appHeader/profile/page.tsx(50,9): error TS2554: Expected 1 arguments, but got 0.
+src/components/ReusbaleFilter/index.tsx(632,31): error TS2345: Argument of type 'unknown[]' is not assignable to parameter of type 'never[]'.
+  Type 'unknown' is not assignable to type 'never'.
+src/components/tenantadmin/dashboard/component/accuracyChart/index.tsx(116,17): error TS2322: Type '{ option: { tooltip: { trigger: string; }; legend: { show: boolean; bottom: number; }; grid: { left: string; right: string; bottom: string; containLabel: boolean; }; xAxis: { type: string; data: any; axisLabel: { ...; }; }; yAxis: ({ ...; } | { ...; })[]; series: any; }; }' is not assignable to type 'IntrinsicAttributes & AppChartProps'.
+  Property 'option' does not exist on type 'IntrinsicAttributes & AppChartProps'.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(14,3): error TS7031: Binding element 'activeItem' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(15,3): error TS7031: Binding element 'setActiveItem' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(16,3): error TS7031: Binding element 'dashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(17,3): error TS7031: Binding element 'components' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(18,3): error TS7031: Binding element 'setComponents' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(19,3): error TS7031: Binding element 'setDashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(20,3): error TS7031: Binding element 'getCharts' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(24,30): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(39,11): error TS2554: Expected 2 arguments, but got 1.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(62,43): error TS2339: Property 'widgetId' does not exist on type 'GridCell'.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(85,31): error TS2339: Property 'widgetId' does not exist on type 'GridCell'.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(86,21): error TS2322: Type 'Widget | GridCell' is not assignable to type 'Widget & { empty?: boolean | undefined; id?: string | undefined; }'.
+  Type 'GridCell' is not assignable to type 'Widget & { empty?: boolean | undefined; id?: string | undefined; }'.
+    Type 'GridCell' is missing the following properties from type 'Widget': orderValue, widgetId, size, widgetName, and 3 more.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(101,32): error TS7006: Parameter 'i' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(123,24): error TS7006: Parameter 'a' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(123,27): error TS7006: Parameter 'b' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(124,23): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(129,21): error TS2820: Type '"component"' is not assignable to type '"dashboard" | "components"'. Did you mean '"components"'?
+src/components/tenantadmin/dashboard/component/function/resubaleDndContext.tsx(151,46): error TS2322: Type '{ item: any; activeBtn: string; }' is not assignable to type 'IntrinsicAttributes & { item: any; }'.
+  Property 'activeBtn' does not exist on type 'IntrinsicAttributes & { item: any; }'.
+src/components/tenantadmin/dashboard/component/function/resubaleGetStorage.tsx(1,36): error TS7006: Parameter 'storageName' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/function/resubaleGetStorage.tsx(13,5): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/component/function/resubaleGetStorage.tsx(13,38): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(3,18): error TS2307: Cannot find module '../../../../components/card/index' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(4,23): error TS2307: Cannot find module '../../../../components/headtitle' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(9,45): error TS2307: Cannot find module '../../../../stores/reviewer/dashboard' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(10,36): error TS2307: Cannot find module '../../../../components/reuseableFunctions' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(11,28): error TS2307: Cannot find module '../../../../utils/storages' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(14,3): error TS7031: Binding element 'getHoldStatusData' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(15,3): error TS7031: Binding element 'holdStatusData' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(32,42): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(35,31): error TS7006: Parameter 'obj' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(57,30): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(57,36): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(74,17): error TS2322: Type 'string' is not assignable to type 'number'.
+src/components/tenantadmin/dashboard/component/holdstatus/index.tsx(141,28): error TS2339: Property 'reviewer' does not exist on type '{}'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(40,31): error TS2307: Cannot find module '../../../../../utils/reusable' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(41,26): error TS2307: Cannot find module '../../../../../components/skeleton/card' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(46,22): error TS7031: Binding element 'type' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(46,28): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(46,39): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(46,52): error TS7031: Binding element 'windowWidth' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(57,15): error TS1117: An object literal cannot have multiple properties with the same name.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(120,10): error TS2741: Property 'chartType' is missing in type '{ charts: ({ type: string; size: string; mainTitle: string; title: string; value: number; bgColor: StaticImageData; backgroundColor: any; categories?: undefined; customHeader?: undefined; legend?: undefined; series?: undefined; } | { ...; })[]; }' but required in type 'GroupCardProps'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(126,10): error TS2741: Property 'chartType' is missing in type '{ charts: ({ type: any; size: string; categories: string[]; customHeader: { label: string; value: string; header: string; }; series: { name: string; data: number[]; color: any; area: boolean; }[]; } | { type: any; size: string; categories: string[]; customHeader: { ...; }; series: { ...; }[]; })[]; }' but required in type 'GroupCardProps'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(132,10): error TS2741: Property 'chartType' is missing in type '{ charts: ({ type: any; size: string; categories: string[]; customHeader: { label: string; value: string; header: string; }; series: { name: string; data: number[]; color: any; area: boolean; }[]; } | { type: any; size: string; categories: string[]; customHeader: { ...; }; series: { ...; }[]; })[]; }' but required in type 'GroupCardProps'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(138,10): error TS2741: Property 'chartType' is missing in type '{ charts: ({ type: any; size: string; categories: string[]; customHeader: { label: string; value: string; header: string; }; series: { name: string; data: number[]; color: any; area: boolean; }[]; } | { type: any; size: string; categories: string[]; customHeader: { ...; }; series: { ...; }[]; })[]; }' but required in type 'GroupCardProps'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(144,10): error TS2741: Property 'chartType' is missing in type '{ charts: ({ type: any; size: string; categories: string[]; customHeader: { label: string; value: string; header: string; }; series: { name: string; data: number[]; color: any; area: boolean; }[]; } | { type: any; size: string; categories: string[]; customHeader: { ...; }; series: { ...; }[]; })[]; }' but required in type 'GroupCardProps'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(153,28): error TS2339: Property 'icon' does not exist on type '{ title: string; value: number; bgColor: StaticImageData; }'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(240,27): error TS2454: Variable 'fileChartCategories' is used before being assigned.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(302,10): error TS2741: Property 'chartType' is missing in type '{ charts: { type: any; size: string; categories: string[]; customHeader: { label: string; value: string; header: string; }; series: { name: string; data: number[]; color: any; area: boolean; }[]; }[]; }' but required in type 'GroupCardProps'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(308,10): error TS2741: Property 'chartType' is missing in type '{ charts: { type: any; size: string; categories: string[]; customHeader: { label: string; value: string; header: string; }; series: { name: string; data: number[]; color: any; area: boolean; }[]; }[]; }' but required in type 'GroupCardProps'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(314,10): error TS2741: Property 'chartType' is missing in type '{ charts: { type: any; size: string; categories: string[]; customHeader: { label: string; value: string; header: string; }; series: { name: string; data: number[]; color: any; area: boolean; }[]; }[]; }' but required in type 'GroupCardProps'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(320,10): error TS2741: Property 'chartType' is missing in type '{ charts: { type: any; size: string; categories: string[]; customHeader: { label: string; value: string; header: string; }; series: { name: string; data: number[]; color: any; area: boolean; }[]; }[]; }' but required in type 'GroupCardProps'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(327,11): error TS2322: Type '{ chartType: any; chartChange: any; windowWidth: any; chartData: { status: string; value: number; }[]; }' is not assignable to type 'IntrinsicAttributes & { chartType: any; chartChange: any; selectedRole: any; chartData: any; }'.
+  Property 'windowWidth' does not exist on type 'IntrinsicAttributes & { chartType: any; chartChange: any; selectedRole: any; chartData: any; }'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(340,15): error TS1117: An object literal cannot have multiple properties with the same name.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(409,15): error TS1117: An object literal cannot have multiple properties with the same name.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(476,3): error TS7031: Binding element 'isDragable' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(477,3): error TS7031: Binding element 'handleSelect' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(478,3): error TS7031: Binding element 'selectedItems' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(479,3): error TS7031: Binding element 'dashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(480,3): error TS7031: Binding element 'setDashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(481,3): error TS7031: Binding element 'getSelectedWidgets' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(482,3): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(491,49): error TS7006: Parameter 'd' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(558,30): error TS7006: Parameter 'element' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(565,32): error TS2345: Argument of type '{ type: string; chartType: string; windowWidth: number | null; }' is not assignable to parameter of type '{ type: any; chartType: any; chartChange: any; windowWidth: any; }'.
+  Property 'chartChange' is missing in type '{ type: string; chartType: string; windowWidth: number | null; }' but required in type '{ type: any; chartType: any; chartChange: any; windowWidth: any; }'.
+src/components/tenantadmin/dashboard/component/layout/default/index.tsx(581,25): error TS18046: 'state' is of type 'unknown'.
+src/components/tenantadmin/dashboard/component/layout/default/mockData.tsx(8,31): error TS2307: Cannot find module '../../../../../utils/reusable' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/default/mockData.tsx(88,33): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/mockData.tsx(128,30): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/mockData.tsx(264,28): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/mockData.tsx(346,32): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/mockData.tsx(429,35): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/mockData.tsx(662,38): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/mockData.tsx(708,39): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/mockData.tsx(736,38): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/default/mockData.tsx(764,40): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/index.tsx(7,17): error TS7006: Parameter 'props' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(28,3): error TS2305: Module '"./mockData"' has no exported member 'ScopeYearMis'.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(32,26): error TS2307: Cannot find module '../../../../../components/skeleton/card' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(34,3): error TS7031: Binding element 'isDragable' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(35,3): error TS7031: Binding element 'handleSelect' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(36,3): error TS7031: Binding element 'selectedItems' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(37,3): error TS7031: Binding element 'dashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(38,3): error TS7031: Binding element 'setDashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(39,3): error TS7031: Binding element 'getSelectedWidgets' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(40,3): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(42,24): error TS7031: Binding element 'type' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(42,30): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(42,41): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(120,49): error TS7006: Parameter 'd' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(177,28): error TS7006: Parameter 'element' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(182,32): error TS2345: Argument of type '{ type: string; chartType: string; }' is not assignable to parameter of type '{ type: any; chartType: any; chartChange: any; }'.
+  Property 'chartChange' is missing in type '{ type: string; chartType: string; }' but required in type '{ type: any; chartType: any; chartChange: any; }'.
+src/components/tenantadmin/dashboard/component/layout/invalid/Invalid.tsx(197,25): error TS18046: 'state' is of type 'unknown'.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(17,31): error TS2307: Cannot find module '../../../../../utils/reusable' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(18,26): error TS2307: Cannot find module '../../../../../components/skeleton/card' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(30,28): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(30,39): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(59,35): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(59,46): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(85,29): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(85,40): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(111,38): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(111,49): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(137,38): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(137,49): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(163,39): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(163,50): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(189,37): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(189,48): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(215,35): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(215,46): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(241,33): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(241,44): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(267,40): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(267,51): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(293,35): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(293,46): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(319,34): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(319,45): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(345,38): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(345,49): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(371,30): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(371,41): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(397,30): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(397,41): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(423,40): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/invalid/mockData.tsx(423,51): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(30,26): error TS2307: Cannot find module '../../../../../components/skeleton/card' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(33,22): error TS7031: Binding element 'type' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(33,28): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(33,39): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(40,51): error TS2322: Type '{ chartType: any; chartChange: any; }' is not assignable to type 'IntrinsicAttributes & { chartType: any; }'.
+  Property 'chartChange' does not exist on type 'IntrinsicAttributes & { chartType: any; }'.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(71,10): error TS2741: Property 'chartType' is missing in type '{ charts: { type: any; size: string; categories: string[]; series: { name: string; data: number[]; color: any; stack: string; }[]; }[]; stacked: true; }' but required in type 'GroupCardProps'.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(91,3): error TS7031: Binding element 'isDragable' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(92,3): error TS7031: Binding element 'handleSelect' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(93,3): error TS7031: Binding element 'selectedItems' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(94,3): error TS7031: Binding element 'dashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(95,3): error TS7031: Binding element 'setDashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(96,3): error TS7031: Binding element 'getSelectedWidgets' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(97,3): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(107,49): error TS7006: Parameter 'd' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(203,26): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(231,46): error TS7053: Element implicitly has an 'any' type because expression of type '"allocationStatus" | "productivityStatus"' can't be used to index type '{}'.
+  Property 'allocationStatus' does not exist on type '{}'.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(242,45): error TS7053: Element implicitly has an 'any' type because expression of type '"allocationStatus" | "productivityStatus"' can't be used to index type '{}'.
+  Property 'allocationStatus' does not exist on type '{}'.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(259,30): error TS7006: Parameter 'element' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(265,32): error TS2345: Argument of type '{ type: string; chartType: string; }' is not assignable to parameter of type '{ type: any; chartType: any; chartChange: any; }'.
+  Property 'chartChange' is missing in type '{ type: string; chartType: string; }' but required in type '{ type: any; chartType: any; chartChange: any; }'.
+src/components/tenantadmin/dashboard/component/layout/workflow/index.tsx(280,25): error TS18046: 'state' is of type 'unknown'.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(9,28): error TS2307: Cannot find module '../../../../../components/buttonSroller' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(11,29): error TS2307: Cannot find module '@fortawesome/free-solid-svg-icons' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(12,33): error TS2307: Cannot find module '@fortawesome/react-fontawesome' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(20,8): error TS2307: Cannot find module '../../../../../utils/reusable' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(25,26): error TS2307: Cannot find module '../../../../../components/skeleton/card' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(26,32): error TS2307: Cannot find module '../../../../../utils/config' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(101,35): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(101,46): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(134,33): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(197,35): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(197,46): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(225,26): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(225,37): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(258,26): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(258,37): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(292,22): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(292,33): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(326,31): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(326,42): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(360,26): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(360,37): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(394,25): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(394,36): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(428,25): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(428,36): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(461,28): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(461,39): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(461,52): error TS7031: Binding element 'series' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(685,42): error TS2322: Type '{ id: number; content: string; createdDate: string; fromUserDetails: { firstName: string; lastName: string; role: string; }; }[]' is not assignable to type 'never[]'.
+  Type '{ id: number; content: string; createdDate: string; fromUserDetails: { firstName: string; lastName: string; role: string; }; }' is not assignable to type 'never'.
+src/components/tenantadmin/dashboard/component/layout/workflow/mockData.tsx(690,40): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(25,26): error TS2307: Cannot find module '../../../../../components/skeleton/card' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(64,3): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(65,3): error TS7031: Binding element 'type' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(66,3): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(67,3): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(68,3): error TS7031: Binding element 'accesslist' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(69,3): error TS7031: Binding element 'windowWidth' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(110,44): error TS2322: Type '{ id: number; content: string; createdDate: string; fromUserDetails: { firstName: string; lastName: string; role: string; }; }[]' is not assignable to type 'never[]'.
+  Type '{ id: number; content: string; createdDate: string; fromUserDetails: { firstName: string; lastName: string; role: string; }; }' is not assignable to type 'never'.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(121,46): error TS2322: Type '{ patientId: string; noteText: string; holdNotes: { 2023: string; }[]; }[]' is not assignable to type 'never[]'.
+  Type '{ patientId: string; noteText: string; holdNotes: { 2023: string; }[]; }' is not assignable to type 'never'.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(135,3): error TS7031: Binding element 'isDragable' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(136,3): error TS7031: Binding element 'handleSelect' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(137,3): error TS7031: Binding element 'selectedItems' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(138,3): error TS7031: Binding element 'dashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(139,3): error TS7031: Binding element 'setDashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(140,3): error TS7031: Binding element 'getSelectedWidgets' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(141,3): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(150,49): error TS7006: Parameter 'd' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(179,23): error TS7006: Parameter 'params' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(214,28): error TS7006: Parameter 'element' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(219,32): error TS2345: Argument of type '{ selectedRole: any; type: string; chartType: string; accesslist: string[] | undefined; windowWidth: number | null; }' is not assignable to parameter of type '{ selectedRole: any; type: any; chartType: any; chartChange: any; accesslist: any; windowWidth: any; }'.
+  Property 'chartChange' is missing in type '{ selectedRole: any; type: string; chartType: string; accesslist: string[] | undefined; windowWidth: number | null; }' but required in type '{ selectedRole: any; type: any; chartType: any; chartChange: any; accesslist: any; windowWidth: any; }'.
+src/components/tenantadmin/dashboard/component/layout/workQueue/index.tsx(237,25): error TS18046: 'state' is of type 'unknown'.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(2,24): error TS2307: Cannot find module '../../../../../components/yearpicker' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(4,28): error TS2307: Cannot find module '../../../../../components/buttonSroller' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(5,25): error TS2307: Cannot find module '../../../../../pages/reviewer/workingstatus' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(6,46): error TS2307: Cannot find module '../../../../../utils/reusable' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(12,8): error TS2307: Cannot find module '@fortawesome/free-solid-svg-icons' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(13,33): error TS2307: Cannot find module '@fortawesome/react-fontawesome' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(15,26): error TS2307: Cannot find module '../../../../../components/skeleton/card' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(167,3): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(168,3): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(169,3): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(170,3): error TS7031: Binding element 'chartData' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(177,22): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(177,28): error TS7006: Parameter 'idx' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(179,16): error TS2741: Property 'col' is missing in type '{ key: any; status: any; value: any; coderName: any; }' but required in type '{ coderName?: string | undefined; status?: string | undefined; value?: number | undefined; label?: string | undefined; subtitle?: string | undefined; col: any; }'.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(197,40): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(197,46): error TS7006: Parameter 'index' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(226,3): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(227,3): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(228,3): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(229,3): error TS7031: Binding element 'windowWidth' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(262,35): error TS7006: Parameter 'params' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(323,3): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(324,3): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(325,3): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(326,3): error TS7031: Binding element 'windowWidth' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(359,35): error TS7006: Parameter 'params' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(419,28): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(419,39): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(419,52): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(506,35): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(506,46): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(506,59): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(558,35): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(558,46): error TS7031: Binding element 'chartChange' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(558,59): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/layout/workQueue/mockData.tsx(566,16): error TS2741: Property 'col' is missing in type '{ key: number; status: string; value: number; coderName: any; }' but required in type '{ coderName?: string | undefined; status?: string | undefined; value?: number | undefined; label?: string | undefined; subtitle?: string | undefined; col: any; }'.
+src/components/tenantadmin/dashboard/component/modal/dragAndDrap/index.tsx(3,24): error TS7031: Binding element 'selectedTab' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/modal/dragAndDrap/index.tsx(3,36): error TS7031: Binding element 'dashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/modal/dragAndDrap/index.tsx(3,46): error TS7031: Binding element 'setDashboard' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/modal/dragAndDrap/index.tsx(3,60): error TS7031: Binding element 'selectedRole' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/modal/widget/index.tsx(4,17): error TS7006: Parameter 'props' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/notifications/index.tsx(7,18): error TS2307: Cannot find module '../../../../components/card/index' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/notifications/index.tsx(8,23): error TS2307: Cannot find module '../../../../components/headtitle' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/notifications/index.tsx(11,33): error TS2307: Cannot find module '@fortawesome/react-fontawesome' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/notifications/index.tsx(12,24): error TS2307: Cannot find module '@fortawesome/free-solid-svg-icons' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/notifications/index.tsx(13,32): error TS2307: Cannot find module '../../../../components/patientDetails/details/components/function/ReusableFunctions' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/notifications/index.tsx(14,39): error TS2307: Cannot find module '../../../../components/headerFilters/functions' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/notifications/index.tsx(43,3): error TS7031: Binding element 'notificationResponse' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/notifications/index.tsx(44,3): error TS7031: Binding element 'notificationLoading' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/notifications/index.tsx(45,3): error TS7031: Binding element 'webSocketNotificationData' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/notifications/index.tsx(62,31): error TS7006: Parameter 'info' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/notifications/index.tsx(140,39): error TS7006: Parameter 'info' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/statusCard/index.tsx(2,33): error TS2307: Cannot find module '@fortawesome/react-fontawesome' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/statusCard/index.tsx(7,8): error TS2307: Cannot find module '@fortawesome/free-solid-svg-icons' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/statusCard/index.tsx(15,31): error TS2307: Cannot find module '../../../../utils/reusable' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/component/statusCard/index.tsx(66,3): error TS7031: Binding element 'col' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/component/statusCard/index.tsx(68,29): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ Allocated: { icon: Element; bgColor: StaticImageData; }; Completed: { icon: Element; bgColor: StaticImageData; }; InProgress: { icon: Element; bgColor: StaticImageData; }; ... 7 more ...; OutPatient: { ...; }; }'.
+  No index signature with a parameter of type 'string' was found on type '{ Allocated: { icon: Element; bgColor: StaticImageData; }; Completed: { icon: Element; bgColor: StaticImageData; }; InProgress: { icon: Element; bgColor: StaticImageData; }; ... 7 more ...; OutPatient: { ...; }; }'.
+src/components/tenantadmin/dashboard/index.tsx(230,12): error TS2532: Object is possibly 'undefined'.
+src/components/tenantadmin/dashboard/index.tsx(508,17): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: { selectedTab: any; dashboard: any; setDashboard: any; selectedRole: any; }, context?: any): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | ... 4 more ... | undefined', gave the following error.
+    Type '{ selectedTab: string; selectedItems: WidgetItem[]; setSelectedItem: Dispatch<SetStateAction<WidgetItem[]>>; handleSelect: (item: WidgetItem) => void; dashboard: WidgetItem[]; setDashboard: Dispatch<...>; selectedRole: string; }' is not assignable to type 'IntrinsicAttributes & { selectedTab: any; dashboard: any; setDashboard: any; selectedRole: any; }'.
+      Property 'selectedItems' does not exist on type 'IntrinsicAttributes & { selectedTab: any; dashboard: any; setDashboard: any; selectedRole: any; }'.
+  Overload 2 of 2, '(props: { selectedTab: any; dashboard: any; setDashboard: any; selectedRole: any; }): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | ... 4 more ... | undefined', gave the following error.
+    Type '{ selectedTab: string; selectedItems: WidgetItem[]; setSelectedItem: Dispatch<SetStateAction<WidgetItem[]>>; handleSelect: (item: WidgetItem) => void; dashboard: WidgetItem[]; setDashboard: Dispatch<...>; selectedRole: string; }' is not assignable to type 'IntrinsicAttributes & { selectedTab: any; dashboard: any; setDashboard: any; selectedRole: any; }'.
+      Property 'selectedItems' does not exist on type 'IntrinsicAttributes & { selectedTab: any; dashboard: any; setDashboard: any; selectedRole: any; }'.
+src/components/tenantadmin/dashboard/pages/components/headerFilters/index.tsx(47,21): error TS2554: Expected 1 arguments, but got 0.
+src/components/tenantadmin/dashboard/pages/invalid/Invalid.tsx(39,23): error TS2307: Cannot find module 'highcharts' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/pages/invalid/Invalid.tsx(68,27): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/pages/invalid/Invalid.tsx(137,23): error TS7006: Parameter 'Dates' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/pages/invalid/Invalid.tsx(147,26): error TS7006: Parameter 'Dates' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/pages/invalid/Invalid.tsx(464,20): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/pages/invalid/Invalid.tsx(466,13): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/pages/invalid/Invalid.tsx(482,24): error TS7031: Binding element 'type' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/pages/invalid/Invalid.tsx(482,30): error TS7031: Binding element 'chartType' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/pages/invalid/Invalid.tsx(482,41): error TS7031: Binding element 'pagesLoader' implicitly has an 'any' type.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(919,25): error TS2367: This comparison appears to be unintentional because the types 'number' and 'string' have no overlap.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(926,25): error TS2367: This comparison appears to be unintentional because the types 'number' and 'string' have no overlap.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(995,13): error TS2322: Type 'any[]' is not assignable to type 'never[]'.
+  Type 'any' is not assignable to type 'never'.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1003,10): error TS2741: Property 'chartType' is missing in type '{ charts: { type: string; size: string; categories: string[] | undefined; series: { name: string; data: any; color: string; stack: string; plotConfig: { key: string; value: string; dates: string[] | undefined; }; }[]; }[]; stacked: true; }' but required in type 'GroupCardProps'.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1241,20): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1242,20): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1289,20): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1290,20): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1326,20): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1327,20): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1360,20): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1361,20): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1374,22): error TS7053: Element implicitly has an 'any' type because expression of type '"getUserDropDownAction"' can't be used to index type '{}'.
+  Property 'getUserDropDownAction' does not exist on type '{}'.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1554,21): error TS2322: Type '(index: any, btn: any) => void' is not assignable to type '(id: number) => void'.
+  Target signature provides too few arguments. Expected 2 or more, but got 1.
+src/components/tenantadmin/dashboard/pages/workflow/index.tsx(1555,21): error TS2322: Type 'string' is not assignable to type 'number'.
+src/components/tenantadmin/dashboard/pages/workQueue/index.tsx(18,25): error TS2307: Cannot find module '../../../../../../pages/reviewer/workingstatus' or its corresponding type declarations.
+src/components/tenantadmin/dashboard/pages/workQueue/index.tsx(293,32): error TS18047: 'windowWidth' is possibly 'null'.
+src/components/tenantadmin/dashboard/pages/workQueue/index.tsx(429,32): error TS18047: 'windowWidth' is possibly 'null'.
+src/components/tenantadmin/dashboard/pages/workQueue/index.tsx(694,17): error TS2322: Type '(date: any, dateString: string) => void' is not assignable to type '(date: any, dateString: string | string[]) => void'.
+  Types of parameters 'dateString' and 'dateString' are incompatible.
+    Type 'string | string[]' is not assignable to type 'string'.
+      Type 'string[]' is not assignable to type 'string'.
+src/components/tenantadmin/dashboard/pages/workQueue/index.tsx(898,17): error TS2322: Type '(date: any, dateString: string) => void' is not assignable to type '(date: any, dateString: string | string[]) => void'.
+  Types of parameters 'dateString' and 'dateString' are incompatible.
+    Type 'string | string[]' is not assignable to type 'string'.
+      Type 'string[]' is not assignable to type 'string'.
+src/components/tenantadmin/patients/PatientDetailsClientComponent/components/function/index.tsx(3,10): error TS2724: '"@/util/reusableFunction"' has no exported member named 'getStatusColors'. Did you mean 'getStatusColor'?
+src/state/admin/dashboard/actions.ts(144,5): error TS7053: Element implicitly has an 'any' type because expression of type '`${string}Action`' can't be used to index type '{}'.
+src/state/admin/dashboard/actions.ts(144,69): error TS7006: Parameter 'params' implicitly has an 'any' type.
+src/state/admin/dashboard/actions.ts(148,5): error TS7053: Element implicitly has an 'any' type because expression of type '`${string}Action`' can't be used to index type '{}'.
+src/state/admin/dashboard/actions.ts(148,69): error TS7006: Parameter 'params' implicitly has an 'any' type.
+src/state/admin/dashboard/network.ts(1,28): error TS2307: Cannot find module '../../../utils/storages' or its corresponding type declarations.
+src/state/admin/dashboard/network.ts(2,31): error TS2307: Cannot find module '../../../utils/network' or its corresponding type declarations.
+src/state/admin/dashboard/network.ts(5,43): error TS7031: Binding element 'endpoint' implicitly has an 'any' type.
+src/state/admin/dashboard/network.ts(12,43): error TS2345: Argument of type 'URLSearchParams' is not assignable to parameter of type 'string'.
+src/state/admin/dashboard/network.ts(32,47): error TS7031: Binding element 'endpoint' implicitly has an 'any' type.
+src/state/admin/dashboard/reducer.ts(11,24): error TS7006: Parameter 'actionThunk' implicitly has an 'any' type.
+src/state/admin/dashboard/reducer.ts(13,5): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(reducerMap: ReducerMap<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }>, initialState: { loading: boolean; data: null; error: null; }, options?: Options | undefined): ReduxCompatibleReducer<...>', gave the following error.
+    Argument of type '{ [x: number]: ((state: { loading: boolean; data: null; error: null; }) => { loading: boolean; error: null; data: null; }) | ((state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { ...; }) | ((state: { ...; }, action: Action<...>) => { ...; }); }' is not assignable to parameter of type 'ReducerMap<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }>'.
+      'number' and 'string' index signatures are incompatible.
+        Type '((state: { loading: boolean; data: null; error: null; }) => { loading: boolean; error: null; data: null; }) | ((state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { ...; }) | ((state: { ...; }, action: Action<...>) => { ...; })' is not assignable to type 'ReducerMapValue<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }>'.
+          Type '(state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { loading: boolean; data: { loading: boolean; data: null; error: null; }; error: null; }' is not assignable to type 'ReducerMapValue<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }>'.
+            Type '(state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { loading: boolean; data: { loading: boolean; data: null; error: null; }; error: null; }' is not assignable to type 'Reducer<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }>'.
+              Call signature return types '{ loading: boolean; data: { loading: boolean; data: null; error: null; }; error: null; }' and '{ loading: boolean; data: null; error: null; }' are incompatible.
+                The types of 'data' are incompatible between these types.
+                  Type '{ loading: boolean; data: null; error: null; }' is not assignable to type 'null'.
+  Overload 2 of 3, '(reducerMap: ReducerMap<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }>, initialState: { loading: boolean; data: null; error: null; }, options?: Options | undefined): ReduxCompatibleReducer<...>', gave the following error.
+    Argument of type '{ [x: number]: ((state: { loading: boolean; data: null; error: null; }) => { loading: boolean; error: null; data: null; }) | ((state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { ...; }) | ((state: { ...; }, action: Action<...>) => { ...; }); }' is not assignable to parameter of type 'ReducerMap<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }>'.
+      'number' and 'string' index signatures are incompatible.
+        Type '((state: { loading: boolean; data: null; error: null; }) => { loading: boolean; error: null; data: null; }) | ((state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { ...; }) | ((state: { ...; }, action: Action<...>) => { ...; })' is not assignable to type 'ReducerMapValue<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }>'.
+          Type '(state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { loading: boolean; data: { loading: boolean; data: null; error: null; }; error: null; }' is not assignable to type 'ReducerMapValue<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }>'.
+            Type '(state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { loading: boolean; data: { loading: boolean; data: null; error: null; }; error: null; }' is not assignable to type 'Reducer<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }>'.
+              Call signature return types '{ loading: boolean; data: { loading: boolean; data: null; error: null; }; error: null; }' and '{ loading: boolean; data: null; error: null; }' are incompatible.
+                The types of 'data' are incompatible between these types.
+                  Type '{ loading: boolean; data: null; error: null; }' is not assignable to type 'null'.
+  Overload 3 of 3, '(reducerMap: ReducerMapMeta<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }, unknown>, initialState: { loading: boolean; data: null; error: null; }, options?: Options | undefined): ReduxCompatibleReducerMeta<...>', gave the following error.
+    Argument of type '{ [x: number]: ((state: { loading: boolean; data: null; error: null; }) => { loading: boolean; error: null; data: null; }) | ((state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { ...; }) | ((state: { ...; }, action: Action<...>) => { ...; }); }' is not assignable to parameter of type 'ReducerMapMeta<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }, unknown>'.
+      'number' and 'string' index signatures are incompatible.
+        Type '((state: { loading: boolean; data: null; error: null; }) => { loading: boolean; error: null; data: null; }) | ((state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { ...; }) | ((state: { ...; }, action: Action<...>) => { ...; })' is not assignable to type 'ReducerMapMeta<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }, unknown> | ReducerMeta<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }, unknown> | ReducerNextThrowMeta<...>'.
+          Type '(state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { loading: boolean; data: { loading: boolean; data: null; error: null; }; error: null; }' is not assignable to type 'ReducerMapMeta<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }, unknown> | ReducerMeta<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }, unknown> | ReducerNextThrowMeta<...>'.
+            Type '(state: { loading: boolean; data: null; error: null; }, action: Action<{ loading: boolean; data: null; error: null; }>) => { loading: boolean; data: { loading: boolean; data: null; error: null; }; error: null; }' is not assignable to type 'ReducerMeta<{ loading: boolean; data: null; error: null; }, { loading: boolean; data: null; error: null; }, unknown>'.
+              Call signature return types '{ loading: boolean; data: { loading: boolean; data: null; error: null; }; error: null; }' and '{ loading: boolean; data: null; error: null; }' are incompatible.
+                The types of 'data' are incompatible between these types.
+                  Type '{ loading: boolean; data: null; error: null; }' is not assignable to type 'null'.
+src/state/admin/dashboard/reducer.ts(29,31): error TS7006: Parameter 'actionThunk' implicitly has an 'any' type.
+src/state/admin/dashboard/reducer.ts(44,3): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/state/admin/dashboard/reducer.ts(45,3): error TS7053: Element implicitly has an 'any' type because expression of type '`${string}Loader`' can't be used to index type '{}'.
+src/util/redux.ts(3,20): error TS7006: Parameter 'p' implicitly has an 'any' type.
+src/util/redux.ts(5,35): error TS7006: Parameter 'type' implicitly has an 'any' type.
+src/util/redux.ts(5,41): error TS7006: Parameter 'fn' implicitly has an 'any' type.
+src/util/redux.ts(19,6): error TS7019: Rest parameter 'args' implicitly has an 'any[]' type.
+src/util/redux.ts(20,6): error TS7006: Parameter 'dispatch' implicitly has an 'any' type.
+src/util/redux.ts(20,16): error TS7006: Parameter 'getState' implicitly has an 'any' type.
+src/util/redux.ts(20,26): error TS7006: Parameter 'extra' implicitly has an 'any' type.
+src/util/redux.ts(26,26): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/util/redux.ts(42,23): error TS7006: Parameter 'err' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(6,22): error TS7016: Could not find a declaration file for module 'crypto-js'. '/Users/macbook/Documents/Typescript/free-for-service-ui/node_modules/crypto-js/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/crypto-js` if it exists or add a new declaration (.d.ts) file containing `declare module 'crypto-js';`
+src/util/reusableFunction.tsx(11,21): error TS7016: Could not find a declaration file for module 'lodash/isEqual'. '/Users/macbook/Documents/Typescript/free-for-service-ui/node_modules/lodash/isEqual.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/lodash` if it exists or add a new declaration (.d.ts) file containing `declare module 'lodash/isEqual';`
+src/util/reusableFunction.tsx(132,31): error TS7006: Parameter 'password' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(146,11): error TS2304: Cannot find name 'companyDeatils'.
+src/util/reusableFunction.tsx(167,11): error TS2304: Cannot find name 'companyDeatils'.
+src/util/reusableFunction.tsx(183,38): error TS7006: Parameter 'list' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(183,44): error TS7006: Parameter 'key' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(187,41): error TS7006: Parameter 'design' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(187,49): error TS7006: Parameter 'key' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(191,36): error TS7031: Binding element 'str' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(191,41): error TS7031: Binding element 'count' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(221,39): error TS7006: Parameter 'obj' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(233,49): error TS7006: Parameter 'obj' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(239,15): error TS2339: Property 'startDate' does not exist on type '{}'.
+src/util/reusableFunction.tsx(239,26): error TS2339: Property 'endDate' does not exist on type '{}'.
+src/util/reusableFunction.tsx(257,36): error TS7006: Parameter 'arr1' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(257,42): error TS7006: Parameter 'arr2' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(258,22): error TS7006: Parameter 'obj1' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(259,17): error TS7006: Parameter 'obj2' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(263,34): error TS7031: Binding element 'date' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(285,3): error TS7006: Parameter 'currentDate' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(316,38): error TS7031: Binding element 'date' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(316,44): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(332,33): error TS7006: Parameter 'items' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(335,22): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(346,39): error TS7006: Parameter 'items' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(349,22): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(360,37): error TS7006: Parameter 'dataArray' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(360,48): error TS7006: Parameter 'fieldName' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(361,33): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(369,30): error TS7006: Parameter 'key' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(379,35): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(379,41): error TS7006: Parameter 'columnItem' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(410,37): error TS7031: Binding element 'tabList' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(411,29): error TS7006: Parameter 'item' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(466,33): error TS7006: Parameter 'current' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(470,31): error TS7006: Parameter 'date' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(480,28): error TS7006: Parameter 'value' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(503,39): error TS7031: Binding element 'inputDate' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(508,3): error TS7006: Parameter 'patientIdDetailsData' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(509,3): error TS7006: Parameter 'patientDetailsResult' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(510,3): error TS7006: Parameter 'pathname' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(575,36): error TS7006: Parameter 'form' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(575,42): error TS7006: Parameter 'fields' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(587,16): error TS7031: Binding element 'errors' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(594,24): error TS7006: Parameter 'acc' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(594,29): error TS7006: Parameter 'key' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(595,22): error TS18047: 'initialValuesRef.current' is possibly 'null'.
+src/util/reusableFunction.tsx(612,32): error TS7031: Binding element 'value' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(612,39): error TS7031: Binding element 'valueType' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(666,32): error TS7006: Parameter 'str' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(670,26): error TS7006: Parameter 'char' implicitly has an 'any' type.
+src/util/reusableFunction.tsx(691,33): error TS7006: Parameter 'role' implicitly has an 'any' type.
+src/util/storage.ts(1,22): error TS7016: Could not find a declaration file for module 'crypto-js'. '/Users/macbook/Documents/Typescript/free-for-service-ui/node_modules/crypto-js/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/crypto-js` if it exists or add a new declaration (.d.ts) file containing `declare module 'crypto-js';`
+src/util/storage.ts(5,18): error TS7006: Parameter 'key' implicitly has an 'any' type.
+src/util/storage.ts(11,28): error TS7006: Parameter 'key' implicitly has an 'any' type.
+src/util/storage.ts(37,28): error TS7006: Parameter 'key' implicitly has an 'any' type.
+src/util/storage.ts(37,33): error TS7006: Parameter 'value' implicitly has an 'any' type.
+src/util/storage.ts(52,7): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+src/util/storage.ts(68,31): error TS7006: Parameter 'key' implicitly has an 'any' type.
+src/util/storage.ts(74,16): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+src/util/storage.ts(82,38): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
+  No index signature with a parameter of type 'string' was found on type '{}'.
+src/util/storage.ts(101,52): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+src/util/storage.ts(103,34): error TS2538: Type 'null' cannot be used as an index type.
+src/util/storage.ts(110,13): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+src/util/storage.ts(112,13): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+src/util/storage.ts(116,13): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
+src/util/storage.ts(116,57): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+src/util/storage.ts(118,13): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{}'.
