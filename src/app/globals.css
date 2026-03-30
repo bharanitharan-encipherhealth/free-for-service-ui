@@ -1504,12 +1504,9 @@ img.login-logo {
 }
 
 .tenatTable>thead>tr {
-  height: 43px !important;
-  border-radius: 10px !important;
-  background: linear-gradient(to right,
-      var(--new-app-secondary4),
-      var(--new-app-secondary),
-      var(--new-app-secondary3));
+  /* height: 13px !important; */
+  border-radius: 20px !important;
+  background-color: var(--application-base-color);
   font-weight: 700;
   font-size: 16px;
   color: white !important;

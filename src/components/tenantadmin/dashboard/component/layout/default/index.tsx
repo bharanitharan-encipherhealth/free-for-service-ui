@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Card } from "antd";
 import React, { useState, useEffect } from "react";
 import AppChart from "../../appchart";
@@ -51,7 +51,13 @@ interface GetChartsProps {
   selectedRole?: string;
 }
 
-const getCharts = ({ type, chartType, chartChange, windowWidth, selectedRole }: GetChartsProps) => {
+const getCharts = ({
+  type,
+  chartType,
+  chartChange,
+  windowWidth,
+  selectedRole,
+}: GetChartsProps) => {
   switch (type) {
     case "filecount":
       if (chartType === "card") {
@@ -199,55 +205,79 @@ const getCharts = ({ type, chartType, chartChange, windowWidth, selectedRole }: 
           )}
         </div>
       );
-      case "fileChart":
-        const {
-          categories: fileChartCategorie,
-          formattedSeries: fileChartFormatte,
-        } = getFormattedChartData(fileChartSeries, chartType);
-      
-        return (
-          <div className="flex flex-col">
-            <div className="flex justify-between w-full flex-wrap gap-3">
-              {statCardData.map((card) => (
-                <StatCard
-                  key={card.title}
-                  icon={card.icon}
-                  title={card.title}
-                  value={card.value}
-                  bgColor={card.bgColor}
-                  padding="10px"
-                  minWidth="165px"
-                  gap="12px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  borderRadius="16px"
-                  height="65px"
-                  textColor={"white"}
-                  fontSize="16px"
-                  fontWeight={700}
-                  textAlign={"center"}
-                  border="3px solid #B3B3B3"
-                />
-              ))}
-            </div>
-      
-            {chartChange ? (
-              <CardSkeleton count={1} height={300} />
-            ) : (
-              <AppChart
-                type={chartType}
-                categories={fileChartCategorie}
-                series={fileChartFormatte}
-                height={250}
+    case "fileChart":
+      const {
+        categories: fileChartCategorie,
+        formattedSeries: fileChartFormatte,
+      } = getFormattedChartData(fileChartSeries, chartType);
+
+      return (
+        <div className="flex flex-col">
+          <div className="flex justify-between w-full flex-wrap gap-3">
+            {statCardData.map((card) => (
+              <StatCard
+                key={card.title}
+                icon={card.icon}
+                title={card.title}
+                value={card.value}
+                bgColor={card.bgColor}
+                padding="10px"
+                minWidth="165px"
+                gap="12px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                borderRadius="16px"
+                height="65px"
+                textColor={"white"}
+                fontSize="16px"
+                fontWeight={700}
+                textAlign={"center"}
+                border="3px solid #B3B3B3"
               />
-            )}
+            ))}
           </div>
-        );
+
+          {chartChange ? (
+            <CardSkeleton count={1} height={300} />
+          ) : (
+            <AppChart
+              type={chartType}
+              categories={fileChartCategorie}
+              series={fileChartFormatte}
+              height={250}
+            />
+          )}
+        </div>
+      );
     case "Top10Diseases":
       return (
         <ReusableTable
-          title="Top 10 Diseases"
+          title={
+            <span>
+              Top 10 <span>ICD Codes</span>
+            </span>
+          }
+          items={top10DiseasesMock}
+          columns={[
+            { title: "Code", dataIndex: "diagnosisCode" },
+            {
+              title: "Description",
+              dataIndex: "description",
+              className: "midRow",
+            },
+            { title: "Count", dataIndex: "count" },
+          ]}
+        />
+      );
+    case "Top10AachiiCode":
+      return (
+        <ReusableTable
+          title={
+            <span>
+              Top 10 <span>AACHII Codes</span>
+            </span>
+          }
           items={top10DiseasesMock}
           columns={[
             { title: "Code", dataIndex: "diagnosisCode" },
@@ -568,6 +598,6 @@ const Default: React.FC<DefaultProps> = ({
       )}
     </>
   );
-}
+};
 
 export default connector(Default);

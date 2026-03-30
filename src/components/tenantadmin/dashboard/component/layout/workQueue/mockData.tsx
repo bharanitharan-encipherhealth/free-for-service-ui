@@ -5,7 +5,11 @@ import Buttonscroller from "@/components/buttonSroller";
 import { Buttons } from "@/util/dashboardConstants";
 import { getColorValue, statusFormate } from "@/util/reusableFunction";
 import StatusCard from "../../statusCard";
-import { IoChevronForwardOutline, IoChevronBackOutline, IoSpeedometerOutline } from "react-icons/io5";
+import {
+  IoChevronForwardOutline,
+  IoChevronBackOutline,
+  IoSpeedometerOutline,
+} from "react-icons/io5";
 import { getFormattedChartData, getTotalChart } from "../../function";
 import CardSkeleton from "@/components/skeleton/card";
 import { Skeleton } from "antd";
@@ -233,56 +237,56 @@ export const DailyTask5 = ({
         />
         {chartChange
           ? Array(3)
-            .fill(0)
-            .map((_, i) => (
-              <Skeleton.Node
-                active={true}
-                style={{ width: windowWidth > 1290 ? 250 : 250, height: 250 }}
-              />
-            ))
-          : dailyTaskData.map((task, index) => {
-            const categories = task.series.map((s) => s.name);
-            const values = task.series.map((s) => s.value);
-            const colors = task.series.map((s) => s.color);
-
-            const formattedSeries =
-              chartType === "bar" || chartType === "line"
-                ? [
-                  {
-                    name: "Tasks",
-                    data: values,
-                    colorBy: "data",
-                    itemStyle: {
-                      color: (params) => colors[params.dataIndex],
-                    },
-                  },
-                ]
-                : task.series;
-
-            return (
-              <div
-                key={index}
-                className="border rounded p-3"
-                style={{ width: "32%", minWidth: 250 }}
-              >
-                <div className="font-bold text-center mb-2">
-                  {task.day} ({task.date})
-                </div>
-
-                <AppChart
-                  type={chartType}
-                  categories={categories}
-                  series={formattedSeries}
-                  height={240}
-                  showLegend={true}
-                  showLegendBarLine={false}
-                  isDailyChart={true}
-                  xAxisRotated={true}
-                  total={getTotalChart(task.series)}
+              .fill(0)
+              .map((_, i) => (
+                <Skeleton.Node
+                  active={true}
+                  style={{ width: windowWidth > 1290 ? 250 : 250, height: 250 }}
                 />
-              </div>
-            );
-          })}
+              ))
+          : dailyTaskData.map((task, index) => {
+              const categories = task.series.map((s) => s.name);
+              const values = task.series.map((s) => s.value);
+              const colors = task.series.map((s) => s.color);
+
+              const formattedSeries =
+                chartType === "bar" || chartType === "line"
+                  ? [
+                      {
+                        name: "Tasks",
+                        data: values,
+                        colorBy: "data",
+                        itemStyle: {
+                          color: (params) => colors[params.dataIndex],
+                        },
+                      },
+                    ]
+                  : task.series;
+
+              return (
+                <div
+                  key={index}
+                  className="border rounded p-3"
+                  style={{ width: "32%", minWidth: 250 }}
+                >
+                  <div className="font-bold text-center mb-2">
+                    {task.day} ({task.date})
+                  </div>
+
+                  <AppChart
+                    type={chartType}
+                    categories={categories}
+                    series={formattedSeries}
+                    height={240}
+                    showLegend={true}
+                    showLegendBarLine={false}
+                    isDailyChart={true}
+                    xAxisRotated={true}
+                    total={getTotalChart(task.series)}
+                  />
+                </div>
+              );
+            })}
 
         <IoChevronForwardOutline
           id="next-arrowIcon"
@@ -328,56 +332,56 @@ export const DailyTask7 = ({
         />
         {chartChange
           ? Array(3)
-            .fill(0)
-            .map((_, i) => (
-              <Skeleton.Node
-                active={true}
-                style={{ width: windowWidth > 1290 ? 250 : 250, height: 250 }}
-              />
-            ))
-          : dailyTask7Data.map((task, index) => {
-            const categories = task.series.map((s) => s.name);
-            const values = task.series.map((s) => s.value);
-            const colors = task.series.map((s) => s.color);
-
-            const formattedSeries =
-              chartType === "bar" || chartType === "line"
-                ? [
-                  {
-                    name: "Tasks",
-                    data: values,
-                    colorBy: "data",
-                    itemStyle: {
-                      color: (params) => colors[params.dataIndex],
-                    },
-                  },
-                ]
-                : task.series;
-
-            return (
-              <div
-                key={index}
-                className="border rounded p-3"
-                style={{ width: "32%", minWidth: 250 }}
-              >
-                <div className="font-bold text-center mb-2">
-                  {task.day} ({task.date})
-                </div>
-
-                <AppChart
-                  type={chartType}
-                  categories={categories}
-                  series={formattedSeries}
-                  height={240}
-                  showLegend={true}
-                  showLegendBarLine={false}
-                  isDailyChart={true}
-                  xAxisRotated={true}
-                  total={getTotalChart(task.series)}
+              .fill(0)
+              .map((_, i) => (
+                <Skeleton.Node
+                  active={true}
+                  style={{ width: windowWidth > 1290 ? 250 : 250, height: 250 }}
                 />
-              </div>
-            );
-          })}
+              ))
+          : dailyTask7Data.map((task, index) => {
+              const categories = task.series.map((s) => s.name);
+              const values = task.series.map((s) => s.value);
+              const colors = task.series.map((s) => s.color);
+
+              const formattedSeries =
+                chartType === "bar" || chartType === "line"
+                  ? [
+                      {
+                        name: "Tasks",
+                        data: values,
+                        colorBy: "data",
+                        itemStyle: {
+                          color: (params) => colors[params.dataIndex],
+                        },
+                      },
+                    ]
+                  : task.series;
+
+              return (
+                <div
+                  key={index}
+                  className="border rounded p-3"
+                  style={{ width: "32%", minWidth: 250 }}
+                >
+                  <div className="font-bold text-center mb-2">
+                    {task.day} ({task.date})
+                  </div>
+
+                  <AppChart
+                    type={chartType}
+                    categories={categories}
+                    series={formattedSeries}
+                    height={240}
+                    showLegend={true}
+                    showLegendBarLine={false}
+                    isDailyChart={true}
+                    xAxisRotated={true}
+                    total={getTotalChart(task.series)}
+                  />
+                </div>
+              );
+            })}
 
         <IoChevronForwardOutline
           id="next-arrowIcon"
@@ -417,8 +421,8 @@ export const Accuracy = ({ chartType, chartChange, selectedRole }) => {
             bgColor="#F3F3FF"
             val={"7"}
             val1={"2025"}
-            onChangeMonth={() => { }}
-            onChangeYear={() => { }}
+            onChangeMonth={() => {}}
+            onChangeYear={() => {}}
             selectid="productivity-select"
             id="productivity-picker1"
           />
@@ -428,7 +432,7 @@ export const Accuracy = ({ chartType, chartChange, selectedRole }) => {
             Buttons={Buttons}
             activeButton={0}
             activeColor="#fff"
-            handleButtonClick={() => { }}
+            handleButtonClick={() => {}}
             inActiveColor="
                 #000000"
             activeBg="#2472FF"
@@ -477,9 +481,7 @@ export const Accuracy = ({ chartType, chartChange, selectedRole }) => {
           >
             <div className="p-4">
               <div className="flex justify-center py-2">
-                <IoSpeedometerOutline
-                  className={`mt-1 text-2xl`}
-                />
+                <IoSpeedometerOutline className={`mt-1 text-2xl`} />
                 <div className="text-lg font-medium">Average Quality</div>
               </div>
               <div className={styles.percentage}>
@@ -501,8 +503,8 @@ export const CompletedStatus = ({ chartType, chartChange, selectedRole }) => {
           <YearPicker
             type={"Daily"}
             bgColor="#F3F3FF"
-            onChangeMonth={() => { }}
-            onChangeYear={() => { }}
+            onChangeMonth={() => {}}
+            onChangeYear={() => {}}
             val={"7"}
             val1={"2025"}
             selectid="productivity-select"
@@ -514,7 +516,7 @@ export const CompletedStatus = ({ chartType, chartChange, selectedRole }) => {
             Buttons={Buttons}
             activeButton={0}
             activeColor="#fff"
-            handleButtonClick={() => { }}
+            handleButtonClick={() => {}}
             inActiveColor="#000000"
             activeBg="#2472FF"
             // inActiveBg="#F3F3FF"

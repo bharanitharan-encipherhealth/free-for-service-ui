@@ -839,8 +839,6 @@ const getCharts = ({
           color: getColorValue("1"),
         },
       ];
-
-      console.log("dates", categories, series);
       return (
         <div className="flex flex-wrap -mx-2">
           <div className="flex justify-between w-full flex-wrap gap-2">
@@ -891,6 +889,26 @@ const getCharts = ({
       ) : (
         <ReusableTable
           title="Top 10 Diseases"
+          items={top10Codes?.topDiseaseDTOList || []}
+          columns={[
+            { title: "Code", dataIndex: "diagnosisCode" },
+            {
+              title: "Description",
+              dataIndex: "description",
+              className: "midRow",
+            },
+            { title: "Count", dataIndex: "count" },
+          ]}
+        />
+      );
+    case "Top10AachiiCode":
+      return (
+        <ReusableTable
+          title={
+            <span>
+              Top 10 <span>AACHII Codes</span>
+            </span>
+          }
           items={top10Codes?.topDiseaseDTOList || []}
           columns={[
             { title: "Code", dataIndex: "diagnosisCode" },
@@ -989,17 +1007,17 @@ const getCharts = ({
                 header: "Overall Performance",
               },
               series: [
-                {
-                  name: "Total Codes",
-                  data: rafTotal?.codesAndRafSummaryDTOList || [],
-                  color: getColorValue("3"),
-                  area: chartType === "area",
-                  plotConfig: {
-                    key: "date",
-                    value: "totalCount",
-                    dates: dates,
-                  },
-                },
+                // {
+                //   name: "Total Codes",
+                //   data: rafTotal?.codesAndRafSummaryDTOList || [],
+                //   color: getColorValue("3"),
+                //   area: chartType === "area",
+                //   plotConfig: {
+                //     key: "date",
+                //     value: "totalCount",
+                //     dates: dates,
+                //   },
+                // },
                 {
                   name: "Valid Codes",
                   data: rafTotal?.codesAndRafSummaryDTOList || [],
@@ -1007,28 +1025,28 @@ const getCharts = ({
                   area: chartType === "area",
                   plotConfig: { key: "date", value: "hccCount", dates: dates },
                 },
-                {
-                  name: "Care Gap Codes",
-                  data: rafTotal?.codesAndRafSummaryDTOList || [],
-                  color: getColorValue("2"),
-                  area: chartType === "area",
-                  plotConfig: {
-                    key: "date",
-                    value: "suggestedCount",
-                    dates: dates,
-                  },
-                },
-                {
-                  name: "Potiential Codes",
-                  data: rafTotal?.codesAndRafSummaryDTOList || [],
-                  color: getColorValue("4"),
-                  area: chartType === "area",
-                  plotConfig: {
-                    key: "date",
-                    value: "potentialCount",
-                    dates: dates,
-                  },
-                },
+                // {
+                //   name: "Care Gap Codes",
+                //   data: rafTotal?.codesAndRafSummaryDTOList || [],
+                //   color: getColorValue("2"),
+                //   area: chartType === "area",
+                //   plotConfig: {
+                //     key: "date",
+                //     value: "suggestedCount",
+                //     dates: dates,
+                //   },
+                // },
+                // {
+                //   name: "Potiential Codes",
+                //   data: rafTotal?.codesAndRafSummaryDTOList || [],
+                //   color: getColorValue("4"),
+                //   area: chartType === "area",
+                //   plotConfig: {
+                //     key: "date",
+                //     value: "potentialCount",
+                //     dates: dates,
+                //   },
+                // },
               ],
             },
           ]}
@@ -1155,21 +1173,24 @@ const getCharts = ({
           icon: fileIcon,
           title: "Exsisting Patient",
           value: `${inPatientDetailsChartData?.existingPatientCount || 0} Charts`,
-          bgColor: patientCount,
+          bgColor:
+            "linear-gradient(129.12deg, #03512E -5.66%, rgba(3, 81, 46, 0.5) 102.29%)",
           color: getColorValue("1"),
         },
         {
           icon: dosIcon,
           title: "New Patient",
           value: `${inPatientDetailsChartData?.newPatientCount || 0} Charts`,
-          bgColor: dosCount,
+          bgColor:
+            "linear-gradient(126.88deg, #87C282 -2.24%, rgba(135, 194, 130, 0.5) 104.92%)",
           color: getColorValue("2"),
         },
         {
           icon: pageIcon,
           title: "Discharged Patient",
           value: `${inPatientDetailsChartData?.dischargePatientCount || 0} Charts`,
-          bgColor: pages,
+          bgColor:
+            "linear-gradient(128.05deg, #5ABA8A -8.93%, rgba(90, 186, 138, 0.5) 97.89%)",
           color: getColorValue("3"),
         },
       ];
@@ -1250,14 +1271,16 @@ const getCharts = ({
           icon: fileIcon,
           title: "ER",
           value: `${outPatientDetailsChartData?.erCount || 0} Charts`,
-          bgColor: patientCount,
+          bgColor:
+            "linear-gradient(129.12deg, #03512E -5.66%, rgba(3, 81, 46, 0.5) 102.29%)",
           color: getColorValue("1"),
         },
         {
           icon: dosIcon,
           title: "Consulation",
           value: `${outPatientDetailsChartData?.consultationCount || 0} Charts`,
-          bgColor: dosCount,
+          bgColor:
+            "linear-gradient(126.88deg, #87C282 -2.24%, rgba(135, 194, 130, 0.5) 104.92%)",
           color: getColorValue("2"),
         },
       ];
@@ -1584,7 +1607,8 @@ const enhancer = connect(
     getSelectedWidgets: state.dashboardReducer.getWidgetsList?.data?.response,
     getSelectedWidgetsLoader: state.dashboardReducer.getWidgetsListLoader,
     data: state.dashboardReducer,
-    top10DiseasesData: state.dashboardReducer?.defaultTop10Codes?.data?.response,
+    top10DiseasesData:
+      state.dashboardReducer?.defaultTop10Codes?.data?.response,
     top10DiseasesLoading: state.dashboardReducer?.defaultTop10CodesLoader,
     top10OIGCodesData: state.dashboardReducer?.defaultTop10OIG?.data?.response,
     top10OIGCodesLoading: state.dashboardReducer?.defaultTop10OIGLoader,
@@ -1648,7 +1672,7 @@ const enhancer = connect(
       dispatch(dashboardActions.inPatientDetailsChartAction(params)),
     outPatientDetailsChart: (params) =>
       dispatch(dashboardActions.outPatientDetailsChartAction(params)),
-  })
+  }),
 )(Default);
 
 export default enhancer;

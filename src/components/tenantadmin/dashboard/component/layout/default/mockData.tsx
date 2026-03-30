@@ -67,25 +67,22 @@ export const statCardData = [
     icon: processing,
     title: "AI Processing",
     value: 4,
-    bgColor: processingContainer,
+    bgColor:
+      "linear-gradient(129.12deg, #03512E -5.66%, rgba(3, 81, 46, 0.5) 102.29%)",
   },
   {
     icon: completed,
     title: "AI Completed",
     value: 293,
-    bgColor: completedContainer,
+    bgColor:
+      "linear-gradient(126.88deg, #87C282 -2.24%, rgba(135, 194, 130, 0.5) 104.92%)",
   },
   {
     icon: failed,
     title: "AI Failed",
     value: 4,
-    bgColor: failedContainer,
-  },
-  {
-    icon: failed,
-    title: "AI Codes Captured",
-    value: 10,
-    bgColor: codeCaptureContainer,
+    bgColor:
+      "linear-gradient(128.05deg, #5ABA8A -8.93%, rgba(90, 186, 138, 0.5) 97.89%)",
   },
 ];
 
@@ -508,12 +505,24 @@ export const potientialCodes = ({ chartType }: any) => [
 ];
 
 export const top10DiseasesMock = [
-  { diagnosisCode: "E119", description: "T2DM without complication", count: 487 },
-  { diagnosisCode: "I10", description: "Essential (primary) hypertension", count: 269 },
+  {
+    diagnosisCode: "E119",
+    description: "T2DM without complication",
+    count: 487,
+  },
+  {
+    diagnosisCode: "I10",
+    description: "Essential (primary) hypertension",
+    count: 269,
+  },
 ];
 
 export const topOIGCodesMock = [
-  { diagnosisCode: "I10", description: "Essential (primary) hypertension", count: 621 },
+  {
+    diagnosisCode: "I10",
+    description: "Essential (primary) hypertension",
+    count: 621,
+  },
 ];
 
 export const tinTableMock = [
@@ -531,8 +540,19 @@ export const overallPerformance = ({ chartType }: any) => [
     type: chartType,
     size: "col-12",
     categories: ["Feb 26", "Mar 1"],
-    customHeader: { label: "Code Distribution", value: "831", header: "Overall Performance" },
-    series: [{ name: "Total Codes", data: [0, 0], color: getColorValue("3"), area: chartType === "area" }],
+    customHeader: {
+      label: "Code Distribution",
+      value: "831",
+      header: "Overall Performance",
+    },
+    series: [
+      {
+        name: "Total Codes",
+        data: [0, 0],
+        color: getColorValue("1"),
+        area: chartType === "area",
+      },
+    ],
   },
 ];
 
@@ -541,8 +561,19 @@ export const diseasesPerformance = ({ chartType }: any) => [
     type: chartType,
     size: "col-12",
     categories: ["Feb 26", "Mar 1"],
-    customHeader: { label: "Valid Disease Code Distribution", value: "290", header: "Valid Disease Performance" },
-    series: [{ name: "Valid Disease Code Distribution", data: [0, 0], color: getColorValue("1"), area: chartType === "area" }],
+    customHeader: {
+      label: "Valid Disease Code Distribution",
+      value: "290",
+      header: "Valid Disease Performance",
+    },
+    series: [
+      {
+        name: "Valid Disease Code Distribution",
+        data: [0, 0],
+        color: getColorValue("1"),
+        area: chartType === "area",
+      },
+    ],
   },
 ];
 
@@ -551,8 +582,19 @@ export const CareGapPerformance = ({ chartType }: any) => [
     type: chartType,
     size: "col-12",
     categories: ["Feb 26", "Mar 1"],
-    customHeader: { label: "Care Gap Code Distribution", value: "241", header: "Care Gap Performance" },
-    series: [{ name: "Care Gap Code Distribution", data: [756, 92], color: getColorValue("3"), area: chartType === "area" }],
+    customHeader: {
+      label: "Care Gap Code Distribution",
+      value: "241",
+      header: "Care Gap Performance",
+    },
+    series: [
+      {
+        name: "Care Gap Code Distribution",
+        data: [756, 92],
+        color: getColorValue("3"),
+        area: chartType === "area",
+      },
+    ],
   },
 ];
 
@@ -561,8 +603,19 @@ export const PotentialPerformance = ({ chartType }: any) => [
     type: chartType,
     size: "col-12",
     categories: ["Feb 26", "Mar 1"],
-    customHeader: { label: "Potential Code Distribution", value: "300", header: "Potential Performance" },
-    series: [{ name: "Potential Code Distribution", data: [762, 92], color: getColorValue("4"), area: chartType === "area" }],
+    customHeader: {
+      label: "Potential Code Distribution",
+      value: "300",
+      header: "Potential Performance",
+    },
+    series: [
+      {
+        name: "Potential Code Distribution",
+        data: [762, 92],
+        color: getColorValue("4"),
+        area: chartType === "area",
+      },
+    ],
   },
 ];
 
@@ -577,21 +630,24 @@ export const inPatientDetailsData = [
     icon: fileIcon,
     title: "Exsisting Patient",
     value: "25 Charts",
-    bgColor: patientCount,
+    bgColor:
+      "linear-gradient(129.12deg, #03512E -5.66%, rgba(3, 81, 46, 0.5) 102.29%)",
     color: getColorValue("1"),
   },
   {
     icon: dosIcon,
     title: "New Patient",
     value: "15 Charts",
-    bgColor: dosCount,
+    bgColor:
+      "linear-gradient(126.88deg, #87C282 -2.24%, rgba(135, 194, 130, 0.5) 104.92%)",
     color: getColorValue("2"),
   },
   {
     icon: pageIcon,
     title: "Discharged Patient",
     value: "10 Charts",
-    bgColor: pages,
+    bgColor:
+      "linear-gradient(128.05deg, #5ABA8A -8.93%, rgba(90, 186, 138, 0.5) 97.89%)",
     color: getColorValue("3"),
   },
 ];
@@ -601,14 +657,16 @@ export const outPatientDetailsData = [
     icon: fileIcon,
     title: "ER",
     value: "25 Charts",
-    bgColor: patientCount,
+    bgColor:
+      "linear-gradient(129.12deg, #03512E -5.66%, rgba(3, 81, 46, 0.5) 102.29%)",
     color: getColorValue("1"),
   },
   {
     icon: dosIcon,
     title: "Consulation",
     value: "15 Charts",
-    bgColor: dosCount,
+    bgColor:
+      "linear-gradient(126.88deg, #87C282 -2.24%, rgba(135, 194, 130, 0.5) 104.92%)",
     color: getColorValue("2"),
   },
 ];

@@ -3,31 +3,31 @@ import { Widget, ReactChartType, RoleType } from "../../types";
 
 // last widgetId : acd1b072-3ca4-4bf2-8d32-973ab8c7c057 next continue with acd1b072-3ca4-4bf2-8d32-973ab8c7c058 for uniqueness
 export const DefaultWidget: Widget[] = [
+  // {
+  //   orderValue: "1",
+  //   widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c001",
+  //   size: "col-sm-12 col-md-12 col-lg-12 col-xl-12",
+  //   widgetName: "filecount",
+  //   widgetTypes: ["card", "line", "bar", "donut"],
+  //   role: "2",
+  //   dashBoardPage: "DEFAULT",
+  //   selectedChart: "card",
+  //   rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD", "CLIENT"],
+  // },
+  // {
+  //   orderValue: "11",
+  //   widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c041",
+  //   widgetName: "AllocatedStatus",
+  //   selectedChart: "donut",
+  //   widgetTypes: ["donut", "bar", "line"],
+  //   size: "col-sm-5 col-md-5 col-lg-6 col-xl-6 row-1",
+  //   role: "2",
+  //   dashBoardPage: "DEFAULT",
+  //   title: "Allocated Status",
+  //   rolesAccessList: ["CLIENT"],
+  // },
   {
-    orderValue: "1",
-    widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c001",
-    size: "col-sm-12 col-md-12 col-lg-12 col-xl-12",
-    widgetName: "filecount",
-    widgetTypes: ["card", "line", "bar", "donut"],
-    role: "2",
-    dashBoardPage: "DEFAULT",
-    selectedChart: "card",
-    rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD", "CLIENT"],
-  },
-  {
-    orderValue: "11",
-    widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c041",
-    widgetName: "AllocatedStatus",
-    selectedChart: "donut",
-    widgetTypes: ["donut", "bar", "line"],
-    size: "col-sm-5 col-md-5 col-lg-6 col-xl-6 row-1",
-    role: "2",
-    dashBoardPage: "DEFAULT",
-    title: "Allocated Status",
-    rolesAccessList: ["CLIENT"],
-  },
-  {
-    orderValue: "10",
+    orderValue: "4",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c008",
     size: "row-1 col-sm-12 col-md-12 col-lg-12 col-xl-12",
     widgetName: "fileChart",
@@ -43,11 +43,12 @@ export const DefaultWidget: Widget[] = [
       "CLIENT",
       "DOWNLOADER",
     ],
+    title: "File",
   },
   {
-    orderValue: "17",
+    orderValue: "5",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c009",
-    size: "col-sm-12 col-md-12 col-lg-12 col-xl-12",
+    size: "col-sm-6 col-md-6 col-lg-6 col-xl-6",
     widgetName: "Top10Diseases",
     role: "2",
     dashBoardPage: "DEFAULT",
@@ -55,15 +56,25 @@ export const DefaultWidget: Widget[] = [
     rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD"],
   },
   {
-    orderValue: "12",
-    widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c040",
-    size: "col-sm-12 col-md-12 col-lg-12 col-xl-12",
-    widgetName: "TinTable",
+    orderValue: "6",
+    widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c009",
+    size: "col-sm-6 col-md-6 col-lg-6 col-xl-6",
+    widgetName: "Top10AachiiCode",
     role: "2",
     dashBoardPage: "DEFAULT",
     selectedChart: "table",
-    rolesAccessList: ["CLIENT"],
+    rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD"],
   },
+  // {
+  //   orderValue: "12",
+  //   widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c040",
+  //   size: "col-sm-12 col-md-12 col-lg-12 col-xl-12",
+  //   widgetName: "TinTable",
+  //   role: "2",
+  //   dashBoardPage: "DEFAULT",
+  //   selectedChart: "table",
+  //   rolesAccessList: ["CLIENT"],
+  // },
   {
     orderValue: "13",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c049",
@@ -75,41 +86,41 @@ export const DefaultWidget: Widget[] = [
     dashBoardPage: "DEFAULT",
     rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD", "CLIENT"],
   },
+  // {
+  //   orderValue: "14",
+  //   widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c050",
+  //   size: "col-6 row-1",
+  //   widgetName: "DiseasesPerformance",
+  //   widgetTypes: ["area", "line", "stepline", "bar"],
+  //   selectedChart: "line",
+  //   role: "2",
+  //   dashBoardPage: "DEFAULT",
+  //   rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD", "CLIENT"],
+  // },
+  // {
+  //   orderValue: "15",
+  //   widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c051",
+  //   size: "col-6 row-1",
+  //   widgetName: "CareGapPerformance",
+  //   widgetTypes: ["area", "line", "stepline", "bar"],
+  //   selectedChart: "line",
+  //   role: "2",
+  //   dashBoardPage: "DEFAULT",
+  //   rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD", "CLIENT"],
+  // },
+  // {
+  //   orderValue: "16",
+  //   widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c052",
+  //   size: "col-6 row-1",
+  //   widgetName: "PotentialPerformance",
+  //   widgetTypes: ["area", "line", "stepline", "bar"],
+  //   selectedChart: "line",
+  //   role: "2",
+  //   dashBoardPage: "DEFAULT",
+  //   rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD", "CLIENT"],
+  // },
   {
-    orderValue: "14",
-    widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c050",
-    size: "col-6 row-1",
-    widgetName: "DiseasesPerformance",
-    widgetTypes: ["area", "line", "stepline", "bar"],
-    selectedChart: "line",
-    role: "2",
-    dashBoardPage: "DEFAULT",
-    rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD", "CLIENT"],
-  },
-  {
-    orderValue: "15",
-    widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c051",
-    size: "col-6 row-1",
-    widgetName: "CareGapPerformance",
-    widgetTypes: ["area", "line", "stepline", "bar"],
-    selectedChart: "line",
-    role: "2",
-    dashBoardPage: "DEFAULT",
-    rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD", "CLIENT"],
-  },
-  {
-    orderValue: "16",
-    widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c052",
-    size: "col-6 row-1",
-    widgetName: "PotentialPerformance",
-    widgetTypes: ["area", "line", "stepline", "bar"],
-    selectedChart: "line",
-    role: "2",
-    dashBoardPage: "DEFAULT",
-    rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD", "CLIENT"],
-  },
-  {
-    orderValue: "17",
+    orderValue: "1",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c053",
     size: "col-sm-3 col-md-3 col-lg-3 col-xl-3",
     widgetName: "patientOverllCount",
@@ -120,7 +131,7 @@ export const DefaultWidget: Widget[] = [
     rolesAccessList: ["ADMIN"],
   },
   {
-    orderValue: "18",
+    orderValue: "2",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c054",
     size: "col-sm-5 col-md-5 col-lg-5 col-xl-5",
     widgetName: "inPatientDetails",
@@ -132,7 +143,7 @@ export const DefaultWidget: Widget[] = [
     title: "In-Patient",
   },
   {
-    orderValue: "19",
+    orderValue: "3",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c055",
     size: "col-sm-4 col-md-4 col-lg-4 col-xl-4",
     widgetName: "outPatientDetails",
@@ -417,7 +428,10 @@ export const workQueueWidget: Widget[] = [
   },
 ];
 
-export const getColSpan = (cls: string = "", windowWidth: number | null): number => {
+export const getColSpan = (
+  cls: string = "",
+  windowWidth: number | null,
+): number => {
   if (!windowWidth) return 12;
 
   const breakpoints = [
@@ -478,11 +492,16 @@ export interface ChartSeries {
   itemStyle?: { color: string | null };
 }
 
-export const getFormattedChartData = (rawSeries: ChartSeries[], chartType: string | any) => {
+export const getFormattedChartData = (
+  rawSeries: ChartSeries[],
+  chartType: string | any,
+) => {
   const categories = rawSeries.map((item) => item.name || item.status || "");
   const values = rawSeries.map((item) => item.value);
-  const colors = rawSeries.map((item) => item.color || item.itemStyle?.color || "");
-  
+  const colors = rawSeries.map(
+    (item) => item.color || item.itemStyle?.color || "",
+  );
+
   const legendData = rawSeries.map((item) => ({
     ...item,
     name: item.name || item.status,
@@ -497,7 +516,8 @@ export const getFormattedChartData = (rawSeries: ChartSeries[], chartType: strin
             data: values,
             colorBy: "data",
             itemStyle: {
-              color: (params: { dataIndex: number }) => colors[params.dataIndex] || "",
+              color: (params: { dataIndex: number }) =>
+                colors[params.dataIndex] || "",
             },
           },
         ]
@@ -568,7 +588,10 @@ export const getDateWeek = (date: Date): number => {
   return Math.ceil((currentDate + firstDayWeek) / 7);
 };
 
-export const filterWidgetsByRole = (widgets: Widget[], selectedRole: string): Widget[] => {
+export const filterWidgetsByRole = (
+  widgets: Widget[],
+  selectedRole: string,
+): Widget[] => {
   if (!Array.isArray(widgets) || !selectedRole) return [];
   const format = (str: string) => str.toLowerCase().replace(/[\s_]/g, "");
   const formattedSelectedRole = format(selectedRole);

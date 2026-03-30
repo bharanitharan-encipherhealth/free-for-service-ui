@@ -14,16 +14,22 @@ interface DashboardTableProps {
   items?: any[];
   dataSource?: any[];
   tableKey?: string | number;
-  title?: string;
+  title?: React.ReactNode;
   columns?: ColumnType[];
   scroll?: { x?: number | string | boolean; y?: number | string };
 }
 
-const DashboardTable: React.FC<DashboardTableProps> = ({ items = [], dataSource = [], tableKey, title, columns = [] }) => {
+const DashboardTable: React.FC<DashboardTableProps> = ({
+  items = [],
+  dataSource = [],
+  tableKey,
+  title,
+  columns = [],
+}) => {
   const data = dataSource.length > 0 ? dataSource : items;
   return (
     <div>
-      {title && <h5 className="mb-4">{title}</h5>}
+      {title && <h5 className="mb-4 font-bold">{title}</h5>}
       <table className="tenatTable" id={tableKey?.toString()}>
         <thead>
           <tr>

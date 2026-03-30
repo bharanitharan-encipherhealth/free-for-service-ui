@@ -34,13 +34,16 @@ const statusConfig: Record<string, StatusConfigItem> = {
     bgColor: "/images/dashboard/failedContainer.webp",
   },
   OverallPatientCount: {
-    bgColor: "/images/dashboard/patientCount.webp",
+    bgColor:
+      "linear-gradient(129.12deg, #03512E -5.66%, rgba(3, 81, 46, 0.5) 102.29%)",
   },
   InPatient: {
-    bgColor: "/images/dashboard/dosCount.webp",
+    bgColor:
+      "linear-gradient(126.88deg, #87C282 -2.24%, rgba(135, 194, 130, 0.5) 104.92%)",
   },
   OutPatient: {
-    bgColor: "/images/dashboard/pages.webp",
+    bgColor:
+      "linear-gradient(128.05deg, #5ABA8A -8.93%, rgba(90, 186, 138, 0.5) 97.89%)",
   },
 };
 
@@ -60,12 +63,13 @@ const StatusCard: React.FC<StatusCardProps> = ({
 }) => {
   const { bgColor } = statusConfig[status] || {};
   const hasBg = Boolean(bgColor);
-  
+
   return (
     <div
-      className="relative overflow-hidden border-2 border-[#B3B3B3] h-[120px] p-4 rounded-lg flex flex-col items-center justify-center text-white"
+      style={{ background: bgColor }}
+      className={`relative overflow-hidden border-2 border-[#B3B3B3] h-[120px] p-4 rounded-lg flex flex-col items-center justify-center text-white`}
     >
-      {hasBg && (
+      {/* {hasBg && (
         <Image
           src={bgColor || ""}
           alt={status}
@@ -75,7 +79,7 @@ const StatusCard: React.FC<StatusCardProps> = ({
           loading="lazy"
           style={{ objectFit: "cover", zIndex: 0 }}
         />
-      )}
+      )} */}
       <div
         className={`${styles.headerFont} relative z-[1]`}
         style={{ textAlign: "left" }}
@@ -87,17 +91,16 @@ const StatusCard: React.FC<StatusCardProps> = ({
         </div>
       </div>
 
-      <div
-        style={{ textAlign: "left" }}
-        className="mt-2 relative z-[1]"
-      >
+      <div style={{ textAlign: "left" }} className="mt-2 relative z-[1]">
         <div className={styles.labelFont}>
           {value} {label}
         </div>
       </div>
 
-      <div style={{ color: "#ffff" }} className={`${styles.subtitleFont} mt-2`}>
-      </div>
+      <div
+        style={{ color: "#ffff" }}
+        className={`${styles.subtitleFont} mt-2`}
+      ></div>
     </div>
   );
 };

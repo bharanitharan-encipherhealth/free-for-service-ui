@@ -664,7 +664,7 @@ export const getColorValue = (key) => {
   switch (key) {
     case "primary":
     case "1":
-      return "#064BAC";
+      return "#03512E";
     case "secondary":
     case "2":
       return "#7F91DE";
