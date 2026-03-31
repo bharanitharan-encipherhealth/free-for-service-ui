@@ -15,7 +15,9 @@ import dashboardActions from "@/state/tenantadmin/dashboard/actions";
 import { usePathname } from "next/navigation";
 import { getResponePopup } from "../../../utils/reusable";
 import { RootState, Widget } from "../types";
-import ContentLayout, { NavigationTabs } from "@/components/layout/ContentLayout/page";
+import ContentLayout, {
+  NavigationTabs,
+} from "@/components/layout/ContentLayout/page";
 import dayjs from "dayjs";
 
 const HeaderFilters = dynamic(() => import("./components/headerFilters"), {
@@ -55,15 +57,6 @@ interface DashboardPagesProps extends PropsFromRedux {
   dynamicModal?: string;
 }
 
-const roles = [
-  "Admin",
-  "Coder 1",
-  "Coder 2",
-  "QA",
-];
-
-import pillStyle from "@/components/layout/ContentLayout/style.module.css";
-
 const DashboardPages: React.FC<DashboardPagesProps> = ({
   setDynamicModal,
   selectedRole,
@@ -73,12 +66,6 @@ const DashboardPages: React.FC<DashboardPagesProps> = ({
   tabNames,
   dispatch,
 }) => {
-  const [selectedPatientType, setSelectedPatientType] = useState<string>(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("selectedPatientType") || "Inpatient";
-    }
-    return "Inpatient";
-  });
   const aliasName = getStorage("aliasName");
   const pathname = usePathname();
   const [currentAliasName, setCurrentAliasName] = useState<string>("");
@@ -98,7 +85,7 @@ const DashboardPages: React.FC<DashboardPagesProps> = ({
 
   const formatRole = currentAliasName
     ? currentAliasName.split("_").join("")[0] +
-    currentAliasName.split("_").join("").slice(1).toLowerCase()
+      currentAliasName.split("_").join("").slice(1).toLowerCase()
     : "";
 
   const [selectedOrganization, setSelectedOrganization] = useState<string>("");
@@ -147,7 +134,7 @@ const DashboardPages: React.FC<DashboardPagesProps> = ({
       if (res?.status !== "SUCCESS" && res) {
         getResponePopup(res);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const getAllDatesInRange = (range: DateRange): string[] => {
@@ -163,20 +150,23 @@ const DashboardPages: React.FC<DashboardPagesProps> = ({
   };
 
   const layoutList = useMemo(
-    () => (formatRole === "Admin" ? [
-      {
-        isBtn: true,
-        btnTitle: "Widget Management",
-        onClick: () => setDynamicModal("widget"),
-        loading: false,
-      },
-      {
-        isBtn: true,
-        btnTitle: "Dashboard Customization",
-        onClick: () => setDynamicModal("customization"),
-        loading: false,
-      },
-    ] : []),
+    () =>
+      formatRole === "Admin"
+        ? [
+            {
+              isBtn: true,
+              btnTitle: "Widget Management",
+              onClick: () => setDynamicModal("widget"),
+              loading: false,
+            },
+            {
+              isBtn: true,
+              btnTitle: "Dashboard Customization",
+              onClick: () => setDynamicModal("customization"),
+              loading: false,
+            },
+          ]
+        : [],
     [setDynamicModal, formatRole],
   );
 
@@ -204,12 +194,6 @@ const DashboardPages: React.FC<DashboardPagesProps> = ({
     }
     setCurrentAliasName(aliasName);
   }, [aliasName, pathname, setSelectedTab]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("selectedPatientType", selectedPatientType);
-    }
-  }, [selectedPatientType]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && selectedRole) {
@@ -288,35 +272,8 @@ const DashboardPages: React.FC<DashboardPagesProps> = ({
 
   return (
     <>
-      <ContentLayout
-        pageTitle="Dashboard"
-        layoutList={layoutList}
-      />
-      <div className="flex justify-center w-full py-2 bg-white">
-        <div className={pillStyle.pillContainer}>
-          <div
-            className={`${
-              selectedPatientType === "Inpatient"
-                ? pillStyle.pillItemActive
-                : pillStyle.pillItem
-            }`}
-            onClick={() => setSelectedPatientType("Inpatient")}
-          >
-            In-Patient
-          </div>
-          <div
-            className={`${
-              selectedPatientType === "Outpatient"
-                ? pillStyle.pillItemActive
-                : pillStyle.pillItem
-            }`}
-            onClick={() => setSelectedPatientType("Outpatient")}
-          >
-            Out-Patient
-          </div>
-        </div>
-      </div>
-      <NavigationTabs
+      <ContentLayout pageTitle="Dashboard" layoutList={layoutList} />
+      {/* <NavigationTabs
         tabList={{
           isTab: true,
           tabList:
@@ -326,21 +283,16 @@ const DashboardPages: React.FC<DashboardPagesProps> = ({
             })) || [],
           activeTab: selectedTab,
           onClick: ({ item }) => setSelectedTab(item.value),
-          secondaryTabList: roles.map((role) => ({
-            label: role,
-            value: role,
-          })),
-          secondaryActiveTab: selectedRole,
-          onSecondaryClick: ({ item }) => setSelectedRole && setSelectedRole(item.value),
         }}
-      />
+      /> */}
       <div className={styles.maincontainer}>
         <div style={{ width: "75%" }} className="mx-7">
           <div className="flex gap-2 ">
             <section className="flex justify-between" style={{ width: "100%" }}>
               <section
-                className={`flex justify-between gap-2 customDateSize ${!isCustom ? styles.customFilter3 : styles.customFilter1
-                  }`}
+                className={`flex justify-between gap-2 customDateSize ${
+                  !isCustom ? styles.customFilter3 : styles.customFilter1
+                }`}
               >
                 <div
                   className="flex flex-col items-start"
@@ -394,7 +346,7 @@ const DashboardPages: React.FC<DashboardPagesProps> = ({
           </div>
         </div>
         {pathname !== "/reviewer/dashboard" &&
-          !(roleAccessList as any)[formatRole]?.includes("WorkQueue") ? (
+        !(roleAccessList as any)[formatRole]?.includes("WorkQueue") ? (
           <div>
             {selectedTab === "Default" && (
               <Default

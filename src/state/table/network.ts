@@ -5,11 +5,19 @@ import {
   generatedReportsPageId,
   generateViewPageId,
   moveBackPageId,
+  moveInPatientPageId,
+  moveOutPatientId,
   patientAllocationPageId,
+  patienAllocationInPatientPageId,
+  patienAllocationOutPatientPageId,
   patientPageId,
+  patientInPatientPageId,
+  patientOutPatientPageId,
   queriedPageId,
   queryApprovalPageId,
   reAllocationPageId,
+  patienReAllocationInPatientPageId,
+  patienReAllocationOutPatientPageId,
   reAssignedPageId,
   userCreatePageId,
   workQueuePageId,
@@ -21,6 +29,7 @@ import {
 import { getStorage } from "@/util/storage";
 import { tableApiParamsType } from "./model";
 import { getReportTableCallType } from "@/models/tenantadmin/report";
+import { tinNumber } from "@/util/config";
 
 const requestManager = {
   tableRequests: new Map<string, AbortController>(),
@@ -180,9 +189,17 @@ export async function getTableView({
       patientPageId,
       patientAllocationPageId,
       moveBackPageId,
+      moveInPatientPageId,
+      moveOutPatientId,
       queryApprovalPageId,
       activeTinPageId,
       reAllocationPageId,
+      patienReAllocationInPatientPageId,
+      patienReAllocationOutPatientPageId,
+      patientInPatientPageId,
+      patientOutPatientPageId,
+      patienAllocationInPatientPageId,
+      patienAllocationOutPatientPageId,
     ];
 
     if (tinPageIds.includes(pageId)) {
@@ -250,14 +267,14 @@ allTinIds=${allTinIds || false}`;
       typeof error === "object" &&
       error !== null &&
       "response" in error &&
-      typeof (error as { response?: { status?: number } }).response
-        ?.status === "number"
+      typeof (error as { response?: { status?: number } }).response?.status ===
+        "number"
         ? (error as { response?: { status?: number } }).response!.status
         : undefined;
 
     if (status !== undefined && status >= 500) {
       throw new Error(
-        "Server error while loading data. Please try again later."
+        "Server error while loading data. Please try again later.",
       );
     }
 
@@ -285,7 +302,7 @@ export async function getTable({
     const options = {
       method: "GET",
     };
-    const tin = getStorage("tinNumber");
+    const tin = tinNumber;
     let searchTextParams = null;
     let selectParams = null;
     let dateRagngesParams = null;
@@ -356,7 +373,7 @@ export async function tableCall({
     }&startDate=${startDate || ""}&endDate=${endDate || ""}&pageNo=${
       pageNo || 0
     }&allAzureBlobPath=${allAzureBlobPath}`,
-    options
+    options,
   );
   return data;
 }

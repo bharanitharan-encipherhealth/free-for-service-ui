@@ -20,6 +20,7 @@ import styles from "@/components/tenantadmin/users/style.module.css";
 import {
   disablePastDate,
   formatDateForIndex,
+  getRoleIdByRole,
   priorityOptions,
 } from "@/util/reusableFunction";
 import style from "../../style.module.css";
@@ -76,7 +77,7 @@ function AllocationModal({
 
   const getAllUserList = useCallback(async () => {
     await getAllUser({
-      roleId: activeTab || "",
+      roleId: getRoleIdByRole(activeTab) || "",
       search: search || "",
       masterAudit: roleAliasName === "MASTER_AUDIT" ? true : false,
     });
@@ -85,8 +86,8 @@ function AllocationModal({
   const handleSelectAll = useCallback(
     ({ checked }: { checked: boolean }) => {
       if (checked) {
-        const allIds = allocateUserList.map((user) => user.proxyId);
-        const allUserName = allocateUserList.map((user) => user?.userName);
+        const allIds = allocateUserList.map((user: userListType) => user.proxyId);
+        const allUserName = allocateUserList.map((user: userListType) => user?.userName);
         setUserName(allUserName);
         setUserId(allIds);
       } else {
@@ -117,9 +118,10 @@ function AllocationModal({
     try {
       setIsAllocate(true);
       let data;
+      const mappedRoleId = getRoleIdByRole(activeTab) || "";
       if (roleAliasName === "MASTER_AUDIT") {
         data = {
-          roleId: activeTab,
+          roleId: mappedRoleId,
           usersWithRole: userName,
           dueDate: formatDateForIndex({ date: allocateDueDate, index: 1 }),
           allocatedBy,
@@ -129,7 +131,7 @@ function AllocationModal({
         };
       } else {
         data = {
-          roleId: activeTab,
+          roleId: mappedRoleId,
           userIdList: userName,
           dueDate: formatDateForIndex({ date: allocateDueDate, index: 1 }),
           allocatedBy,
@@ -250,7 +252,7 @@ function AllocationModal({
                     ))}
                   </div>
                 ) : allocateUserList?.length ? (
-                  allocateUserList?.map((item, index) => (
+                  allocateUserList?.map((item: userListType, index: number) => (
                     <div
                       className={`flex justify-between items-center my-4 ${styles.userList}`}
                       key={index}

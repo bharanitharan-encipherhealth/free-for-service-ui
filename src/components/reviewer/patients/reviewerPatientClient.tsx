@@ -2,7 +2,7 @@
 import { findMatchesByField, generateHeaderTab } from "@/util/reusableFunction";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
-import ContentLayout from "@/components/layout/ContentLayout/page";
+import ContentLayout, { NavigationTabs } from "@/components/layout/ContentLayout/page";
 import TableViewType, { metaDataType, SortType } from "@/state/table/model";
 import { connect, ConnectedProps } from "react-redux";
 
@@ -41,11 +41,11 @@ const ReviewerPatientClient = ({
     () => [
       {
         id: "PENDING",
-        value: `pending - ${tableData?.mciPatientCountDTO?.pendingCount || 0}`,
+        value: `Pending (${tableData?.mciPatientCountDTO?.pendingCount || 0})`,
       },
       {
         id: "COMPLETED",
-        value: `completed ${tableData?.mciPatientCountDTO?.approvedCount || 0}`,
+        value: `Completed (${tableData?.mciPatientCountDTO?.approvedCount || 0})`,
       },
     ],
     [tableData],
@@ -260,6 +260,8 @@ const ReviewerPatientClient = ({
         handleInsert={handleInsert}
         setTableCustomization={setTableCustomization}
       />
+
+      <NavigationTabs tabList={tabList} />
 
       <div className="content">
         <ReusableFilters

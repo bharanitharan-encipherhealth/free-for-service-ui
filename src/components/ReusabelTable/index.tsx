@@ -59,7 +59,7 @@ interface DynamicColumn {
   id: string;
 }
 
-interface newColumnType extends Partial<metaDataType>, Partial<DynamicColumn> {}
+interface newColumnType extends Partial<metaDataType>, Partial<DynamicColumn> { }
 export default function ReusabelTable<
   T extends Record<string, unknown> = Record<string, unknown>,
 >({
@@ -208,7 +208,7 @@ export default function ReusabelTable<
           <Spin
             indicator={
               <AiOutlineLoading3Quarters
-                style={{ color: "white", fontSize: "12px" }}
+                style={{ color: "black", fontSize: "12px" }}
               />
             }
             style={{ color: "#452b90", margin: "0 10px 0 0" }}
@@ -332,8 +332,8 @@ export default function ReusabelTable<
                 tableId
                   ? CreateIdGens("checkBox" + tableId + colIndex)
                   : CreateIdGens(
-                      "checkbox" + pathname.replaceAll("/", " ") + colIndex,
-                    )
+                    "checkbox" + pathname.replaceAll("/", " ") + colIndex,
+                  )
               }
               className={`custom-checkbox`}
             />
@@ -493,7 +493,7 @@ export default function ReusabelTable<
             <span>{item.headerName || item.name}</span>
             <div className="flex flex-column">
               {sort?.sortField === item.actualField &&
-              sort?.sortDir === "ASC" ? (
+                sort?.sortDir === "ASC" ? (
                 <FaArrowUp />
               ) : (
                 <FaArrowDown />
@@ -511,23 +511,23 @@ export default function ReusabelTable<
         onHeaderCell: () => ({
           onClick: checkWithIncludesKey(item?.design, "SORTABLE")
             ? () => {
-                if (setSort) {
-                  const newSortDir =
-                    sort?.sortField === item.actualField &&
+              if (setSort) {
+                const newSortDir =
+                  sort?.sortField === item.actualField &&
                     sort?.sortDir === "ASC"
-                      ? "DESC"
-                      : "ASC";
-                  setSort((prev: SortType) => ({
-                    ...prev,
-                    [item!.actualField!]: {
-                      sortField: item!.actualField!,
-                      sortDir: newSortDir,
-                    },
+                    ? "DESC"
+                    : "ASC";
+                setSort((prev: SortType) => ({
+                  ...prev,
+                  [item!.actualField!]: {
                     sortField: item!.actualField!,
                     sortDir: newSortDir,
-                  }));
-                }
+                  },
+                  sortField: item!.actualField!,
+                  sortDir: newSortDir,
+                }));
               }
+            }
             : undefined,
         }),
         render: (_value: newColumnType, record: T, rowIndex: number) =>
@@ -566,8 +566,8 @@ export default function ReusabelTable<
                 id
                   ? CreateIdGens("tableCheckbox" + id)
                   : CreateIdGens(
-                      "tableCheckbox" + pathname.replaceAll("/", " "),
-                    )
+                    "tableCheckbox" + pathname.replaceAll("/", " "),
+                  )
               }
               checked={data?.length > 0 && !loader && checkedHeader}
               disabled={data?.length === 0 || disabled || loader}
@@ -606,6 +606,8 @@ export default function ReusabelTable<
     handleRowCheckboxChange,
     renderCheckboxCell,
     renderBtnCell,
+    data,
+    loader,
   ]);
 
   return (

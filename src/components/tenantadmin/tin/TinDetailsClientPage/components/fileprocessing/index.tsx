@@ -6,9 +6,11 @@ import { actions as fileProcessingActions } from "@/state/tenantadmin/fileProces
 import FileProcessingTable from "./FileProcessingTable";
 import ContentLayout from "@/components/layout/ContentLayout/page";
 import { getStorage } from "@/util/storage";
+import { tinNumber } from "@/util/config";
 
 const mapState = (state: any) => ({
-  fileProcessingData: state.tinDetailsReducer.fileProcessingReducer.allProcessing,
+  fileProcessingData:
+    state.tinDetailsReducer.fileProcessingReducer.allProcessing,
   webSocketData: state.webSocketReducer.webSocketDetails?.data,
 });
 
@@ -24,7 +26,7 @@ const FileProcessing: React.FC<PropsFromRedux> = ({
   getUsers,
   getAllProcessingData,
 }) => {
-  const tinId = getStorage("tinNumber");
+  const tinId = tinNumber;
 
   useEffect(() => {
     if (tinId) {

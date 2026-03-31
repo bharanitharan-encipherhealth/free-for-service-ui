@@ -7,9 +7,13 @@ import React, {
 } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import { actions as productivityAction } from "@/state/tenantadmin/productivity";
-import { moveBackPageId, moveInPatientPageId, moveOutPatientId } from "@/util/pageIds";
+import {
+  moveBackPageId,
+  moveInPatientPageId,
+  moveOutPatientId,
+} from "@/util/pageIds";
 import productivityReducerType from "@/state/tenantadmin/productivity/model";
-import { generateHeaderTab } from "@/util/reusableFunction";
+import { generateHeaderTab, getRoleIdByRole } from "@/util/reusableFunction";
 import ContentLayout from "@/components/layout/ContentLayout/page";
 import TableViewType, { SortType } from "@/state/table/model";
 import { MovebackParamsType } from "@/models/tenantadmin/tin/moveback";
@@ -26,6 +30,7 @@ import {
 } from "@/models/tenantadmin/tin/patients";
 import { checkAllPatientIdType } from "@/models/tenantadmin/tin/patientAllocation";
 import MoveBackModal from "./components/movebackModal";
+import { tinNumber } from "@/util/config";
 
 type patientMoveBackTabReduxType = ConnectedProps<typeof connector>;
 type patientMoveBackTabProps = MovebackParamsType &
@@ -56,7 +61,7 @@ function MoveBack({
   setActiveRole,
 }: patientMoveBackTabProps) {
   const prevMoveBackModalRef = useRef<boolean | undefined>(undefined);
-  const tin = getStorage("tinNumber");
+  const tin = tinNumber;
   const [roleAliasName, setRoleAliasName] = useState("");
   const [selectedOption, setSelectedOption] = useState<
     Record<string, string | string[]>
@@ -98,25 +103,29 @@ function MoveBack({
     }
   };
 
-  const getAllPatientsMoveBack = useCallback(async () => {
-    let currentPageId = moveBackPageId;
+  const currentPageId = useMemo(() => {
+    let id = moveBackPageId;
     if (subActiveTab === "Inpatient") {
-      currentPageId = moveInPatientPageId;
+      id = moveInPatientPageId;
     } else if (subActiveTab === "Outpatient") {
-      currentPageId = moveOutPatientId;
+      id = moveOutPatientId;
     }
+    return id;
+  }, [subActiveTab]);
+
+  const getAllPatientsMoveBack = useCallback(async () => {
     try {
       await getTableView({
-        pageId: activeRole || currentPageId,
+        pageId: currentPageId,
         pageNo,
         pageSize: 15,
-        roleId: activeRole,
+        roleId: getRoleIdByRole(activeRole) || "",
         tin,
-        isAdmin: true,
         selectedOption,
         selectedDateRanges,
         searchText,
         sort,
+        isMasterAudit: roleAliasName === "MASTER_AUDIT" ? true : false,
       });
       setTriggerTableCustomization((prev: Record<string, boolean>) => ({
         ...prev,
@@ -129,14 +138,20 @@ function MoveBack({
     getTableView,
     pageNo,
     activeRole,
-    subActiveTab,
+    currentPageId,
     selectedOption,
     selectedDateRanges,
     searchText,
     sort,
     setTriggerTableCustomization,
     tin,
+    roleAliasName,
   ]);
+
+  useEffect(() => {
+    const hasSelection = selectedRows && selectedRows.length > 0;
+    onSelectionChange?.(hasSelection);
+  }, [selectedRows, onSelectionChange]);
 
   const handleRowCheckboxChange = useCallback(
     async ({
@@ -151,14 +166,15 @@ function MoveBack({
           setCheckedHeader(true);
           const response = await getTable({
             allPatientIds: checked,
-            pageId: moveBackPageId,
+            pageId: currentPageId,
             pageNo: 0,
             pageSize: 15,
-            roleId: activeRole,
+            roleId: getRoleIdByRole(activeRole) || "",
             searchText,
             selectedOption,
             selectedDateRanges,
-            isMasterAudit: false,
+            isAdmin: true,
+            sort,
           });
           if (response?.status === "SUCCESS") {
             const result = response?.response?.patientIds?.map(
@@ -195,6 +211,8 @@ function MoveBack({
       setCheckedLoader,
       setCheckedHeader,
       setSelectedRows,
+      currentPageId,
+      sort,
     ],
   );
 

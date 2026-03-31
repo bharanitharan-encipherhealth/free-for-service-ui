@@ -17,6 +17,7 @@ import styles from "@/components/tenantadmin/users/style.module.css";
 import {
   disablePastDate,
   formatDateForIndex,
+  getRoleIdByRole,
   priorityOptions,
 } from "@/util/reusableFunction";
 import style from "../../style.module.css";
@@ -73,9 +74,11 @@ function ReAllocationModal({
     setAllocatePriority(value);
   };
 
+  console.log(selectedPatientDetails,"selectedPatientDetails");
+
   const getAllUserList = useCallback(async () => {
     const data = {
-      roleId: activeTab || "",
+      roleId: getRoleIdByRole(activeTab) || "",
       searchString: search || "",
       masterAudit: roleAliasName === "MASTER_AUDIT" ? true : false,
       userRoleDTOList: selectedPatientDetails.map(({ username, roleId }) => ({
@@ -121,9 +124,10 @@ function ReAllocationModal({
     try {
       setIsAllocate(true);
       let data;
+      const mappedRoleId = Number(getRoleIdByRole(activeTab) || 0);
       if (roleAliasName === "MASTER_AUDIT") {
         data = {
-          roleId: Number(activeTab),
+          roleId: mappedRoleId,
           reallocateUserName: userName.toString(),
           dueDate: formatDateForIndex({ date: allocateDueDate, index: 1 }),
           patientId: selectedRows,
@@ -133,7 +137,7 @@ function ReAllocationModal({
         };
       } else {
         data = {
-          roleId: Number(activeTab),
+          roleId: mappedRoleId,
           reallocateUserName: userName.toString(),
           dueDate: formatDateForIndex({ date: allocateDueDate, index: 1 }),
           patientId: selectedRows,

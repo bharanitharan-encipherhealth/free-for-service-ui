@@ -19,7 +19,7 @@ import ReusableTable from "@/components/ReusabelTable";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
 import productivityReducerType from "@/state/tenantadmin/productivity/model";
 import ContentLayout from "@/components/layout/ContentLayout/page";
-import { generateHeaderTab } from "@/util/reusableFunction";
+import { generateHeaderTab, getRoleIdByRole } from "@/util/reusableFunction";
 import { actions as productivityAction } from "@/state/tenantadmin/productivity";
 import { handleRowCheckboxChangeType } from "@/models/ReusabelTable";
 import { getTable } from "@/state/table/network";
@@ -30,6 +30,7 @@ import {
   checkAllPatientIdType,
   patientReAllocationContentArrayType,
 } from "@/models/tenantadmin/tin/patientReAllocation";
+import { tinNumber } from "@/util/config";
 
 type patientReAllocationTabReduxType = ConnectedProps<typeof connector>;
 
@@ -60,7 +61,7 @@ function PatientReAllocation({
   setActiveRole,
 }: patientReAllocationTabProps) {
   const prevReAllocateModalRef = useRef<boolean | undefined>(undefined);
-  const tin = getStorage("tinNumber");
+  const tin = tinNumber;
   const [selectedOption, setSelectedOption] = useState<
     Record<string, string | string[]>
   >({});
@@ -91,11 +92,10 @@ function PatientReAllocation({
     },
     [setPaginationFirst, setPageNo],
   );
+
   const handleRowChange = ({ value }: { value: number }) => {
     const totalRecords = tableData?.pageResponse?.totalElements || 0;
-
     const newTotalPages = Math.ceil(totalRecords / value);
-
     setRow(value);
 
     if (pageNo >= newTotalPages && newTotalPages > 0) {
@@ -103,6 +103,16 @@ function PatientReAllocation({
       setPaginationFirst((newTotalPages - 1) * value);
     }
   };
+
+  const currentPageId = useMemo(() => {
+    let id = reAllocationPageId;
+    if (subActiveTab === "Inpatient") {
+      id = patienReAllocationInPatientPageId;
+    } else if (subActiveTab === "Outpatient") {
+      id = patienReAllocationOutPatientPageId;
+    }
+    return id;
+  }, [subActiveTab]);
 
   const handleRowCheckboxChange = useCallback(
     async ({
@@ -117,10 +127,10 @@ function PatientReAllocation({
           setCheckedHeader(true);
           const response = await getTable({
             allPatientIds: checked,
-            pageId: reAllocationPageId,
+            pageId: currentPageId,
             pageNo: 0,
             pageSize: 15,
-            roleId: activeRole,
+            roleId: getRoleIdByRole(activeRole) || "",
             searchText,
             selectedOption,
             selectedDateRanges,
@@ -128,10 +138,11 @@ function PatientReAllocation({
           });
 
           if (response?.status === "SUCCESS") {
+            console.log(response?.response?.patientIds,"response?.response?.patientIds");
             const result = response?.response?.patientIds?.map(
               (patient: checkAllPatientIdType) => ({
                 patientId: patient?.patientId,
-                username: patient?.username,
+                username: patient?.userName,
                 roleId: patient?.roleId,
                 fileName: patient?.fileName,
               }),
@@ -183,22 +194,17 @@ function PatientReAllocation({
       setCheckedHeader,
       setSelectedRows,
       setSelectedPatientDetails,
+      currentPageId,
     ],
   );
 
   const getAllPatientsReAllocation = useCallback(async () => {
-    let currentPageId = reAllocationPageId;
-    if (subActiveTab === "Inpatient") {
-      currentPageId = patienReAllocationInPatientPageId;
-    } else if (subActiveTab === "Outpatient") {
-      currentPageId = patienReAllocationOutPatientPageId;
-    }
     try {
       await getTableView({
-        pageId: activeRole || currentPageId,
+        pageId: currentPageId,
         pageNo,
         pageSize: 15,
-        roleId: activeRole,
+        roleId: getRoleIdByRole(activeRole) || "",
         tin,
         selectedOption,
         selectedDateRanges,
@@ -224,7 +230,7 @@ function PatientReAllocation({
     setTriggerTableCustomization,
     roleAliasName,
     activeRole,
-    subActiveTab,
+    currentPageId,
   ]);
   useEffect(() => {
     getAllPatientsReAllocation();
@@ -243,6 +249,11 @@ function PatientReAllocation({
       getAllPatientsReAllocation();
     }
   }, [triggerTableCustomization]);
+
+  useEffect(() => {
+    const hasSelection = (selectedRows && selectedRows.length > 0) || false;
+    onSelectionChange?.(hasSelection);
+  }, [selectedRows, onSelectionChange]);
 
   useEffect(() => {
     if (prevReAllocateModalRef.current === true && !allocateModal) {

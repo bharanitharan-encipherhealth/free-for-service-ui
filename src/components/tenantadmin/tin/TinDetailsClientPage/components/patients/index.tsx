@@ -21,6 +21,7 @@ import {
   patientInPatientPageId,
   patientOutPatientPageId,
 } from "@/util/pageIds";
+import { tinNumber } from "@/util/config";
 
 type patientTabReduxType = ConnectedProps<typeof connector>;
 
@@ -42,7 +43,7 @@ function PatientsTab({
   setSubActiveTab,
 }: patientTabProps) {
   const route = useRouter();
-  const tin = getStorage("tinNumber");
+  const tin = tinNumber;
   const [selectedOption, setSelectedOption] = useState<
     Record<string, string | string[]>
   >({});
@@ -106,6 +107,7 @@ function PatientsTab({
     getTableView,
     tin,
     setTriggerTableCustomization,
+    subActiveTab,
   ]);
 
   const params = {

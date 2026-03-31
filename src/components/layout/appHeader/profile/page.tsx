@@ -119,7 +119,9 @@ function HeaderProfile({
           }}
           trigger={["click"]}
         >
-          <IoIosArrowDown />
+          <span>
+            <IoIosArrowDown />
+          </span>
         </Dropdown>
       </div>
     </div>

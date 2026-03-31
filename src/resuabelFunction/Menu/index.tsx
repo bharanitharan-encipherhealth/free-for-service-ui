@@ -114,7 +114,7 @@ export const ProviderMenuList = (
 
       case "TIN":
         items.push(
-          createMenuItem("Tenant", "/tenantadmin/tin", <MdOutlineAnalytics />),
+          createMenuItem("Tenant", "/tenantadmin/tin/tindetails", <MdOutlineAnalytics />),
         );
         break;
 
@@ -189,13 +189,13 @@ export const statusColorPick = ({ status }: { status: string }) => {
     case "processing":
       return {
         backgroundColor: "var(--processing-bg-color)",
-        color: "var(--defaultColor)",
+        color: "var(--foreground)",
       };
     case "not processed":
     case "failed":
       return {
         backgroundColor: "var(--not-processed-bg-color)",
-        color: "var(--defaultColor)",
+        color: "var(--foreground)",
       };
   }
 };

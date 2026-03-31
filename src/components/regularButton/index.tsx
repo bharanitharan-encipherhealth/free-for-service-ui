@@ -23,9 +23,8 @@ const RegularButton = ({
       //     ? createIdGen("reusableBtn" + id)
       //     : createIdGen("reusableBtn" + router.pathname.replaceAll("/", " "))
       // }
-      className={`btn ${type === "outline" ? Style.outer : Style.btnColor} ${
-        disabled && Style.disabledBtn
-      }`}
+      className={`btn rounded-lg ${type === "outline" ? Style.outer : Style.btnColor} ${disabled && Style.disabledBtn
+        }`}
       name={name}
       onClick={!htmlType ? onClick : undefined}
       style={{ width: width, padding: padding, height: height }}

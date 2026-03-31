@@ -411,7 +411,7 @@ const WorkQueuePage: React.FC<WorkQueuePageProps> = (props) => {
         series: [
           { name: "Allocated", value: data?.allocatedCount || 0, color: getColorValue("1") },
           { name: "Completed", value: data?.completedCount || 0, color: getColorValue("2") },
-          { name: "InProgress", value: data?.pendingCount || 0, color: getColorValue("7") },
+          { name: "InProgress", value: data?.pendingCount || 0, color: getColorValue("3") },
         ],
       };
     });

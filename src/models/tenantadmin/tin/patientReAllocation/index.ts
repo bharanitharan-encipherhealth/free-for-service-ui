@@ -28,6 +28,7 @@ export interface checkAllPatientIdType {
   username: string;
   roleId: string;
   fileName?: string;
+  userName?: string;
 }
 
 export interface tinPatientReAllocationTableResposneType {

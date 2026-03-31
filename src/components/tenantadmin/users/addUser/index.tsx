@@ -1,5 +1,9 @@
 import { CreateUserResponseType } from "@/models/tenantadmin/users";
-import { CreateIdGens, formValidate, getResponePopup } from "@/util/reusableFunction";
+import {
+  CreateIdGens,
+  formValidate,
+  getResponePopup,
+} from "@/util/reusableFunction";
 import { Drawer, Form, Input, Select, Button } from "antd";
 import React, { useCallback } from "react";
 import { IoClose } from "react-icons/io5";
@@ -58,9 +62,20 @@ const AddUser = React.memo(
         title={"Add User"}
         destroyOnClose
         closable={false}
-        extra={<IoClose className="cursor-pointer" size={20} onClick={handleCloseModal} />}
+        extra={
+          <IoClose
+            className="cursor-pointer"
+            size={20}
+            onClick={handleCloseModal}
+          />
+        }
       >
-        <Form layout="vertical" form={form} onFinish={onFinish}>
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={onFinish}
+          requiredMark={false}
+        >
           <Form.Item
             name="firstName"
             label={
@@ -160,7 +175,12 @@ const AddUser = React.memo(
               },
             ]}
           >
-            <Select mode="multiple" options={roles} allowClear placeholder="Select Roles" />
+            <Select
+              mode="multiple"
+              options={roles}
+              allowClear
+              placeholder="Select Roles"
+            />
           </Form.Item>
 
           <Form.Item className="flex justify-center w-full mt-4">
@@ -183,5 +203,3 @@ const AddUser = React.memo(
 AddUser.displayName = "AddUser";
 
 export default AddUser;
-
-

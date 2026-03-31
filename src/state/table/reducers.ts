@@ -16,6 +16,7 @@ const createReducer = (actionType: any) =>
         ...state,
         loading: true,
         error: null,
+        data: null,
       }),
       [actionType.SUCCEEDED]: (state, action) => ({
         ...state,
@@ -35,7 +36,7 @@ const createReducer = (actionType: any) =>
 const getTableLoading = (type: any) =>
   handleActions(
     {
-      [type.START]: () => true,
+      [type.STARTED]: () => true,
       [type.SUCCEEDED]: () => false,
       [type.FAILED]: () => false,
     },

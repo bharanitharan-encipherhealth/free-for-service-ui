@@ -337,8 +337,8 @@ export function NavigationTabs({
   };
 }) {
   return (
-    <div className={`px-2`}>
-      <div className="flex items-center justify-between border-b border-[#e8e8e8]">
+    <div className={`px-0`}>
+      <div className="flex items-center justify-between border-b border-[#e8e8e8] px-3">
         {tabList?.isTab && (
           <div className="flex gap-4 items-center">
             {tabList?.tabList?.map((item, index) => (

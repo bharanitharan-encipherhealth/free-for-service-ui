@@ -17,6 +17,7 @@ import HeaderProfile from "./profile/page";
 import { ssoLogout } from "../../../../lib/authService";
 import { actions as authAction } from "@/state/auth";
 import { usePathname, useRouter } from "next/navigation";
+import { tinNumber } from "@/util/config";
 
 type AppHeaderRedux = ConnectedProps<typeof connector>;
 function AppHeader({
@@ -34,7 +35,7 @@ function AppHeader({
   const userRole = getStorage("userRole");
   const client = getStorage("client");
   const project = getStorage("project");
-  const tinNumber = getStorage("tinNumber");
+  const tin = tinNumber;
 
   const [seletedClient, setSelectedClient] = useState<string>();
   const [selectedProject, setSelectedProject] = useState<string>();
@@ -104,11 +105,10 @@ function AppHeader({
     const allRoles = JSON.parse(getStorage("userAllRoles"));
     const client = getStorage("client");
     const project = getStorage("project");
-    const tinNumber = getStorage("tinNumber");
+    const tin = tinNumber;
     if (tinDetails?.length > 0 && userRole == "QA") {
-      const initialTin = tinNumber || tinDetails?.[0]?.tinNumber;
+      const initialTin = tin || tinDetails?.[0]?.tinNumber;
       setSelectedTin(initialTin);
-      setStorage("tinNumber", initialTin);
     }
     if (client) setSelectedClient(client);
     if (project) setSelectedProject(project);
@@ -210,10 +210,9 @@ function AppHeader({
 
   useEffect(() => {
     if (tinDetails?.length > 0 && userRole == "QA") {
-      const initialTin = tinNumber || tinDetails?.[0]?.tinNumber;
+      const initialTin = tin || tinDetails?.[0]?.tinNumber;
       if (!selectedTin) {
         setSelectedTin(initialTin);
-        setStorage("tinNumber", initialTin);
       }
     }
     if (client) setSelectedClient(client);

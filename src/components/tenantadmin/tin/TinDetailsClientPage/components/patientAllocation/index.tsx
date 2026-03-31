@@ -19,7 +19,7 @@ import ReusableTable from "@/components/ReusabelTable";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
 import productivityReducerType from "@/state/tenantadmin/productivity/model";
 import ContentLayout from "@/components/layout/ContentLayout/page";
-import { generateHeaderTab } from "@/util/reusableFunction";
+import { generateHeaderTab, getRoleIdByRole } from "@/util/reusableFunction";
 import { actions as productivityAction } from "@/state/tenantadmin/productivity";
 import { handleRowCheckboxChangeType } from "@/models/ReusabelTable";
 import { getTable } from "@/state/table/network";
@@ -33,6 +33,7 @@ import {
   patienAllocationInPatientPageId,
   patienAllocationOutPatientPageId,
 } from "@/util/pageIds";
+import { tinNumber } from "@/util/config";
 
 type patientTabReduxType = ConnectedProps<typeof connector>;
 
@@ -62,7 +63,7 @@ function PatientAllocation({
   activeRole,
   setActiveRole,
 }: patientTabProps) {
-  const tin = getStorage("tinNumber");
+  const tin = tinNumber;
   const [selectedOption, setSelectedOption] = useState<
     Record<string, string | string[]>
   >({});
@@ -108,6 +109,16 @@ function PatientAllocation({
     }
   };
 
+  const currentPageId = useMemo(() => {
+    let id = patientAllocationPageId;
+    if (subActiveTab === "Inpatient") {
+      id = patienAllocationInPatientPageId;
+    } else if (subActiveTab === "Outpatient") {
+      id = patienAllocationOutPatientPageId;
+    }
+    return id;
+  }, [subActiveTab]);
+
   const handleRowCheckboxChange = useCallback(
     async ({
       e,
@@ -121,10 +132,10 @@ function PatientAllocation({
           setCheckedHeader(true);
           const response = await getTable({
             allPatientIds: checked,
-            pageId: patientAllocationPageId,
+            pageId: currentPageId,
             pageNo: 0,
             pageSize: 15,
-            roleId: activeRole,
+            roleId: getRoleIdByRole(activeRole) || "",
             searchText,
             selectedOption,
             selectedDateRanges,
@@ -178,23 +189,17 @@ function PatientAllocation({
       setCheckedHeader,
       setSelectedRows,
       setSelectedPatientDetails,
+      currentPageId,
     ],
   );
 
   const getAllPatientsAllocation = useCallback(async () => {
-    let currentPageId = patientAllocationPageId;
-    if (subActiveTab === "Inpatient") {
-      currentPageId = patienAllocationInPatientPageId;
-    } else if (subActiveTab === "Outpatient") {
-      currentPageId = patienAllocationOutPatientPageId;
-    }
-
     try {
       await getTableView({
         pageId: currentPageId,
         pageNo,
         pageSize: 15,
-        roleId: activeRole,
+        roleId: getRoleIdByRole(activeRole) || "",
         tin,
         selectedOption,
         selectedDateRanges,
@@ -220,6 +225,7 @@ function PatientAllocation({
     setTriggerTableCustomization,
     roleAliasName,
     activeRole,
+    currentPageId,
   ]);
 
   useEffect(() => {

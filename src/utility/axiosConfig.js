@@ -1,6 +1,8 @@
 const axios = require("axios");
 import Swal from "sweetalert2";
-import { getStorage } from "../util/storage";
+import { getStorage, removeStorage } from "../util/storage";
+
+let sessionExpired = false;
 
 axios.interceptors.request.use(
   (config) => {
@@ -67,18 +69,22 @@ axios.interceptors.response.use(
       });
     }
     if (statusCode === 401) {
-      Swal.fire({
-        title: "",
-        text: "Your session has timed out. Please log in again.",
-        icon: "warning",
-        confirmButtonText: "Logout",
-        confirmButtonColor: "#DD6B55",
-        closeOnConfirm: false,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location = "/login";
-        }
-      });
+      if (!sessionExpired) {
+        sessionExpired = true;
+        Swal.fire({
+          title: "",
+          text: "Your session has timed out. Please log in again.",
+          icon: "warning",
+          confirmButtonText: "Logout",
+          confirmButtonColor: "#DD6B55",
+          closeOnConfirm: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            removeStorage();
+            window.location = "/login";
+          }
+        });
+      }
     }
     return Promise.reject(error);
   },

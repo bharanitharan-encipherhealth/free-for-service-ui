@@ -5,6 +5,7 @@ import { connect, ConnectedProps } from "react-redux";
 
 import { actions as moveBackActions } from "@/state/tenantadmin/tin/tinDetails/moveBack";
 import patinetMovebackReducerType from "@/state/tenantadmin/tin/tinDetails/moveBack/model";
+import { getRoleIdByRole } from "@/util/reusableFunction";
 import style from "../../style.module.css";
 
 type MoveBackModalReduxProps = ConnectedProps<typeof connector>;
@@ -27,7 +28,7 @@ function MoveBackModal({
   }));
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const getLevelOptions = useCallback(async () => {
-    await getLevelOptionsAction({ roleId: activeTab });
+    await getLevelOptionsAction({ roleId: getRoleIdByRole(activeTab) || "" });
   }, [getLevelOptionsAction, activeTab]);
 
   const handleChangeLevel = useCallback(

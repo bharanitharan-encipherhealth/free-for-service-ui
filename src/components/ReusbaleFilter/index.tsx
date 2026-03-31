@@ -113,7 +113,7 @@ const ReusableFilters = ({
           const pos = Math.min(focus.pos, inputEl.value?.length || 0);
           try {
             inputEl.setSelectionRange(pos, pos);
-          } catch {}
+          } catch { }
         }
       }, 100);
     }
@@ -187,13 +187,13 @@ const ReusableFilters = ({
       filterWidth = 224;
     }
 
-    const filterWidthWithMargin = filterWidth + 15;
-    const availableWidth = windowWidth * 0.98 - 20; // Use window width as fallback
-    const filtersPerLine = Math.floor(availableWidth / filterWidthWithMargin);
+    const filterWidthWithMargin = (filterWidth > 200 ? 195 : filterWidth) + 15;
+    const availableWidth = windowWidth * 0.98 - 10;
+    const filtersPerLine = Math.floor((availableWidth + 10) / filterWidthWithMargin);
 
-    // FIXED: Add null check for activeFilterItems
+    // FIXED: Add null check for activeFilterItems and cap at 7
     const activeItemsLength = activeFilterItems?.length || 0;
-    return Math.max(1, Math.min(filtersPerLine, activeItemsLength));
+    return Math.max(1, Math.min(7, Math.min(filtersPerLine, activeItemsLength)));
   }, [activeFilterItems]); // FIXED: Use optional chaining in dependency
 
   // Debounced width measurement function
@@ -328,14 +328,19 @@ const ReusableFilters = ({
     }
 
     // Add margin/gap between filters
-    const filterWidthWithMargin = filterWidth + 15;
-    const availableWidth = containerWidth - 20; // Account for container padding
+    // Using a slightly smaller effective width (195 + 15 = 210) to match the 7-column grid behavior 
+    // better on standard desktop screens (1366px-1600px)
+    const filterWidthWithMargin = (filterWidth > 200 ? 195 : filterWidth) + 15;
+    const availableWidth = containerWidth - 10; 
 
     // Calculate how many filters fit in one line
-    const filtersPerLine = Math.floor(availableWidth / filterWidthWithMargin);
+    // Use an epsilon to allow the 7th filter to fit if space is reasonable
+    const filtersPerLine = Math.floor((availableWidth + 10) / filterWidthWithMargin);
+    
+    // Cap it at 7 to match the className="grid-cols-7" used in the JSX
     const result = Math.max(
       1,
-      Math.min(filtersPerLine, activeFilterItems?.length || 0),
+      Math.min(7, Math.min(filtersPerLine, activeFilterItems?.length || 0)),
     );
 
     return result;
@@ -416,7 +421,7 @@ const ReusableFilters = ({
           ))}
         </div>
       ) : (
-        <div>
+        <div className="pe-2">
           <div
             ref={containerRef}
             className="grid grid-cols-7 gap-x-5"
@@ -487,8 +492,8 @@ const ReusableFilters = ({
                             options={
                               item?.filter?.nameOptions
                                 ? generateOptionsObject(
-                                    item?.filter?.nameOptions,
-                                  )
+                                  item?.filter?.nameOptions,
+                                )
                                 : generateOptions(item?.filter?.options) || []
                             }
                             placeholder={`Select ${item?.headerName}`}
@@ -535,8 +540,8 @@ const ReusableFilters = ({
                             options={
                               item?.filter?.nameOptions
                                 ? generateOptionsObject(
-                                    item?.filter?.nameOptions,
-                                  )
+                                  item?.filter?.nameOptions,
+                                )
                                 : generateOptions(item?.filter?.options) || []
                             }
                             placeholder={`Select ${item?.headerName}`}
@@ -605,9 +610,9 @@ const ReusableFilters = ({
                           format="MM-DD-YYYY"
                           value={
                             selectedDates?.[item?.actualField] as
-                              | [Dayjs, Dayjs]
-                              | null
-                              | undefined
+                            | [Dayjs, Dayjs]
+                            | null
+                            | undefined
                           }
                           onChange={(
                             date: [Dayjs | null, Dayjs | null] | null,
@@ -632,11 +637,11 @@ const ReusableFilters = ({
                                 ? selectedDates?.[item?.actualField]
                                 : []) as unknown[],
                               item?.actualField === "coder1DueDate" ||
-                                item?.actualField == "coder2DueDate" ||
-                                item?.actualField == "qaDueDate" ||
-                                item?.actualField == "downloaderDueDate" ||
-                                item?.actualField == "ownerDueDate" ||
-                                item?.actualField == "projectEndDate",
+                              item?.actualField == "coder2DueDate" ||
+                              item?.actualField == "qaDueDate" ||
+                              item?.actualField == "downloaderDueDate" ||
+                              item?.actualField == "ownerDueDate" ||
+                              item?.actualField == "projectEndDate",
                             )
                           }
                           inputReadOnly
@@ -695,9 +700,8 @@ const ReusableFilters = ({
               >
                 {isExpanded
                   ? "Show Less"
-                  : `See All Filters (${
-                      activeFilterItems.length - filtersPerLine
-                    } more)`}
+                  : `See All Filters (${activeFilterItems.length - filtersPerLine
+                  } more)`}
               </Button>
             </div>
           ) : (

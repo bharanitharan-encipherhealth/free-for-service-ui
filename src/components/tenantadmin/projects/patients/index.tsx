@@ -16,6 +16,7 @@ import TableViewType, { SortType } from "@/state/table/model";
 import { actions as tableAction } from "@/state/table";
 import { notification } from "antd";
 import { useRouter } from "next/navigation";
+import { tinNumber } from "@/util/config";
 
 type PatientReduxProps = ConnectedProps<typeof connector>;
 
@@ -34,7 +35,7 @@ function Patients({
   getRoutedData,
 }: Props) {
   const route = useRouter();
-  const tin = getStorage("tinNumber");
+  const tin = tinNumber;
   const [pageNo, setPageNo] = useState(0);
   const [sort, setSort] = useState<SortType>({
     computedDate: {

@@ -45,8 +45,10 @@ const EditUser = React.memo(
     useEffect(() => {
       if (editingUser) {
         form.setFieldsValue({
-          patientId: editingUser.patientId || editingUser.id,
-          patientName: editingUser.name || `${editingUser.firstName} ${editingUser.lastName}`,
+          email: editingUser.userName,
+          patientName:
+            editingUser.name ||
+            `${editingUser.firstName} ${editingUser.lastName}`,
           role: editingUser.roleNames || [],
         });
       } else {
@@ -61,20 +63,20 @@ const EditUser = React.memo(
         title="Edit User"
         destroyOnClose
         closable={false}
-        extra={<IoClose className="cursor-pointer" size={20} onClick={handleEditUserClose} />}
+        extra={
+          <IoClose
+            className="cursor-pointer"
+            size={20}
+            onClick={handleEditUserClose}
+          />
+        }
       >
-        <Form layout="vertical" form={form} onFinish={handleRoleSubmit}>
-          <Form.Item
-            name="patientId"
-            label={
-              <label className="font-semibold text-gray-700">
-                Patient ID <span className="text-red-500">*</span>
-              </label>
-            }
-          >
-            <Input disabled placeholder="Patient ID" data-testid="patientId" />
-          </Form.Item>
-
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={handleRoleSubmit}
+          requiredMark={false}
+        >
           <Form.Item
             name="patientName"
             label={
@@ -83,7 +85,22 @@ const EditUser = React.memo(
               </label>
             }
           >
-            <Input disabled placeholder="Patient Name" data-testid="patientName" />
+            <Input
+              disabled
+              placeholder="Patient Name"
+              data-testid="patientName"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            label={
+              <label className="font-semibold text-gray-700">
+                User Email <span className="text-red-500">*</span>
+              </label>
+            }
+          >
+            <Input disabled placeholder="User Email" data-testid="email" />
           </Form.Item>
 
           <Form.Item

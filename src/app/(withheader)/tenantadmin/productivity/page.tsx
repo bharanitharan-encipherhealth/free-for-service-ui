@@ -5,7 +5,9 @@ import { connect } from "react-redux";
 import { actions as tableAction } from "@/state/table";
 import TableViewType, { metaDataType, SortType } from "@/state/table/model";
 import { actions as productivityAction } from "@/state/tenantadmin/productivity";
-import ContentLayout, { NavigationTabs } from "@/components/layout/ContentLayout/page";
+import ContentLayout, {
+  NavigationTabs,
+} from "@/components/layout/ContentLayout/page";
 import {
   ProductivityPropsType,
   productivitytabelResposne,
@@ -22,6 +24,7 @@ import { usePathname } from "next/navigation";
 import { actions as logsAction } from "@/state/tenantadmin/tracking";
 import LogsReducerType from "@/state/tenantadmin/tracking/model";
 import { notification } from "antd";
+import { tinNumber } from "@/util/config";
 
 function Productivity({
   getTableView,
@@ -35,7 +38,7 @@ function Productivity({
   exportLoading,
 }: ProductivityPropsType) {
   const pathName = usePathname();
-  const tin = getStorage("tinNumber");
+  const tin = tinNumber;
   const projectId = getStorage("project");
   const clientId = getStorage("client");
   const [activeTab, setActiveTab] = useState<string>("");
@@ -269,9 +272,7 @@ function Productivity({
   }, []);
 
   useEffect(() => {
-    if (
-      tableData?.metaDataDTO && activeFilters?.length === 0
-    ) {
+    if (tableData?.metaDataDTO && activeFilters?.length === 0) {
       const filters = tableData.metaDataDTO.filter(
         (item: metaDataType) => item.active && item?.filter?.style,
       );

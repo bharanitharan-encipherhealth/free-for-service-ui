@@ -7,6 +7,7 @@
   border: none !important;
   box-shadow: none;
 }
+
 .pendingBgColor,
 .pendingBgColor:hover,
 .pendingBgColor:focus,
@@ -21,22 +22,22 @@
 .completedBgColor:hover,
 .completedBgColor:focus,
 .completedBgColor:active {
-  color: #3a9b94 !important;
-  background: #daf1ef !important;
+  color: var(--defaultColor) !important;
+  background: var(--completedBgColor) !important;
   border: none !important;
   box-shadow: none;
 }
 
 .pendingOverlay :global(.ant-dropdown-menu-item) {
-  background: #c2e1f9 !important;
-  color: #5da9e4 !important;
+  background: var(--pedingBgColor) !important;
+  color: var(--defaultColor) !important;
   font-weight: 900;
   text-transform: uppercase;
 }
 
 .completedOverlay :global(.ant-dropdown-menu-item) {
-  color: #3a9b94 !important;
-  background: #daf1ef !important;
+  color: var(--defaultColor) !important;
+  background: var(--completedBgColor) !important;
   font-weight: 900;
   text-transform: uppercase;
 }

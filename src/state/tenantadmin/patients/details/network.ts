@@ -4,6 +4,7 @@ import {
 } from "@/models/tenantadmin/patients/details";
 import { requestPortal } from "@/util/network";
 import { getStorage, setStorage } from "@/util/storage";
+import { tinNumber } from "@/util/config";
 
 // api call for patient details
 export async function patientIdDetails({
@@ -211,7 +212,7 @@ export const patientListFilter = async ({
   };
 
   const role = getStorage("headerAliasName")?.replace(/_/g, "").toLowerCase();
-  const tin = getStorage("tinNumber");
+  const tin = tinNumber;
   const pageId = "502745ab-e131-4663-8702-94603ff1e8e6";
 
   const path = typeof window !== "undefined" ? window.location.pathname : "";

@@ -19,3 +19,4 @@ export const portalRedirectUrl = process.env
   .NEXT_PUBLIC_PORTAL_REDIRECT_URI as string;
 export const analyticsTag = process.env
   .NEXT_PUBLIC_GOOGLE_ANALYTICS_TAG as string;
+export const tinNumber = process.env.NEXT_PUBLIC_TIN_NUMBER as string;

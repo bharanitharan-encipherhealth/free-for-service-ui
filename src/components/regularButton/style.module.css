@@ -1,28 +1,29 @@
 .btnColor {
-  background-color: #0942C4 !important;
-  color: #fff !important;
+  background-color: var(--application-base-color) !important;
+  color: var(--defaultColor) !important;
 }
 
 .btnColor:disabled {
-  background-color: #0942C4  !important;
-  color: #fff !important;
+  background-color: var(--application-base-color) !important;
+  color: var(--defaultColor) !important;
   cursor: not-allowed !important;
   opacity: 0.5 !important;
 }
 
 .btnColor:hover {
-  background-color: #6c9ddd !important;
-  color: #fff !important;
+  background-color: var(--application-base-color) !important;
+  opacity: 0.8 !important;
+  color: var(--defaultColor) !important;
 }
 
 .outer {
-  border: 1px solid #043069 !important;
-  color: #043069 !important;
+  border: 1px solid var(--application-base-color) !important;
+  color: var(--application-base-color) !important;
 }
 
 .outer:hover {
-  background-color: #6c9ddd !important;
-  color: #fff !important;
+  background-color: var(--application-base-color) !important;
+  color: var(--defaultColor) !important;
 }
 
 .both {
@@ -37,8 +38,8 @@
 }
 .submitBtn {
   height: 45px;
-  background: #04306f !important;
-  color: white !important;
+  background: var(--application-base-color) !important;
+  color: var(--defaultColor) !important;
   width: 30%;
 }
 .subHeader {

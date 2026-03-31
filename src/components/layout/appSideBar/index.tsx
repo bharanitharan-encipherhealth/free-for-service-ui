@@ -20,7 +20,7 @@ const { Sider } = Layout;
 function AppSideBar({ selectedUserRole }: appSideBarType) {
   const pathName = usePathname();
   const router = useRouter();
-  const [collapsed, setCollapsed] = useState<boolean>(true);
+  const [collapsed, setCollapsed] = useState<boolean>(false);
   const [menuList, setMenuList] = useState<MenuItem[]>([]);
 
   const getRoleMenuList = ({ userRole }: { userRole: string }) => {
@@ -58,9 +58,15 @@ function AppSideBar({ selectedUserRole }: appSideBarType) {
 
   return (
     <div className={`${style.appSideBar}`}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className={`${style.arrowBoder}`}>
-          <div className="p-2 flex justify-center">
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        width={160}
+        collapsedWidth={75}
+      >
+        <div className={`${style.arrowBoder} ${collapsed ? "justify-center" : "justify-end"}`}>
+          <div className={`p-2 flex  `}>
             <div
               className={`${style.sideNavArrow} rounded-full cursor-pointer`}
               onClick={() => {
@@ -74,11 +80,17 @@ function AppSideBar({ selectedUserRole }: appSideBarType) {
 
         <Menu
           items={menuList}
-          selectedKeys={
-            menuList
-              ?.filter((item) => pathName?.startsWith(item?.key as string))
-              ?.map((item) => item?.key as string) || [pathName]
-          }
+          selectedKeys={(() => {
+            const cleanPath = pathName?.replace(/\/$/, "") || "";
+            const matchedKeys =
+              menuList
+                ?.filter((item) => {
+                  const cleanKey = (item?.key as string)?.replace(/\/$/, "");
+                  return cleanPath.startsWith(cleanKey);
+                })
+                ?.map((item) => item?.key as string) || [];
+            return matchedKeys.length > 0 ? matchedKeys : [pathName];
+          })()}
           onClick={({ key }) => router.push(key)}
         />
       </Sider>
