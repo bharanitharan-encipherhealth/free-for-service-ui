@@ -42,7 +42,7 @@ const YearPicker = ({
             name="date-picker1"
             onChange={onChangeYear}
             picker={"year"}
-            value={val1 && dayjs(val1 ? val1 : currentDate, "YYYY")}
+            value={val1 ? dayjs(val1) : dayjs()}
             format={"YYYY"}
             className={className}
             suffixIcon={<FaAngleDown />}
@@ -55,7 +55,7 @@ const YearPicker = ({
             onChange={onChangeYear}
             picker={"year"}
             allowClear={false}
-            value={dayjs(val1 ? val1 : currentYearDate, "YYYY")}
+            value={val1 ? dayjs(val1) : dayjs()}
             format={"YYYY"}
             className={`${styles.picker} pickerChnages`}
             style={{ backgroundColor: bgColor }}
@@ -73,8 +73,8 @@ const YearPicker = ({
           data-testid={selectid}
           value={
             val
-              ? { label: val < 10 ? `0${val}` : val, value: val }
-              : { label: currentDate, value: currentDate }
+              ? { label: monthNames[val - 1], value: val }
+              : { label: monthNames[parseInt(currentDate) - 1], value: parseInt(currentDate) }
           }
           onChange={(e) => onChangeMonth(e)}
           className={`${bgColor === "#F3F3FF"

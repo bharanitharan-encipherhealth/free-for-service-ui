@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Widget, ReactChartType, RoleType } from "../../types";
 
-// last widgetId : acd1b072-3ca4-4bf2-8d32-973ab8c7c057 next continue with acd1b072-3ca4-4bf2-8d32-973ab8c7c058 for uniqueness
+// last widgetId : acd1b072-3ca4-4bf2-8d32-973ab8c7c057 next continue with acd1b072-3ca4-4bf2-8d32-973ab8c7c059 for uniqueness
 export const DefaultWidget: Widget[] = [
   // {
   //   orderValue: "1",
@@ -57,7 +57,7 @@ export const DefaultWidget: Widget[] = [
   },
   {
     orderValue: "6",
-    widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c009",
+    widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c058",
     size: "col-sm-6 col-md-6 col-lg-6 col-xl-6",
     widgetName: "Top10AachiiCode",
     role: "2",
@@ -338,7 +338,7 @@ export const WorkflowWidget: Widget[] = [
     role: "2",
     dashBoardPage: "WORKFLOWS",
     title: "Accuracy and Quality Insights",
-    selectedChart: "table",
+    selectedChart: "column",
     rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD"],
   },
   {
@@ -358,7 +358,7 @@ export const WorkflowWidget: Widget[] = [
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c057",
     size: "col-12",
     widgetName: "productivityStatus",
-    selectedChart: "table",
+    selectedChart: "column",
     role: "2",
     dashBoardPage: "WORKFLOWS",
     rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD", "CLIENT"],
@@ -511,19 +511,20 @@ export const getFormattedChartData = (
   const formattedSeries =
     chartType === "bar" || chartType === "line"
       ? [
-          {
-            name: "Status",
-            data: values,
-            colorBy: "data",
-            itemStyle: {
-              color: (params: { dataIndex: number }) =>
-                colors[params.dataIndex] || "",
-            },
+        {
+          name: "Status",
+          data: values,
+          colorBy: "data",
+          itemStyle: {
+            color: (params: { dataIndex: number }) =>
+              colors[params.dataIndex] || "",
           },
-        ]
-      : rawSeries.map((item) => ({
+        },
+      ]
+      : rawSeries.map((item: any) => ({
           ...item,
           name: item.name || item.status,
+          color: item.color || undefined,
           itemStyle: { color: item.color || item.itemStyle?.color || "" },
         }));
 

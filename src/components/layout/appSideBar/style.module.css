@@ -1,6 +1,7 @@
 .appSideBar {
   border-right: 1px solid var(--app-header-boder-color);
   background-color: white !important;
+  height: 100%;
 }
 .sideNavArrow {
   background-color: var(--sidebar-arrow-color);
@@ -12,4 +13,9 @@
 
 .arrowBoder {
   border-bottom: 1px solid var(--app-header-boder-color);
+  height: 53px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

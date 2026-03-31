@@ -55,14 +55,14 @@ const DashboardTable: React.FC<DashboardTableProps> = ({
                               percent={parseFloat(String(value)) || 0}
                               size="small"
                               showInfo={true}
-                              strokeColor={getColorValue("2")}
+                              strokeColor={(getColorValue("2") as string) || ""}
                               status="normal"
                               format={(percent) =>
                                 percent === 100 ? (
                                   <span>
                                     <IoCheckmarkCircle
                                       style={{
-                                        color: getColorValue("2"),
+                                        color: getColorValue("2") || "",
                                         marginRight: 4,
                                       }}
                                     />

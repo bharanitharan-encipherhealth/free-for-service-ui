@@ -1,6 +1,7 @@
 .btnActive {
-    border: 2px solid #04306f;
-    color: #04306f
+    background-color: #03512E !important;
+    color: white !important;
+    border: none !important;
 }
 .maincontainer {
   position: relative;

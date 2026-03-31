@@ -56,7 +56,7 @@ const connector = connect(mapState);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 interface Props extends PropsFromRedux {
-  dispatch: any; 
+  dispatch: any;
 }
 
 const DynamicDashboard: React.FC<Props> = ({
@@ -362,15 +362,19 @@ const DynamicDashboard: React.FC<Props> = ({
     }
   }, [dashboard, selectedItems, getSelectedWidgets, dynamicModal]);
 
+  console.log("dashboard", dynamicModal);
+
   return (
     <div className={style.showHeight}>
       <DashboardPages
         setDynamicModal={setDynamicModal}
         selectedRole={selectedRole}
+        setSelectedRole={setSelectedRole}
         pagesLoader={pagesLoader}
         dynamicModal={dynamicModal}
         setSelectedTab={setSelectedTabPage}
         selectedTab={selectedTabPage}
+        tabNames={tabNames}
       />
       <Modal
         open={!!dynamicModal}
@@ -402,8 +406,8 @@ const DynamicDashboard: React.FC<Props> = ({
                 key={role}
                 size="small"
                 className={`rounded-full ${selectedRole === role
-                    ? style.btnActive
-                    : "border border-gray-400 text-gray-600"
+                  ? style.btnActive
+                  : "border border-gray-400 text-gray-600"
                   }`}
                 onClick={() => {
                   setTabLoading(true);
@@ -431,7 +435,7 @@ const DynamicDashboard: React.FC<Props> = ({
                 <div className="flex items-center">
                   <div className="font-bold">
                     Total Widgets Selected:{" "}
-                    <span style={{ color: "#04306F" }}>
+                    <span style={{ color: "#03512E" }}>
                       {selectedItems?.length}
                     </span>
                   </div>
@@ -443,8 +447,8 @@ const DynamicDashboard: React.FC<Props> = ({
                       id="selectAll"
                       checked={
                         !!(selectedItems.length &&
-                        getWidgets(selectedTab)?.length ===
-                        selectedItems?.length)
+                          getWidgets(selectedTab)?.length ===
+                          selectedItems?.length)
                       }
                       onChange={(e) => handleSelectAll(e.target.checked)}
                     />
@@ -469,7 +473,7 @@ const DynamicDashboard: React.FC<Props> = ({
                   {dynamicModal === "widget" ? "Cancel" : "Reset"}
                 </Button>
                 <Button
-                  className="btn-sm w-full text-ellipsis tableButton"
+                  className="btn-sm w-full text-ellipsis tableButton bg-[#03512E] text-white"
                   onClick={handleSave}
                   disabled={isDisable}
                   loading={saveLoading}
@@ -501,8 +505,8 @@ const DynamicDashboard: React.FC<Props> = ({
                 cursor: "pointer",
                 fontWeight: selectedTab === tab ? "bold" : "normal",
                 borderBottom:
-                  selectedTab === tab ? "3px solid #04306F" : "none",
-                color: selectedTab === tab ? "#04306F" : "inherit",
+                  selectedTab === tab ? "3px solid #03512E" : "none",
+                color: selectedTab === tab ? "#03512E" : "inherit",
               }}
             >
               {tab}

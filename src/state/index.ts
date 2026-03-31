@@ -17,8 +17,10 @@ import { reducer as projectReducer } from "./tenantadmin/project";
 import { reducer as patientAllocationReducer } from "./tenantadmin/tin/tinDetails/patientAllocation";
 import { reducer as patinetReAllocationReducer } from "./tenantadmin/tin/tinDetails/patientReAllocation";
 import { reducer as patinetMoveBackReducer } from "./tenantadmin/tin/tinDetails/moveBack";
+import { reducer as fileProcessingReducer } from "./tenantadmin/fileProcessing";
 import { reducer as patientDetailsReducer } from "./tenantadmin/patients/details";
 import { reducer as dashboardReducer } from "./tenantadmin/dashboard";
+import { reducer as webSocketReducer } from "./websocket";
 
 // Import thunk middleware using require to handle module export issues
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -44,6 +46,8 @@ const promiseMiddleware =
     ? promiseModule.default
     : null);
 
+import { DashboardState } from "@/components/tenantadmin/dashboard/types";
+
 // ✅ Combine reducers
 const rootReducer = combineReducers({
   authReducer: authReducer,
@@ -57,9 +61,11 @@ const rootReducer = combineReducers({
     patientAllocationReducer: patientAllocationReducer,
     patinetReAllocationReducer: patinetReAllocationReducer,
     patinetMoveBackReducer: patinetMoveBackReducer,
+    fileProcessingReducer: fileProcessingReducer,
   }),
   patientDetailsReducer: patientDetailsReducer,
   dashboardReducer: dashboardReducer,
+  webSocketReducer: webSocketReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -70,7 +76,7 @@ const middlewares: Middleware[] = [];
 
 // Add thunk middleware
 if (typeof thunk === "function") {
-  middlewares.push(thunk as unknown as ThunkMiddleware<RootState, any>);
+  middlewares.push(thunk as any);
 }
 
 // Add ReduxPromise middleware

@@ -10,13 +10,13 @@ interface StatusConfigItem {
 
 const statusConfig: Record<string, StatusConfigItem> = {
   Allocated: {
-    bgColor: "/images/dashboard/patientCount.webp",
+    bgColor: "linear-gradient(129.12deg, #03512E -5.66%, rgba(3, 81, 46, 0.5) 102.29%)",
   },
   Completed: {
-    bgColor: "/images/dashboard/pages.webp",
+    bgColor: "linear-gradient(126.88deg, #87C282 -2.24%, rgba(135, 194, 130, 0.5) 104.92%)",
   },
   InProgress: {
-    bgColor: "/images/dashboard/dosCount.webp",
+    bgColor: "linear-gradient(128.05deg, #5ABA8A -8.93%, rgba(90, 186, 138, 0.5) 97.89%)",
   },
   ReassignedPending: {
     bgColor: "/images/dashboard/completedContainer.webp",

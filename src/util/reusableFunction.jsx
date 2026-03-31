@@ -460,13 +460,13 @@ export const getStatusColors = (state) => {
   let previousStateColor = "";
   switch (state) {
     case "COMPLETED":
-      previousStateColor = "#00BC13";
+      previousStateColor = "#03512E";
       break;
     case "PENDING":
-      previousStateColor = "#0078D4";
+      previousStateColor = "#02854A";
       break;
     case "HOLD":
-      previousStateColor = "#3C0AD2";
+      previousStateColor = "#9CFAD0";
       break;
     case "DECLINED":
       previousStateColor = "#EB5252";
@@ -667,10 +667,10 @@ export const getColorValue = (key) => {
       return "#03512E";
     case "secondary":
     case "2":
-      return "#7F91DE";
+      return "#87d068";
     case "secondary2":
     case "3":
-      return "#00C1FF";
+      return "#02854A";
     case "secondary3":
     case "4":
       return "#006DDC";
@@ -774,11 +774,11 @@ export const getRoleIdByRole = (role) => {
 export const getStatusColor = (key) => {
   switch (key) {
     case "1": // allocated
-      return "#064BAC";
+      return "#03512E";
     case "2": //Not Allocated
-      return "#5271FA";
+      return "#02854A";
     case "3": //Completed
-      return "#00C1FF";
+      return "#9CFAD0";
     case "4": //InProgress
       return "#006DDC";
     case "5": //Reassigned

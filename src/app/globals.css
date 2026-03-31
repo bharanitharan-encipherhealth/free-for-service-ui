@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f0f6fe;
+  --background: #ffffff;
   --foreground: #171717;
 
   --icon-color: #666;
@@ -89,7 +89,7 @@
 /* Removed system dark mode preference to force light theme */
 
 body {
-  /* background: var(--background); */
+  background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   transition:
@@ -1504,12 +1504,22 @@ img.login-logo {
 }
 
 .tenatTable>thead>tr {
-  /* height: 13px !important; */
   border-radius: 20px !important;
   background-color: var(--application-base-color);
   font-weight: 700;
   font-size: 16px;
   color: white !important;
+  overflow: hidden;
+}
+
+.tenatTable thead td:first-child {
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+}
+
+.tenatTable thead td:last-child {
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .tenatTable>tbody>tr {

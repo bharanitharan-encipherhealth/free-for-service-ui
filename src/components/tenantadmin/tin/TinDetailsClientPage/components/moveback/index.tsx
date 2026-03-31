@@ -32,6 +32,8 @@ type patientMoveBackTabProps = MovebackParamsType &
   patientMoveBackTabReduxType & {
     subActiveTab: string;
     setSubActiveTab: React.Dispatch<React.SetStateAction<string>>;
+    activeRole: string;
+    setActiveRole: React.Dispatch<React.SetStateAction<string>>;
   };
 
 function MoveBack({
@@ -50,10 +52,11 @@ function MoveBack({
   tableLoader,
   subActiveTab,
   setSubActiveTab,
+  activeRole,
+  setActiveRole,
 }: patientMoveBackTabProps) {
   const prevMoveBackModalRef = useRef<boolean | undefined>(undefined);
   const tin = getStorage("tinNumber");
-  const [activeTab, setActiveTab] = useState<string>("");
   const [roleAliasName, setRoleAliasName] = useState("");
   const [selectedOption, setSelectedOption] = useState<
     Record<string, string | string[]>
@@ -73,57 +76,6 @@ function MoveBack({
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [checkedLoader, setCheckedLoader] = useState(false);
   const [checkedHeader, setCheckedHeader] = useState(false);
-
-  const handleTabChange = useCallback(
-    ({ item }: { item: { label: string; value: string } }) => {
-      if (item?.value === "Inpatient" || item?.value === "Outpatient") {
-        setSubActiveTab(item?.value);
-      } else {
-        setActiveTab(item?.value);
-        setRoleAliasName(item?.label);
-      }
-      setSelectedDates({});
-      setSelectedDateRanges({});
-      setSelectedOption({});
-      setSearchText({});
-    },
-    [setSubActiveTab],
-  );
-  const tabList = useMemo(() => {
-    const dynamicRoles = generateHeaderTab({
-      tabList:
-        allAllocationRoleData?.allocationRoles?.filter(
-          (item) => item?.aliasName?.toUpperCase() !== "MASTER_AUDIT",
-        ) || [],
-      value: "aliasName",
-      id: "roleId",
-    });
-
-    const primaryTabs = [
-      { label: "Inpatient", value: "Inpatient" },
-      { label: "Outpatient", value: "Outpatient" },
-    ];
-
-    const secondaryTabs = dynamicRoles;
-
-    return {
-      isTab: true,
-      tabList: primaryTabs,
-      secondaryTabList: secondaryTabs,
-      loading: allAllocationRoleLoading,
-      activeTab: subActiveTab,
-      secondaryActiveTab: activeTab,
-      onClick: ({ item }: { item: { label: string; value: string } }) =>
-        handleTabChange({ item }),
-      value: "aliasName",
-    };
-  }, [
-    activeTab,
-    subActiveTab,
-    allAllocationRoleData,
-    allAllocationRoleLoading,
-    handleTabChange,
-  ]);
 
   const onPageChange = useCallback(
     (e: PaginatorPageChangeEvent) => {
@@ -155,10 +107,10 @@ function MoveBack({
     }
     try {
       await getTableView({
-        pageId: activeTab || currentPageId,
+        pageId: activeRole || currentPageId,
         pageNo,
         pageSize: 15,
-        roleId: activeTab,
+        roleId: activeRole,
         tin,
         isAdmin: true,
         selectedOption,
@@ -176,7 +128,7 @@ function MoveBack({
   }, [
     getTableView,
     pageNo,
-    activeTab,
+    activeRole,
     subActiveTab,
     selectedOption,
     selectedDateRanges,
@@ -202,7 +154,7 @@ function MoveBack({
             pageId: moveBackPageId,
             pageNo: 0,
             pageSize: 15,
-            roleId: activeTab,
+            roleId: activeRole,
             searchText,
             selectedOption,
             selectedDateRanges,
@@ -236,7 +188,7 @@ function MoveBack({
       }
     },
     [
-      activeTab,
+      activeRole,
       searchText,
       selectedOption,
       selectedDateRanges,
@@ -247,10 +199,6 @@ function MoveBack({
   );
 
   useEffect(() => {
-    getAllRolesTab();
-  }, [getAllRolesTab]);
-
-  useEffect(() => {
     getAllPatientsMoveBack();
   }, [
     pageNo,
@@ -259,7 +207,7 @@ function MoveBack({
     selectedDateRanges,
     sort,
     paginationFirst,
-    activeTab,
+    activeRole,
     subActiveTab,
   ]);
 
@@ -276,7 +224,7 @@ function MoveBack({
     prevMoveBackModalRef.current = allocateModal;
   }, [allocateModal]);
   return (
-    <ContentLayout tabList={tabList}>
+    <>
       <div className="content">
         <ReusableFilters
           showFilter={false}
@@ -324,11 +272,11 @@ function MoveBack({
       <MoveBackModal
         openModal={allocateModal}
         setMoveBackModal={setAllocateModal}
-        activeTab={activeTab}
+        activeTab={activeRole}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
       />
-    </ContentLayout>
+    </>
   );
 }
 

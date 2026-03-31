@@ -61,3 +61,29 @@ export async function requestPortalExcel(url, options) {
   };
   return fetch(actualUrl, actualOptions);
 }
+
+export async function requestPortalFiles(url, options) {
+  try {
+    const orgId = getStorage("orgId");
+    const client = getStorage("client");
+    const project = getStorage("project");
+    const roleId = getStorage("roleId");
+    const token = getStorage(tokenKey);
+
+    const actualUrl = `${portalUrl}${url}`;
+    const actualOptions = {
+      ...options,
+      headers: {
+        Authorization: `${"Bearer" + " " + token}`,
+        "X-Role-Id": roleId,
+        "X-Client": client,
+        "X-Org": orgId,
+        "X-Project": project,
+        "X-Org-based": "true",
+      },
+    };
+    return fetch(actualUrl, actualOptions).then(checkStatus);
+  } catch (e) {
+    console.error(e, "while Calling the requestPortalFiles");
+  }
+}

@@ -171,6 +171,9 @@ const Invalid: React.FC<InvalidProps> = ({
           components={components}
           setComponents={setComponents}
           getCharts={getCharts}
+          selectedRole={selectedRole}
+          handleSelect={handleSelect}
+          selectedItems={selectedItems}
         />
       ) : (
         <div

@@ -6,6 +6,7 @@ import { Layout, ConfigProvider, theme as antdTheme } from "antd";
 import { useTheme } from "./theme-provider";
 import AppHeader from "./appHeader/page";
 import AppSideBar from "./appSideBar";
+import ConnectWebSocket from "../websocket";
 
 const { Content } = Layout;
 
@@ -44,6 +45,7 @@ const LayoutPage = ({ children }: LayoutPageProps) => {
         <Layout>
           <AppSideBar />
           <Content className="overflow-auto">{children}</Content>
+          <ConnectWebSocket />
         </Layout>
       </Layout>
     </ConfigProvider>

@@ -5,11 +5,10 @@ import { connect } from "react-redux";
 import { actions as tableAction } from "@/state/table";
 import TableViewType, { metaDataType, SortType } from "@/state/table/model";
 import { actions as productivityAction } from "@/state/tenantadmin/productivity";
-import ContentLayout from "@/components/layout/ContentLayout/page";
+import ContentLayout, { NavigationTabs } from "@/components/layout/ContentLayout/page";
 import {
   ProductivityPropsType,
   productivitytabelResposne,
-  productivityContentArrayType,
 } from "@/models/tenantadmin/productivity/page";
 import { productivityPageId } from "@/util/pageIds";
 import productivityReducerType from "@/state/tenantadmin/productivity/model";
@@ -69,6 +68,8 @@ function Productivity({
     ({ item }: { item: { label: string; value: string } }) => {
       setActiveTab(item?.value);
       setRoleAliasName(item?.label);
+      setPageNo(0);
+      setPaginationFirst(0);
     },
     [],
   );
@@ -163,7 +164,6 @@ function Productivity({
       activeTab: activeTab,
       onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
-      value: "aliasName",
     };
   }, [
     allAllocationRoleData,
@@ -221,17 +221,16 @@ function Productivity({
   const getAllRoles = useCallback(async () => {
     const res = await getAllRolesTab({ pageId: productivityPageId });
     if (res?.status == "SUCCESS") {
-      setActiveTab(res?.response?.allocationRoles?.[0]?.roleId);
+      const firstRole = res?.response?.allocationRoles?.[0];
+      setActiveTab(firstRole?.roleId);
+      setRoleAliasName(firstRole?.aliasName);
     }
   }, [getAllRolesTab]);
 
   const handleRowChange = ({ value }: { value: number }) => {
     const totalRecords = tableData?.pageResponse?.totalElements || 0;
-
     const newTotalPages = Math.ceil(totalRecords / value);
-
     setRow(value);
-
     if (pageNo >= newTotalPages && newTotalPages > 0) {
       setPageNo(newTotalPages - 1);
       setPaginationFirst((newTotalPages - 1) * value);
@@ -261,44 +260,31 @@ function Productivity({
     searchText,
     pageNo,
     sort,
-    paginationFirst,
     activeTab,
     roleAliasName,
   ]);
 
   useEffect(() => {
-    const callRoles = () => {
-      getAllRoles();
-    };
-    callRoles();
+    getAllRoles();
   }, []);
 
   useEffect(() => {
-    const activeFilterSet = () => {
-      if (
-        tableData?.metaDataDTO ||
-        !findMatchesByField(activeFilters, tableData?.metaDataDTO)
-      ) {
-        const a = tableData?.metaDataDTO.filter(
-          (item) => item.active && item?.filter?.style,
-        );
-        setActiveFilters(
-          tableData?.metaDataDTO.filter(
-            (item) => item.active && item?.filter?.style,
-          ),
-        );
-        setSelectedColumns(tableData?.metaDataDTO);
-        // setIsFilter(false);
-      }
-    };
-    activeFilterSet();
-  }, [tableData?.metaDataDTO]);
+    if (
+      tableData?.metaDataDTO && activeFilters?.length === 0
+    ) {
+      const filters = tableData.metaDataDTO.filter(
+        (item: metaDataType) => item.active && item?.filter?.style,
+      );
+      setActiveFilters(filters);
+      setSelectedColumns(tableData.metaDataDTO);
+    }
+  }, [tableData?.metaDataDTO, activeFilters]);
+
   return (
-    <>
+    <div>
       <ContentLayout
         pageTitle="Productivity"
         layoutList={layoutList}
-        tabList={tabList}
         activeFilters={activeFilters}
         setActiveFilters={setActiveFilters}
         tableCustomization={tableCustomization}
@@ -307,7 +293,12 @@ function Productivity({
         handleInsert={handleInsert}
         setTableCustomization={setTableCustomization}
       />
-      <div className="content">
+
+      <div>
+        <NavigationTabs tabList={tabList} />
+      </div>
+
+      <div className="content py-0">
         <div className="flex">
           <ReusableFilters
             showFilter={false}
@@ -317,7 +308,6 @@ function Productivity({
             setSelectedOption={setSelectedOption}
             selectedOption={selectedOption}
             setSelectedDateRanges={setSelectedDateRanges}
-            // selectedDateRanges={selectedDateRanges}
             FilterItems={activeFilters}
             selectedDates={selectedDates}
             setSelectedDates={setSelectedDates}
@@ -347,7 +337,7 @@ function Productivity({
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -176,7 +176,7 @@ const Invalid: React.FC<InvalidPageProps> = ({
         xAxisInterval={1}
         type={chartType}
         categories={dates}
-        series={[{ name: chart.header, data: chart.data, color: chart.color }]}
+        series={[{ name: chart.header, data: chart.data, color: (chart.color as any) || undefined }]}
         customHeader={{
           label: "Current / Overall",
           value: `${chart.count} / ${chart.overAll}`,

@@ -105,7 +105,7 @@ const AppChart: React.FC<AppChartProps> = ({
   height = 250,
   showLegend = true,
   showLegendBarLine = false,
-  legendData,
+  legendData: legendDataProp,
   showLabel = false,
   xAxisRotated = false,
   toolTipColor,
@@ -115,29 +115,12 @@ const AppChart: React.FC<AppChartProps> = ({
   showModal,
   handleOk,
   handleCancel,
+  xAxisInterval,
   isDailyChart = false,
   total,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isInView, setIsInView] = useState(false);
   const windowWidth = useWindowWidth();
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsInView(true);
-            observer.disconnect();
-          }
-        });
-      },
-      { rootMargin: "200px 0px" },
-    );
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   const formattedSeries = useMemo(() => {
     return series.map((item) => {
@@ -150,9 +133,24 @@ const AppChart: React.FC<AppChartProps> = ({
     });
   }, [series]);
 
+  const legendData = useMemo(() => {
+    if (legendDataProp && legendDataProp.length > 0) return legendDataProp;
+    return formattedSeries.map((item: any) => ({
+      ...item,
+      name: item.name || item.status,
+      itemStyle: { color: item.color || (item.itemStyle as any)?.color || "" },
+    }));
+  }, [formattedSeries, legendDataProp]);
+
   const formattedCategories = useMemo(() => {
-    return categories?.map((item) => item && statusFormate(item));
+    const cats = categories?.map((item) => item && statusFormate(item)) || [];
+    return cats;
   }, [categories]);
+
+  useEffect(() => {
+    console.log(`[AppChart Debug] Type: ${type}, Title: ${title}`);
+    console.log("[AppChart Debug] Raw Categories:", categories);
+  }, [type, title, categories]);
 
   const getTextStyleWidth = (t: string, daily: boolean, width: number | null) => {
     if (!width) return 0;
@@ -215,28 +213,44 @@ const AppChart: React.FC<AppChartProps> = ({
         )
         : item.data;
 
+      const seriesColor = item.color || (item.itemStyle as any)?.color;
+
+      console.log(`[AppChart Debug] Series ${index} (${item.name}):`, {
+        originalDataLength: item?.data?.length,
+        mappedDataLength: mappedData?.length,
+        mappedDataSample: mappedData?.slice(0, 3)
+      });
+
       return {
         ...item,
         data: mappedData,
-        type: "bar",
         stack: stacked ? "total" : undefined,
         itemStyle: {
           ...item.itemStyle,
-          borderRadius: stacked
-            ? index === formattedSeries.length - 1
-              ? [20, 20, 0, 0]
-              : 0
-            : [20, 20, 0, 0],
+          color: seriesColor,
+          borderRadius: type === "bar"
+            ? stacked
+              ? index === formattedSeries.length - 1
+                ? [20, 20, 0, 0]
+                : 0
+              : [20, 20, 0, 0]
+            : undefined,
+        },
+        lineStyle: {
+          color: seriesColor,
         },
         label: { show: false },
         emphasis: { label: { show: false } },
-      }
+        ...(type === "stepline" && { step: "middle" }),
+        ...(type === "area" && { areaStyle: {} }),
+        smooth: type === "line" || type === "area",
+      };
     });
 
     switch (type) {
       case "bar":
         extraOptions = {
-          series: seriesDataArr,
+          series: seriesDataArr.map(s => ({ ...s, type: "bar" })),
           tooltip: {
             show: true,
             trigger: "axis",
@@ -257,10 +271,11 @@ const AppChart: React.FC<AppChartProps> = ({
             type: "category",
             data: formattedCategories || formattedSeries.map((s) => s.name),
             axisLabel: {
-              interval: "auto",
+              interval: xAxisInterval ?? "auto",
               rotate: xAxisRotated ? 25 : 0,
               hideOverlap: true,
-              formatter: function (value: string) {
+              formatter: function (value: any) {
+                if (!value) return "";
                 if (typeof value === "string" && value.includes("-")) {
                   const parts = value.split("-");
                   return parts.length === 3 ? `${parts[1]}-${parts[2]}` : value;
@@ -276,59 +291,10 @@ const AppChart: React.FC<AppChartProps> = ({
         break;
 
       case "stepline":
-        extraOptions = {
-          series: formattedSeries.map((item) => ({
-            name: item.name,
-            type: "line",
-            data: item?.plotConfig
-              ? formatValues(
-                getChartTimeLine(item?.data, item?.plotConfig),
-                item?.plotConfig.dates,
-              )
-              : item.data,
-            step: "middle",
-            stack: stacked ? "total" : undefined,
-            lineStyle: { color: item.color },
-            itemStyle: { color: item.color },
-          })),
-          tooltip: {
-            show: true,
-            trigger: "axis",
-            axisPointer: { type: "cross", label: { backgroundColor: toolTipColor || "gray" } },
-          },
-          legend: { show: showLegendBarLine, selectedMode: false },
-          xAxis: {
-            type: "category",
-            data: formattedCategories || formattedSeries.map((s) => s.name),
-            axisLabel: {
-              interval: "auto",
-              rotate: xAxisRotated ? 25 : 0,
-              hideOverlap: true,
-              formatter: (v: string) => v,
-              margin: 12,
-            },
-          },
-          yAxis: { type: "value" },
-        };
-        break;
-
       case "area":
       case "line":
         extraOptions = {
-          series: formattedSeries.map((item) => ({
-            name: item.name,
-            type: "line",
-            data: item?.plotConfig
-              ? formatValues(
-                getChartTimeLine(item?.data, item?.plotConfig),
-                item?.plotConfig.dates,
-              )
-              : item.data,
-            smooth: true,
-            areaStyle: type === "area" ? {} : undefined,
-            lineStyle: { color: item.color },
-            itemStyle: { color: item.color },
-          })),
+          series: seriesDataArr.map(s => ({ ...s, type: "line" })),
           tooltip: {
             show: true,
             trigger: "axis",
@@ -339,16 +305,10 @@ const AppChart: React.FC<AppChartProps> = ({
             type: "category",
             data: formattedCategories || formattedSeries.map((s) => s.name),
             axisLabel: {
-              interval: "auto",
+              interval: xAxisInterval ?? "auto",
               rotate: xAxisRotated ? 25 : 0,
               hideOverlap: true,
-              formatter: function (value: string) {
-                if (typeof value === "string" && value.includes("-")) {
-                  const parts = value.split("-");
-                  return parts.length === 3 ? `${parts[1]}-${parts[2]}` : value;
-                }
-                return value;
-              },
+              formatter: (v: string) => v,
               margin: 12,
             },
           },
@@ -468,12 +428,11 @@ const AppChart: React.FC<AppChartProps> = ({
 
       default:
         extraOptions = {
-          series: formattedSeries.map((item) => ({
-            name: item.name,
-            type: "line",
-            data: item.data,
-            itemStyle: { color: item.color },
-          })),
+          series: seriesDataArr.map(s => ({ ...s, type: "line" })),
+          xAxis: {
+            type: "category",
+            data: formattedCategories || formattedSeries.map((s) => s.name),
+          },
           tooltip: {
             show: true,
             trigger: "axis",
@@ -494,21 +453,34 @@ const AppChart: React.FC<AppChartProps> = ({
   };
 
   const option = useMemo(() => getChartOptions(), [
-    type, title, formattedCategories, formattedSeries, stacked, showLegend, showLegendBarLine,
-    toolTipColor, isDailyChart, total, windowWidth
+    type,
+    title,
+    JSON.stringify(formattedCategories),
+    JSON.stringify(formattedSeries),
+    stacked,
+    showLegend,
+    showLegendBarLine,
+    toolTipColor,
+    chartBackground,
+    windowWidth,
   ]);
+
+  useEffect(() => {
+    if (series?.length > 0) {
+      console.log(`[AppChart Debug] Series (${type}):`, series);
+      console.log("[AppChart Debug] Final Option:", option);
+    }
+  }, [series, option, type]);
 
   return (
     <>
-      <div className="rounded pt-2" style={{ background: chartBackground || "#fff" }} ref={containerRef}>
+      <div
+        className="rounded pt-2 w-full"
+        style={{ background: chartBackground || "#fff" }}
+        ref={containerRef}
+      >
         {customHeader && <ChartHeader customHeader={customHeader} />}
-        {isInView ? (
-          <ReactECharts echarts={echarts} option={option} style={{ height }} />
-        ) : (
-          <div style={{ height }}>
-            <CardSkeleton count={1} height={Number(height)} />
-          </div>
-        )}
+        <ReactECharts echarts={echarts} option={option} style={{ height }} />
       </div>
       {showLabel && (
         <div className="flex mx-4">

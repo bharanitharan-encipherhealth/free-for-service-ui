@@ -193,12 +193,12 @@ const getCharts = ({
                 {
                   name: "Lab",
                   data: [0, 0, 12.34, 0, 3, 0],
-                  color: getColorValue("5"),
+                  color: (getColorValue("5") as any) || undefined,
                 },
                 {
                   name: "Radiology",
                   data: [20, 56, 34, 67, 12],
-                  color: getColorValue("6"),
+                  color: (getColorValue("6") as any) || undefined,
                 },
               ]}
             />
@@ -355,7 +355,6 @@ const getCharts = ({
         <WorkFlow
           chartType={chartType}
           chartChange={chartChange}
-          windowWidth={windowWidth}
           chartData={patientOverllCountData}
           selectedRole={selectedRole}
         />
@@ -541,6 +540,9 @@ const Default: React.FC<DefaultProps> = ({
           components={components}
           setComponents={setComponents}
           getCharts={getCharts}
+          selectedRole={selectedRole}
+          handleSelect={handleSelect}
+          selectedItems={selectedItems}
         />
       ) : (
         <div

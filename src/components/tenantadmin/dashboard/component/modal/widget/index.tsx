@@ -16,7 +16,7 @@ interface WidgetProps {
 const Widget: React.FC<WidgetProps> = (props) => {
   return (
     <div>
-      <Layout {...props} />
+      <Layout {...(props as any)} />
     </div>
   );
 };

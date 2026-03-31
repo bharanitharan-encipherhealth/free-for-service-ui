@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 
 import { actions as tableAction } from "@/state/table";
-import ContentLayout from "@/components/layout/ContentLayout/page";
+import ContentLayout, { NavigationTabs } from "@/components/layout/ContentLayout/page";
 import { getAccessTabItems } from "@/resuabelFunction/Menu";
 import { findMatchesByField, generateHeaderTab } from "@/util/reusableFunction";
 import TableViewType, { metaDataType } from "@/state/table/model";
@@ -25,9 +25,12 @@ import { getStorage } from "@/util/storage";
 import { getTable } from "@/state/table/network";
 import { contentArrayType } from "@/models/tenantadmin/tin";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import PatientReAllocation from "./components/patientReAllocation";
+import ReAllocation from "./components/patientReAllocation";
 import MoveBack from "./components/moveback";
+import FileProcessing from "./components/fileprocessing";
 import Batch from "../../projects/batch";
+
+import style from "@/components/layout/ContentLayout/style.module.css";
 
 type TinDetailsPropsType = ConnectedProps<typeof connector>;
 function TinDetailsClientPage({
@@ -47,7 +50,35 @@ function TinDetailsClientPage({
   const tabFromUrl = searchParams.get("tab");
 
   const [activeTab, setActiveTab] = useState<string>("");
-  const [subActiveTab, setSubActiveTab] = useState<string>("Inpatient");
+  const [subActiveTab, setSubActiveTab] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("tinSubActiveTab") || "Inpatient";
+    }
+    return "Inpatient";
+  });
+  const [activeRole, setActiveRole] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("tinActiveRole") || "EH Coder";
+    }
+    return "EH Coder";
+  });
+
+  const headerMiddle = useMemo(() => (
+    <div className={style.pillContainer}>
+      <div
+        className={`${style.pillItem} ${subActiveTab === "Inpatient" ? style.pillItemActive : ""}`}
+        onClick={() => setSubActiveTab("Inpatient")}
+      >
+        In-Patient
+      </div>
+      <div
+        className={`${style.pillItem} ${subActiveTab === "Outpatient" ? style.pillItemActive : ""}`}
+        onClick={() => setSubActiveTab("Outpatient")}
+      >
+        Out-Patient
+      </div>
+    </div>
+  ), [subActiveTab]);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [activeFilters, setActiveFilters] = useState<metaDataType[]>([]);
@@ -177,7 +208,39 @@ function TinDetailsClientPage({
     [router, pathName, searchParams],
   );
   const [tableCustomization, setTableCustomization] = useState<boolean>(false);
+
+  const [dynamicRoles, setDynamicRoles] = useState<{ label: string; value: string }[]>([]);
+
+  const fetchRoles = useCallback(async () => {
+    let pageId;
+    switch (activeTab.toLowerCase()) {
+      case "patient allocation":
+        pageId = patientAllocationPageId;
+        break;
+      case "reallocation":
+        pageId = reAllocationPageId;
+        break;
+      default:
+        setDynamicRoles([]);
+        return;
+    }
+    // Fetch roles if needed? Or maybe they come from Redux.
+    // PatientsTab doesn't have roles in am-coding image.
+    // For now, I'll use placeholders as seen in my previous TabItemList or similar.
+  }, [activeTab]);
+
+  const roleTabItems = useMemo(() => {
+    if (activeTab?.toLowerCase() === "patient allocation" || activeTab?.toLowerCase() === "reallocation") {
+      return ["EH Coder", "Owner", "Coder"];
+    }
+    return [];
+  }, [activeTab]);
+
   const tabList = useMemo(() => {
+    const roles = generateHeaderTab({
+      tabList: roleTabItems,
+    });
+
     return {
       isTab: true,
       tabList: generateHeaderTab({
@@ -187,10 +250,14 @@ function TinDetailsClientPage({
           item?.value != "Query Approval" && item?.value != "Master Audit",
       ),
       activeTab,
+      secondaryTabList: roles?.length > 0 ? roles : undefined,
+      secondaryActiveTab: activeRole,
       onClick: ({ item }: { item: { label: string; value: string } }) =>
         handleTabChange({ item }),
+      onSecondaryClick: ({ item }: { item: { label: string; value: string } }) =>
+        setActiveRole(item.value),
     };
-  }, [handleTabChange, activeTab, tinDetailsTab]);
+  }, [handleTabChange, activeTab, tinDetailsTab, activeRole, roleTabItems]);
 
   const layoutList = useMemo(() => {
     return [
@@ -260,6 +327,18 @@ function TinDetailsClientPage({
   }, [tabFromUrl, tinDetailsTab]);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("tinSubActiveTab", subActiveTab);
+    }
+  }, [subActiveTab]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("tinActiveRole", activeRole);
+    }
+  }, [activeRole]);
+
+  useEffect(() => {
     if (
       tableData?.metaDataDTO ||
       !findMatchesByField(activeFilters, tableData?.metaDataDTO)
@@ -278,7 +357,6 @@ function TinDetailsClientPage({
     <div>
       <ContentLayout
         pageTitle="Tenant"
-        tabList={tabList}
         layoutList={layoutList}
         activeFilters={activeFilters}
         setActiveFilters={setActiveFilters}
@@ -289,11 +367,17 @@ function TinDetailsClientPage({
         setTableCustomization={setTableCustomization}
       />
 
-      <PageHeaderLayout
+      <div className="flex justify-center w-full py-2">
+        {headerMiddle}
+      </div>
+
+      <NavigationTabs tabList={tabList} />
+
+      {/* <PageHeaderLayout
         data={tinInfoList}
         onHandleBack={onHandleBack}
         loading={loading}
-      />
+      /> */}
 
       <div>
         {activeTab?.toLowerCase() === "patients" && (
@@ -317,10 +401,12 @@ function TinDetailsClientPage({
             setAllocateModal={setAllocateModal}
             subActiveTab={subActiveTab}
             setSubActiveTab={setSubActiveTab}
+            activeRole={activeRole}
+            setActiveRole={setActiveRole}
           />
         )}
         {activeTab?.toLowerCase() === "reallocation" && (
-          <PatientReAllocation
+          <ReAllocation
             activeFilters={activeFilters}
             setActiveFilters={setActiveFilters}
             triggerTableCustomization={triggerTableCustomization}
@@ -330,6 +416,8 @@ function TinDetailsClientPage({
             setAllocateModal={setReAllocateModal}
             subActiveTab={subActiveTab}
             setSubActiveTab={setSubActiveTab}
+            activeRole={activeRole}
+            setActiveRole={setActiveRole}
           />
         )}
 
@@ -344,9 +432,12 @@ function TinDetailsClientPage({
             setAllocateModal={setMoveBackModal}
             subActiveTab={subActiveTab}
             setSubActiveTab={setSubActiveTab}
+            activeRole={activeRole}
+            setActiveRole={setActiveRole}
           />
         )}
 
+        {activeTab?.toLowerCase() === "file processing" && <FileProcessing />}
         {activeTab?.toLowerCase() === "batch" && <Batch />}
       </div>
     </div>

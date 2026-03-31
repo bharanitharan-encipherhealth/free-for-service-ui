@@ -13,5 +13,5 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
  * Typed version of useSelector hook
  * Use this instead of the plain useSelector from react-redux
  */
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppSelector: TypedUseSelectorHook<any> = useSelector;
 

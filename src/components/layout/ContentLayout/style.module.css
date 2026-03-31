@@ -1,6 +1,59 @@
+.processedSelect :global(.ant-select-selector) {
+  background-color: var(--chart-tab-select-bg-color) !important;
+  border: none !important;
+}
+
 .contentLayout {
   border-bottom: 1px solid var(--app-header-boder-color);
-  background-color: var(--defaultColor);
+  background-color: #fff;
+  height: 53px;
+  box-sizing: border-box;
+}
+
+/* .pageTitle {
+  color: #03512E;
+} */
+
+.pillContainer {
+  display: flex;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 12px;
+  padding: 5px;
+  gap: 2px;
+  align-items: center;
+}
+
+.pillItem {
+  padding: 3px 12px;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #666;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.pillItemActive {
+  background-color: #e8f5e9;
+  color: #03512E;
+  font-weight: 600;
+  border: none !important;
+}
+
+.underlinedTab {
+  cursor: pointer;
+  padding: 8px 12px;
+  border-bottom: 3px solid transparent;
+  color: #888;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.underlinedTabActive {
+  color: #03512E;
+  border-bottom: 3px solid #03512E !important;
+  font-weight: bold;
 }
 
 .headerBtnColor {
@@ -10,9 +63,7 @@
   border-radius: 8px;
 }
 
-.filterSelectAll {
-  border-bottom: 1px solid var(--app-header-boder-color);
-}
+.filterSelectAll {}
 
 .tableCheckBox {
   border: 1px solid #a8b3bd;
@@ -53,9 +104,4 @@
   border: 2px solid #d9d9d9;
   background-color: transparent;
   color: transparent;
-}
-
-.processedSelect :global(.ant-select-selector) {
-  background-color: var(--chart-tab-select-bg-color) !important;
-  border: none !important;
 }

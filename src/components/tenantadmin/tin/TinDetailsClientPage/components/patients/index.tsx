@@ -167,45 +167,43 @@ function PatientsTab({
   );
 
   return (
-    <ContentLayout tabList={subTabList}>
-      <div className="content">
-        <ReusableFilters
-          showFilter={false}
-          setActiveFilters={setActiveFilters}
-          setSearchText={setSearchText}
-          searchText={searchText}
-          setSelectedOption={setSelectedOption}
-          selectedOption={selectedOption}
-          setSelectedDateRanges={setSelectedDateRanges}
-          // selectedDateRanges={selectedDateRanges}
-          FilterItems={activeFilters}
-          selectedDates={selectedDates}
-          setSelectedDates={setSelectedDates}
-          activeFilters={activeFilters}
-          setPageNo={setPageNo}
-          tableLoader={tableLoader}
-        />
+    <div className="content">
+      <ReusableFilters
+        showFilter={false}
+        setActiveFilters={setActiveFilters}
+        setSearchText={setSearchText}
+        searchText={searchText}
+        setSelectedOption={setSelectedOption}
+        selectedOption={selectedOption}
+        setSelectedDateRanges={setSelectedDateRanges}
+        // selectedDateRanges={selectedDateRanges}
+        FilterItems={activeFilters}
+        selectedDates={selectedDates}
+        setSelectedDates={setSelectedDates}
+        activeFilters={activeFilters}
+        setPageNo={setPageNo}
+        tableLoader={tableLoader}
+      />
 
-        <ReusableTable<productivityContentArrayType>
-          data={tableData?.pageResponse?.content}
-          column={tableData?.metaDataDTO?.filter(
-            (item) => item?.active && item?.columnActive,
-          )}
-          loader={tableLoader}
-          setSort={setSort}
-          sort={sort}
-          first={pageNo === 0 ? 0 : paginationFirst}
-          totalRecords={tableData?.pageResponse?.totalElements}
-          row={row}
-          onPageChange={onPageChange}
-          isPagination={true}
-          isRowSizabel={true}
-          count={30}
-          handleRowChange={handleRowChange}
-          onRowClick={goToPatientDetails}
-        />
-      </div>
-    </ContentLayout>
+      <ReusableTable<productivityContentArrayType>
+        data={tableData?.pageResponse?.content}
+        column={tableData?.metaDataDTO?.filter(
+          (item) => item?.active && item?.columnActive,
+        )}
+        loader={tableLoader}
+        setSort={setSort}
+        sort={sort}
+        first={pageNo === 0 ? 0 : paginationFirst}
+        totalRecords={tableData?.pageResponse?.totalElements}
+        row={row}
+        onPageChange={onPageChange}
+        isPagination={true}
+        isRowSizabel={true}
+        count={30}
+        handleRowChange={handleRowChange}
+        onRowClick={goToPatientDetails}
+      />
+    </div>
   );
 }
 

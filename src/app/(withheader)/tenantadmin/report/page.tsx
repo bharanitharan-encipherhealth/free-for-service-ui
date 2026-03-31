@@ -11,7 +11,7 @@ import {
   resposeDataArrayType,
 } from "@/models/tenantadmin/report";
 import reportReducerType from "@/state/tenantadmin/report/model";
-import { findMatchesByField, generateHeaderTab } from "@/util/reusableFunction";
+import { findMatchesByField } from "@/util/reusableFunction";
 import { actions as tableAction } from "@/state/table";
 import TableViewType, { metaDataType, SortType } from "@/state/table/model";
 import ReusableFilters from "@/components/ReusbaleFilter";
@@ -21,8 +21,8 @@ import { PaginatorPageChangeEvent } from "primereact/paginator";
 import { handleRowCheckboxChangeType } from "@/models/ReusabelTable";
 import { tableCall } from "@/state/table/network";
 import * as XLSX from "xlsx";
-import { IoMdClose } from "react-icons/io";
 import VirtualizedExcel from "@/components/ExcelReport/index";
+import style from "@/components/layout/ContentLayout/style.module.css";
 
 function Report({
   getReportTabs,
@@ -35,6 +35,7 @@ function Report({
   getReportCall,
 }: ReportPropsType) {
   const [activeTab, setActiveTab] = useState<string>("");
+  const [selectedPatientType, setSelectedPatientType] = useState<"INPATIENT" | "OUTPATIENT">("INPATIENT");
   const [pageNo, setPageNo] = useState(0);
   const [selectedOption, setSelectedOption] = useState<
     Record<string, string | string[]>
@@ -47,12 +48,6 @@ function Report({
   const [row, setRow] = useState<number>(15);
   const [checkedLoader, setCheckedLoader] = useState<boolean>(false);
 
-  const handleTabChange = useCallback(
-    ({ item }: { item: { label: string; value: string } }) => {
-      setActiveTab(item?.value);
-    },
-    [activeTab, setActiveTab],
-  );
   const [selectedDateRanges, setSelectedDateRanges] = useState<
     Record<string, DateRange>
   >({});
@@ -78,12 +73,9 @@ function Report({
   const handleReportDownload = async () => {
     setLoading(true);
     try {
-      const patientType =
-        activeTab == "In-patient" ? "INPATIENT" : "OUTPATIENT";
-
       const response = await getReportDownload({
         formData: selectedRows,
-        patientType,
+        patientType: selectedPatientType,
       });
 
       const blob = await response.blob();
@@ -92,9 +84,9 @@ function Report({
       a.href = url;
       let filename;
       if (selectedRows.length > 1) {
-        filename = `Reports_${new Date().toISOString().split("T")[0]}.zip`;
+        filename = `Reports_${selectedPatientType}_${new Date().toISOString().split("T")[0]}.zip`;
       } else {
-        filename = selectedRows[0] || `Report.xlsx`;
+        filename = selectedRows[0] || `Report_${selectedPatientType}.xlsx`;
       }
       a.download = filename;
       document.body.appendChild(a);
@@ -111,6 +103,10 @@ function Report({
   const layoutList = useMemo(() => {
     return [
       {
+        isFilter: true,
+        loading: false,
+      },
+      {
         isToolTip: true,
         toolTip: "Choose atleast one file to download the report.",
         btnTitle: "Export",
@@ -121,17 +117,6 @@ function Report({
     ];
   }, [tableData, tableLoader, loading, selectedRows, handleReportDownload]);
 
-  const tabList = useMemo(() => {
-    return {
-      isTab: true,
-      tabList: generateHeaderTab({ tabList: reportTabList?.tabMenuList2 }),
-      loading: reportTabListLoading,
-      activeTab,
-      onClick: ({ item }: { item: { label: string; value: string } }) =>
-        handleTabChange({ item }),
-    };
-  }, [reportTabList, handleTabChange, reportTabListLoading, activeTab]);
-
   const getReportTab = async () => {
     const res = await getReportTabs();
     if (res?.status == "SUCCESS") {
@@ -141,11 +126,8 @@ function Report({
 
   const handleRowChange = ({ value }: { value: number }) => {
     const totalRecords = tableData?.totalElements || 0;
-
     const newTotalPages = Math.ceil(totalRecords / value);
-
     setRow(value);
-
     if (pageNo >= newTotalPages && newTotalPages > 0) {
       setPageNo(newTotalPages - 1);
       setPaginationFirst((newTotalPages - 1) * value);
@@ -161,10 +143,8 @@ function Report({
     if (!singleCheck) {
       if (checked) {
         setCheckedLoader(true);
-        const patientType =
-          activeTab == "In-patient" ? "INPATIENT" : "OUTPATIENT";
         const response = await tableCall({
-          patientType: patientType,
+          patientType: selectedPatientType,
           searchText,
           dateRange: selectedDateRanges?.batchDate,
           pageNo: 0,
@@ -193,14 +173,13 @@ function Report({
   };
 
   const getReportTable = useCallback(async () => {
-    const patientType = activeTab == "In-patient" ? "INPATIENT" : "OUTPATIENT";
-    const res = await getReportTableCall({
-      patientType,
+    await getReportTableCall({
+      patientType: selectedPatientType,
       searchText,
       dateRange: selectedDateRanges?.batchDate,
       pageNo,
     });
-  }, [activeTab, getReportTableCall, searchText, selectedDateRanges, pageNo]);
+  }, [selectedPatientType, getReportTableCall, searchText, selectedDateRanges, pageNo]);
 
   const generateViewReport = useCallback(async ({ item }: { item: string }) => {
     setViewModelOpen(true);
@@ -241,16 +220,13 @@ function Report({
         throw new Error("No data found in the Excel file");
       }
 
-      // Format data efficiently
       const formattedData = jsonData.map((row) => {
-        // Ensure row is an array and pad with empty cells if needed
         const paddedRow = Array.isArray(row) ? row : [];
         return paddedRow.map((cell) => ({
           value: cell !== null && cell !== undefined ? String(cell) : "",
         }));
       });
 
-      // Save the full data in state
       setReportData(formattedData);
     } catch (err) {
       console.error("Error loading Excel:", err);
@@ -258,7 +234,7 @@ function Report({
     } finally {
       setExcelLoading(false);
     }
-  }, []);
+  }, [getReportCall]);
 
   const onPageChange = useCallback(
     (e: PaginatorPageChangeEvent) => {
@@ -270,36 +246,59 @@ function Report({
 
   useEffect(() => {
     if (
-      tableData?.amMetaData ||
-      !findMatchesByField(activeFilters, tableData?.amMetaData)
+      tableData?.amMetaData && activeFilters?.length === 0
     ) {
       setActiveFilters(
-        tableData?.amMetaData.filter(
+        tableData?.amMetaData?.filter(
           (item) => item.columnActive && item?.filter?.style,
-        ),
+        ) || [],
       );
     }
-  }, [tableData?.amMetaData]);
+  }, [tableData?.amMetaData, activeFilters]);
 
   useEffect(() => {
-    if (activeTab) {
-      getReportTable();
-    }
-  }, [pageNo, selectedOption, searchText, selectedDateRanges, sort, activeTab]);
+    getReportTable();
+  }, [pageNo, selectedOption, searchText, selectedDateRanges, sort, selectedPatientType, getReportTable]);
+
   useEffect(() => {
     getReportTab();
   }, []);
+
   return (
-    <>
+    <div>
       <ContentLayout
         pageTitle="Report"
-        tabList={tabList}
         layoutList={layoutList}
         activeFilters={activeFilters}
         setActiveFilters={setActiveFilters}
       />
+      
+      <div className="flex justify-center w-full py-4">
+          <div className={style.pillContainer}>
+              <div
+                  className={`${style.pillItem} ${selectedPatientType === "INPATIENT" ? style.pillItemActive : ""}`}
+                  onClick={() => {
+                      setSelectedPatientType("INPATIENT");
+                      setPageNo(0);
+                      setPaginationFirst(0);
+                  }}
+              >
+                  Inpatient
+              </div>
+              <div
+                  className={`${style.pillItem} ${selectedPatientType === "OUTPATIENT" ? style.pillItemActive : ""}`}
+                  onClick={() => {
+                      setSelectedPatientType("OUTPATIENT");
+                      setPageNo(0);
+                      setPaginationFirst(0);
+                  }}
+              >
+                  Outpatient
+              </div>
+          </div>
+      </div>
 
-      <div className="content">
+      <div className="content py-0">
         <ReusableFilters
           showFilter={false}
           setActiveFilters={setActiveFilters}
@@ -308,13 +307,11 @@ function Report({
           setSelectedOption={setSelectedOption}
           selectedOption={selectedOption}
           setSelectedDateRanges={setSelectedDateRanges}
-          // selectedDateRanges={selectedDateRanges}
           FilterItems={activeFilters}
           selectedDates={selectedDates}
           setSelectedDates={setSelectedDates}
           activeFilters={activeFilters}
           setPageNo={setPageNo}
-          //customize table
           tableLoader={tableLoader}
         />
 
@@ -360,65 +357,25 @@ function Report({
         }}
         centered
         width={"100%"}
-        height={"90dvh"}
+        style={{ top: 20 }}
         title={
           <div className="flex items-center content-center w-100">
-            <div>View</div>
+            <div className="text-[#03512E] font-bold">View Report</div>
           </div>
         }
         footer={null}
       >
         <div style={{ height: "80vh", width: "100%" }}>
           {excelLoading ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                flexDirection: "column",
-                gap: "16px",
-              }}
-            >
-              <div className="spinner-border text-primary" role="status">
-                <span className="sr-only">Loading...</span>
-              </div>
-              <div style={{ color: "var(--excel-text-secondary)" }}>
-                Loading Excel data...
-              </div>
+            <div className="flex flex-col items-center justify-center h-full gap-4">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#03512E]"></div>
+              <div className="text-gray-500">Loading Excel data...</div>
             </div>
           ) : excelError ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                flexDirection: "column",
-                gap: "16px",
-              }}
-            >
-              <div
-                style={{
-                  color: "var(--excel-error-color)",
-                  fontSize: "18px",
-                }}
-              >
-                ⚠️
-              </div>
-              <div
-                style={{
-                  color: "var(--excel-error-color)",
-                  textAlign: "center",
-                }}
-              >
-                {excelError}
-              </div>
-              <Button
-                type="primary"
-                onClick={() => setExcelError(null)}
-                size="small"
-              >
+            <div className="flex flex-col items-center justify-center h-full gap-4">
+              <div className="text-red-500 text-2xl">⚠️</div>
+              <div className="text-red-500 text-center">{excelError}</div>
+              <Button type="primary" onClick={() => setExcelError(null)} className="bg-[#03512E] border-none rounded-lg">
                 Try Again
               </Button>
             </div>
@@ -432,21 +389,13 @@ function Report({
               rowHeight={40}
             />
           ) : (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                color: "var(--excel-text-muted)",
-              }}
-            >
+            <div className="flex items-center justify-center h-full text-gray-400">
               No data to display
             </div>
           )}
         </div>
       </Modal>
-    </>
+    </div>
   );
 }
 

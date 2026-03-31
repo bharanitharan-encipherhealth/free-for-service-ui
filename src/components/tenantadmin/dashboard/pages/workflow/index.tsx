@@ -2,20 +2,20 @@
 import { connect, ConnectedProps } from "react-redux";
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
-import { 
-  getFormattedChartData, 
-  getTotalChart, 
-  useHasMounted, 
-  useWindowWidth, 
-  getColSpan, 
+import {
+  getFormattedChartData,
+  getTotalChart,
+  useHasMounted,
+  useWindowWidth,
+  getColSpan,
   getRowSpan,
-  WorkflowWidget 
+  WorkflowWidget
 } from "../../component/function";
 import dashboardActions from "@/state/tenantadmin/dashboard/actions";
-import { 
-  getColorValue, 
-  getRoleIdByRole, 
-  getStatusColor, 
+import {
+  getColorValue,
+  getRoleIdByRole,
+  getStatusColor,
 } from "@/util/reusableFunction";
 import CardSkeleton from "@/components/skeleton/card";
 import { RootState, Widget } from "../../types";
@@ -73,9 +73,9 @@ const getCharts = (params: any) => {
     case "WorkFlowFiles":
       const { computedFiles = 0, failedFiles = 0, processingFiles = 0, computedStats = [], failedStats = [], processingStats = [] } = filesCountData || {};
       const fileCards = [
-        { icon: processing, title: "AI Processing", value: processingFiles, bgColor: processingContainer, iconColor: "#d0ccff" },
-        { icon: completed, title: "AI Completed", value: computedFiles, bgColor: completedContainer, iconColor: "#adffb5" },
-        { icon: failed, title: "AI Failed", value: failedFiles, bgColor: failedContainer, iconColor: "#ffdbcc" },
+        { icon: processing, title: "AI Processing", value: processingFiles, bgColor: "linear-gradient(129.12deg, #03512E -5.66%, rgba(3, 81, 46, 0.5) 102.29%)", iconColor: "#d0ccff" },
+        { icon: completed, title: "AI Completed", value: computedFiles, bgColor: "linear-gradient(126.88deg, #87C282 -2.24%, rgba(135, 194, 130, 0.5) 104.92%)", iconColor: "#adffb5" },
+        { icon: failed, title: "AI Failed", value: failedFiles, bgColor: "linear-gradient(128.05deg, #5ABA8A -8.93%, rgba(90, 186, 138, 0.5) 97.89%)", iconColor: "#ffdbcc" },
       ];
       return (
         <>
@@ -83,9 +83,9 @@ const getCharts = (params: any) => {
             {fileCards.map((c, i) => <StatCard key={i} {...c} padding="16px" minWidth="220px" gap="12px" display="flex" alignItems="center" justifyContent="center" borderRadius="14px" height="63px" fontSize="20px" fontWeight={700} textColor="white" border="4px solid #B3B3B3" />)}
           </div>
           <AppChart type={chartType} categories={dates} series={[
-            { name: "Completed", data: computedStats, color: getColorValue("5"), plotConfig: { key: "date", value: "count", dates } },
-            { name: "Processing", data: processingStats, color: getColorValue("7"), plotConfig: { key: "date", value: "count", dates } },
-            { name: "Failed", data: failedStats, color: getColorValue("1"), plotConfig: { key: "date", value: "count", dates } }
+            { name: "Completed", data: computedStats, color: getColorValue("2") || undefined, plotConfig: { key: "date", value: "count", dates } },
+            { name: "Processing", data: processingStats, color: getColorValue("3") || undefined, plotConfig: { key: "date", value: "count", dates } },
+            { name: "Failed", data: failedStats, color: getColorValue("1") || undefined, plotConfig: { key: "date", value: "count", dates } }
           ]} />
         </>
       );
@@ -93,7 +93,7 @@ const getCharts = (params: any) => {
       const allocated = [{ name: "Allocated", value: allocatedStatusCountData?.allocatedCount || 0, color: getStatusColor("1") }, { name: "Not Allocated", value: allocatedStatusCountData?.notAllocatedCount || 0, color: getStatusColor("2") }];
       const { categories: ac, formattedSeries: as, height: ah } = getFormattedChartData(allocated, chartType);
       return allocatedStatusCountDataLoading ? <CardSkeleton count={1} height={200} /> : <AppChart type={chartType} categories={ac} series={as} height={ah} showLegend />;
-    
+
     case "Coder 1":
     case "Coder 2":
     case "QA":
@@ -104,7 +104,7 @@ const getCharts = (params: any) => {
       const seriesData = [
         { name: "Allocated", value: statusData?.allocatedCount || 0, color: getStatusColor("1") },
         { name: "Completed", value: statusData?.completedCount || 0, color: getStatusColor("2") },
-        { name: "InProgress", value: statusData?.pendingCount || 0, color: getStatusColor("7") },
+        { name: "InProgress", value: statusData?.pendingCount || 0, color: getStatusColor("3") },
       ];
       const { categories: sc, formattedSeries: ss, height: sh } = getFormattedChartData(seriesData, chartType);
       return <AppChart type={chartType} categories={sc} series={ss} height={sh} showLegend xAxisRotated total={getTotalChart(seriesData)} />;

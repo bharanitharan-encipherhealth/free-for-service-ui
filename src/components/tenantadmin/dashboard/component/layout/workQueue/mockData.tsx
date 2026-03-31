@@ -38,7 +38,7 @@ const dailyTaskData = [
     series: [
       { name: "Allocated", value: 20, color: getColorValue("1") },
       { name: "Completed", value: 10, color: getColorValue("2") },
-      { name: "InProgress", value: 40, color: getColorValue("7") },
+      { name: "InProgress", value: 40, color: getColorValue("3") },
       // { name: "ReassignedPending", value: 30, color: getColorValue("4") },
       // { name: "ReassignedCompleted", value: 30, color: getColorValue("5") },
     ],
@@ -49,7 +49,7 @@ const dailyTaskData = [
     series: [
       { name: "Allocated", value: 0, color: getColorValue("1") },
       { name: "Completed", value: 0, color: getColorValue("2") },
-      { name: "InProgress", value: 0, color: getColorValue("7") },
+      { name: "InProgress", value: 0, color: getColorValue("3") },
       // { name: "ReassignedPending", value: 0, color: getColorValue("4") },
       // { name: "ReassignedCompleted", value: 0, color: getColorValue("5") },
     ],
@@ -60,7 +60,7 @@ const dailyTaskData = [
     series: [
       { name: "Allocated", value: 0, color: getColorValue("1") },
       { name: "Completed", value: 0, color: getColorValue("2") },
-      { name: "InProgress", value: 0, color: getColorValue("7") },
+      { name: "InProgress", value: 0, color: getColorValue("3") },
       // { name: "ReassignedPending", value: 0, color: getColorValue("4") },
       // { name: "ReassignedCompleted", value: 0, color: getColorValue("5") },
     ],
@@ -74,7 +74,7 @@ const dailyTask7Data = [
     series: [
       { name: "Allocated", value: 20, color: getColorValue("1") },
       { name: "Completed", value: 10, color: getColorValue("2") },
-      { name: "InProgress", value: 40, color: getColorValue("7") },
+      { name: "InProgress", value: 40, color: getColorValue("3") },
       // { name: "ReassignedPending", value: 30, color: getColorValue("4") },
       // { name: "ReassignedCompleted", value: 30, color: getColorValue("5") },
       // { name: "QueriedApproved", value: 30, color: getColorValue("3") },
@@ -87,7 +87,7 @@ const dailyTask7Data = [
     series: [
       { name: "Allocated", value: 0, color: getColorValue("1") },
       { name: "Completed", value: 0, color: getColorValue("2") },
-      { name: "InProgress", value: 0, color: getColorValue("7") },
+      { name: "InProgress", value: 0, color: getColorValue("3") },
       // { name: "ReassignedPending", value: 0, color: getColorValue("4") },
       // { name: "ReassignedCompleted", value: 0, color: getColorValue("5") },
       // { name: "QueriedApproved", value: 0, color: getColorValue("3") },
@@ -100,7 +100,7 @@ const dailyTask7Data = [
     series: [
       { name: "Allocated", value: 0, color: getColorValue("1") },
       { name: "Completed", value: 0, color: getColorValue("2") },
-      { name: "InProgress", value: 0, color: getColorValue("7") },
+      { name: "InProgress", value: 0, color: getColorValue("3") },
       // { name: "ReassignedPending", value: 0, color: getColorValue("4") },
       // { name: "ReassignedCompleted", value: 0, color: getColorValue("5") },
       // { name: "QueriedApproved", value: 0, color: getColorValue("3") },
@@ -167,13 +167,18 @@ export const WorkFlow = ({
   chartChange,
   selectedRole,
   chartData,
+}: {
+  chartType: any;
+  chartChange: any;
+  selectedRole: any;
+  chartData: any;
 }) => {
   const data = chartData;
   if (chartType === "card") {
     return (
       <div className="container">
         <div className="grid grid-cols-12 gap-2">
-          {data.map((item, idx) => (
+          {data.map((item: any, idx: number) => (
             <div className={idx === 0 ? "col-span-12" : "col-span-6"} key={idx}>
               <StatusCard
                 key={idx}
@@ -193,10 +198,10 @@ export const WorkFlow = ({
     getColorValue("3"),
     getColorValue("4"),
   ];
-  const formattedChartData = data.map((item, index) => ({
+  const formattedChartData = data.map((item: any, index: number) => ({
     name: item.status,
     value: item.value,
-    color: defaultColors[index % defaultColors.length],
+    color: (defaultColors[index % defaultColors.length] as any) || undefined,
   }));
 
   const {
@@ -226,10 +231,15 @@ export const DailyTask5 = ({
   chartChange,
   selectedRole,
   windowWidth,
+}: {
+  chartType: any;
+  chartChange: any;
+  selectedRole: any;
+  windowWidth: any;
 }) => {
   return (
     <div className="flex gap-3 justify-between flex-wrap">
-      <div className="flex justify-between items-center w-full">
+      <div className="flex justify-between items-center w-full gap-2">
         <IoChevronBackOutline
           className="font5 mt-5"
           id="prev-arrow"
@@ -237,56 +247,57 @@ export const DailyTask5 = ({
         />
         {chartChange
           ? Array(3)
-              .fill(0)
-              .map((_, i) => (
-                <Skeleton.Node
-                  active={true}
-                  style={{ width: windowWidth > 1290 ? 250 : 250, height: 250 }}
-                />
-              ))
-          : dailyTaskData.map((task, index) => {
-              const categories = task.series.map((s) => s.name);
-              const values = task.series.map((s) => s.value);
-              const colors = task.series.map((s) => s.color);
+            .fill(0)
+            .map((_, i) => (
+              <Skeleton.Node
+                active={true}
+                key={i}
+                style={{ width: windowWidth > 1290 ? 250 : 250, height: 250 }}
+              />
+            ))
+          : dailyTaskData.map((task: any, index: number) => {
+            const categories = task.series.map((s: any) => s.name);
+            const values = task.series.map((s: any) => s.value);
+            const colors = task.series.map((s: any) => s.color);
 
-              const formattedSeries =
-                chartType === "bar" || chartType === "line"
-                  ? [
-                      {
-                        name: "Tasks",
-                        data: values,
-                        colorBy: "data",
-                        itemStyle: {
-                          color: (params) => colors[params.dataIndex],
-                        },
-                      },
-                    ]
-                  : task.series;
+            const formattedSeries =
+              chartType === "bar" || chartType === "line"
+                ? [
+                  {
+                    name: "Tasks",
+                    data: values,
+                    colorBy: "data",
+                    itemStyle: {
+                      color: (params: any) => colors[params.dataIndex] || "",
+                    },
+                  },
+                ]
+                : task.series.map((s: any) => ({ ...s, color: (s.color as any) || undefined }));
 
-              return (
-                <div
-                  key={index}
-                  className="border rounded p-3"
-                  style={{ width: "32%", minWidth: 250 }}
-                >
-                  <div className="font-bold text-center mb-2">
-                    {task.day} ({task.date})
-                  </div>
-
-                  <AppChart
-                    type={chartType}
-                    categories={categories}
-                    series={formattedSeries}
-                    height={240}
-                    showLegend={true}
-                    showLegendBarLine={false}
-                    isDailyChart={true}
-                    xAxisRotated={true}
-                    total={getTotalChart(task.series)}
-                  />
+            return (
+              <div
+                key={index}
+                className="border rounded p-3 border-gray-300"
+                style={{ width: "32%", minWidth: 250 }}
+              >
+                <div className="font-bold text-center mb-2">
+                  {task.day} ({task.date})
                 </div>
-              );
-            })}
+
+                <AppChart
+                  type={chartType}
+                  categories={categories}
+                  series={formattedSeries}
+                  height={240}
+                  showLegend={true}
+                  showLegendBarLine={false}
+                  isDailyChart={true}
+                  xAxisRotated={true}
+                  total={getTotalChart(task.series)}
+                />
+              </div>
+            );
+          })}
 
         <IoChevronForwardOutline
           id="next-arrowIcon"
@@ -296,12 +307,12 @@ export const DailyTask5 = ({
       </div>
       <div className="flex justify-center w-full my-2 gap-4 flex-wrap">
         {dailyTaskData[0]?.series
-          ?.filter((item) => dailyTaskData5.includes(item.name))
-          ?.map((item) => (
+          ?.filter((item: any) => dailyTaskData5.includes(item.name))
+          ?.map((item: any) => (
             <div key={item.name} className="flex items-center">
               <div
                 style={{
-                  backgroundColor: item.color,
+                  backgroundColor: (item.color as any) || undefined,
                   width: 12,
                   height: 12,
                   borderRadius: "25%",
@@ -321,10 +332,15 @@ export const DailyTask7 = ({
   chartChange,
   selectedRole,
   windowWidth,
+}: {
+  chartType: any;
+  chartChange: any;
+  selectedRole: any;
+  windowWidth: any;
 }) => {
   return (
     <div className="flex gap-3 justify-between flex-wrap">
-      <div className="flex justify-between items-center w-full">
+      <div className="flex justify-between items-center w-full gap-2">
         <IoChevronBackOutline
           className="font5 mt-5"
           id="prev-arrow"
@@ -332,56 +348,57 @@ export const DailyTask7 = ({
         />
         {chartChange
           ? Array(3)
-              .fill(0)
-              .map((_, i) => (
-                <Skeleton.Node
-                  active={true}
-                  style={{ width: windowWidth > 1290 ? 250 : 250, height: 250 }}
-                />
-              ))
-          : dailyTask7Data.map((task, index) => {
-              const categories = task.series.map((s) => s.name);
-              const values = task.series.map((s) => s.value);
-              const colors = task.series.map((s) => s.color);
+            .fill(0)
+            .map((_, i) => (
+              <Skeleton.Node
+                active={true}
+                key={i}
+                style={{ width: windowWidth > 1290 ? 250 : 250, height: 250 }}
+              />
+            ))
+          : dailyTask7Data.map((task: any, index: number) => {
+            const categories = task.series.map((s: any) => s.name);
+            const values = task.series.map((s: any) => s.value);
+            const colors = task.series.map((s: any) => s.color);
 
-              const formattedSeries =
-                chartType === "bar" || chartType === "line"
-                  ? [
-                      {
-                        name: "Tasks",
-                        data: values,
-                        colorBy: "data",
-                        itemStyle: {
-                          color: (params) => colors[params.dataIndex],
-                        },
-                      },
-                    ]
-                  : task.series;
+            const formattedSeries =
+              chartType === "bar" || chartType === "line"
+                ? [
+                  {
+                    name: "Tasks",
+                    data: values,
+                    colorBy: "data",
+                    itemStyle: {
+                      color: (params: any) => colors[params.dataIndex] || "",
+                    },
+                  },
+                ]
+                : task.series.map((s: any) => ({ ...s, color: (s.color as any) || undefined }));
 
-              return (
-                <div
-                  key={index}
-                  className="border rounded p-3"
-                  style={{ width: "32%", minWidth: 250 }}
-                >
-                  <div className="font-bold text-center mb-2">
-                    {task.day} ({task.date})
-                  </div>
-
-                  <AppChart
-                    type={chartType}
-                    categories={categories}
-                    series={formattedSeries}
-                    height={240}
-                    showLegend={true}
-                    showLegendBarLine={false}
-                    isDailyChart={true}
-                    xAxisRotated={true}
-                    total={getTotalChart(task.series)}
-                  />
+            return (
+              <div
+                key={index}
+                className="border rounded p-3 border-gray-200"
+                style={{ width: "32%", minWidth: 250 }}
+              >
+                <div className="font-bold text-center mb-2">
+                  {task.day} ({task.date})
                 </div>
-              );
-            })}
+
+                <AppChart
+                  type={chartType}
+                  categories={categories}
+                  series={formattedSeries}
+                  height={240}
+                  showLegend={true}
+                  showLegendBarLine={false}
+                  isDailyChart={true}
+                  xAxisRotated={true}
+                  total={getTotalChart(task.series)}
+                />
+              </div>
+            );
+          })}
 
         <IoChevronForwardOutline
           id="next-arrowIcon"
@@ -391,12 +408,12 @@ export const DailyTask7 = ({
       </div>
       <div className="flex justify-center w-full my-2 gap-4 flex-wrap">
         {dailyTask7Data[0]?.series
-          ?.filter((item) => dailyTaskData7.includes(item.name))
-          ?.map((item) => (
+          ?.filter((item: any) => dailyTaskData7.includes(item.name))
+          ?.map((item: any) => (
             <div key={item.name} className="flex items-center">
               <div
                 style={{
-                  backgroundColor: item.color,
+                  backgroundColor: (item.color as any) || undefined,
                   width: 12,
                   height: 12,
                   borderRadius: "25%",
@@ -411,20 +428,23 @@ export const DailyTask7 = ({
   );
 };
 
-export const Accuracy = ({ chartType, chartChange, selectedRole }) => {
+export const Accuracy = ({ chartType, chartChange, selectedRole }: { chartType: any, chartChange: any, selectedRole: any }) => {
   return (
     <>
       <div className={`flex justify-end gap-4 w-full`}>
         <div className="flex justify-between">
           <YearPicker
             type={"Daily"}
-            bgColor="#F3F3FF"
             val={"7"}
             val1={"2025"}
-            onChangeMonth={() => {}}
-            onChangeYear={() => {}}
+            onChangeMonth={() => { }}
+            onChangeYear={() => { }}
             selectid="productivity-select"
             id="productivity-picker1"
+            bgColor="#F3F3FF"
+            hideMonth={false}
+            className=""
+            disabledDate={() => false}
           />
         </div>
         <div className={styles.btnScroller}>
@@ -432,7 +452,7 @@ export const Accuracy = ({ chartType, chartChange, selectedRole }) => {
             Buttons={Buttons}
             activeButton={0}
             activeColor="#fff"
-            handleButtonClick={() => {}}
+            handleButtonClick={() => { }}
             inActiveColor="
                 #000000"
             activeBg="#2472FF"
@@ -456,14 +476,14 @@ export const Accuracy = ({ chartType, chartChange, selectedRole }) => {
                 data: [
                   0, 29, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0,
                 ],
-                color: getColorValue("1"),
+                color: (getColorValue("1") as any) || undefined,
               },
               {
                 name: "Allocated",
                 data: [
                   0, 0, 0, 8, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 ],
-                color: getColorValue("2"),
+                color: (getColorValue("2") as any) || undefined,
               },
             ]}
           />
@@ -495,20 +515,23 @@ export const Accuracy = ({ chartType, chartChange, selectedRole }) => {
   );
 };
 
-export const CompletedStatus = ({ chartType, chartChange, selectedRole }) => {
+export const CompletedStatus = ({ chartType, chartChange, selectedRole }: { chartType: any, chartChange: any, selectedRole: any }) => {
   return (
     <>
       <div className={`flex justify-end gap-4 w-full`}>
         <div className="flex justify-between">
           <YearPicker
             type={"Daily"}
-            bgColor="#F3F3FF"
-            onChangeMonth={() => {}}
-            onChangeYear={() => {}}
+            onChangeMonth={() => { }}
+            onChangeYear={() => { }}
             val={"7"}
             val1={"2025"}
             selectid="productivity-select"
             id="productivity-picker1"
+            bgColor="#F3F3FF"
+            hideMonth={false}
+            className=""
+            disabledDate={() => false}
           />
         </div>
         <div className={styles.btnScroller}>
@@ -516,7 +539,7 @@ export const CompletedStatus = ({ chartType, chartChange, selectedRole }) => {
             Buttons={Buttons}
             activeButton={0}
             activeColor="#fff"
-            handleButtonClick={() => {}}
+            handleButtonClick={() => { }}
             inActiveColor="#000000"
             activeBg="#2472FF"
             // inActiveBg="#F3F3FF"
@@ -534,12 +557,12 @@ export const CompletedStatus = ({ chartType, chartChange, selectedRole }) => {
           {
             name: "Completed",
             data: [0, 6, 0, 0, 7, 7, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            color: getColorValue("1"),
+            color: (getColorValue("1") as any) || undefined,
           },
           {
             name: "Allocated",
             data: [0, 0, 0, 1, 1, 0, 0, 2, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            color: getColorValue("2"),
+            color: (getColorValue("2") as any) || undefined,
           },
         ]}
       />
@@ -547,13 +570,13 @@ export const CompletedStatus = ({ chartType, chartChange, selectedRole }) => {
   );
 };
 
-export const WorkFlowCharat7 = ({ chartType, chartChange, selectedRole }) => {
+export const WorkFlowCharat7 = ({ chartType, chartChange, selectedRole }: { chartType: any, chartChange: any, selectedRole: any }) => {
   const data = chart7Data;
   if (chartType === "card") {
     return (
       <div className="container">
         <div className="grid grid-cols-12 gap-2">
-          {data.map((item, idx) => (
+          {data.map((item: any, idx: number) => (
             <div className={idx === 0 ? "col-span-12" : "col-span-6"} key={idx}>
               <StatusCard
                 key={idx}
@@ -573,10 +596,10 @@ export const WorkFlowCharat7 = ({ chartType, chartChange, selectedRole }) => {
     getColorValue("3"),
     getColorValue("4"),
   ];
-  const formattedChartData = data.map((item, index) => ({
+  const formattedChartData = data.map((item: any, index: number) => ({
     name: item.status,
     value: item.value,
-    color: defaultColors[index % defaultColors.length],
+    color: (defaultColors[index % defaultColors.length] as any) || undefined,
   }));
 
   const {

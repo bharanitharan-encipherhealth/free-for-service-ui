@@ -202,6 +202,9 @@ const WorkQueue: React.FC<WorkQueueProps> = ({
           components={components}
           setComponents={setComponents}
           getCharts={(params: any) => getCharts({ ...params, selectedRole, windowWidth })}
+          selectedRole={selectedRole}
+          handleSelect={handleSelect}
+          selectedItems={selectedItems}
         />
       ) : (
         <div

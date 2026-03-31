@@ -139,6 +139,8 @@ export interface DashboardState {
   getUserDropDownLoader: boolean;
   organizationStatus: ReduxActionState;
   organizationStatusLoader: boolean;
+  holdStatus: ReduxActionState;
+  holdStatusLoader: boolean;
 }
 
 export interface RootState {

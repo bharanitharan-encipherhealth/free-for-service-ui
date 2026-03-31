@@ -32,7 +32,7 @@ export const DOSCount: React.FC<WidgetComponentProps> = ({ chartType, chartChang
         {
           name: "DOS Count",
           data: [361, 150, 40, 100, 25.6, 24.6, 26],
-          color: getColorValue("7"),
+          color: (getColorValue("7") as any) || undefined,
         },
       ]}
       customHeader={{
@@ -64,7 +64,7 @@ export const InvalidDocument: React.FC<WidgetComponentProps> = ({ chartType, cha
         {
           name: "Invalid Document",
           data: [36, 28, 40, 33, 31, 37, 36],
-          color: getColorValue("5"),
+          color: (getColorValue("5") as any) || undefined,
         },
       ]}
     />
@@ -89,7 +89,7 @@ export const Televisit: React.FC<WidgetComponentProps> = ({ chartType, chartChan
         {
           name: "Audio Visit Count",
           data: [14, 19, 10, 16, 12, 20, 20],
-          color: getColorValue("4"),
+          color: (getColorValue("4") as any) || undefined,
         },
       ]}
     />
@@ -114,7 +114,7 @@ export const InvalidCredentails: React.FC<WidgetComponentProps> = ({ chartType, 
         {
           name: "Invalid Credentails",
           data: [9, 14, 7, 10, 11, 13, 12],
-          color: getColorValue("3"),
+          color: (getColorValue("3") as any) || undefined,
         },
       ]}
     />
@@ -139,7 +139,7 @@ export const PatientDOBMismatch: React.FC<WidgetComponentProps> = ({ chartType, 
         {
           name: "Patient DOB Mismatch",
           data: [4, 3, 6, 5, 4, 5, 5],
-          color: getColorValue("7"),
+          color: (getColorValue("7") as any) || undefined,
         },
       ]}
     />
@@ -164,7 +164,7 @@ export const PatientNameMismatch: React.FC<WidgetComponentProps> = ({ chartType,
         {
           name: "Patient Name Mismatch",
           data: [3, 4, 2, 5, 3, 4, 6],
-          color: getColorValue("4"),
+          color: (getColorValue("4") as any) || undefined,
         },
       ]}
     />
@@ -189,7 +189,7 @@ export const ScopeYearMismatch: React.FC<WidgetComponentProps> = ({ chartType, c
         {
           name: "Scope Year Mis-match",
           data: [10, 7, 12, 9, 8, 11, 11],
-          color: getColorValue("1"),
+          color: (getColorValue("1") as any) || undefined,
         },
       ]}
     />
@@ -214,7 +214,7 @@ export const PatientDeceased: React.FC<WidgetComponentProps> = ({ chartType, cha
         {
           name: "Patient Deceased",
           data: [1, 1, 2, 0, 1, 2, 1],
-          color: getColorValue("4"),
+          color: (getColorValue("4") as any) || undefined,
         },
       ]}
     />
@@ -239,7 +239,7 @@ export const MRNIDMismatch: React.FC<WidgetComponentProps> = ({ chartType, chart
         {
           name: "MRN ID Mismatch",
           data: [45, 38, 41, 36, 47, 43, 47],
-          color: getColorValue("7"),
+          color: (getColorValue("7") as any) || undefined,
         },
       ]}
     />
@@ -264,7 +264,7 @@ export const MultiplePatientFound: React.FC<WidgetComponentProps> = ({ chartType
         {
           name: "Multiple Patient Found",
           data: [1, 0, 0, 1, 1, 1, 1],
-          color: getColorValue("4"),
+          color: (getColorValue("4") as any) || undefined,
         },
       ]}
     />
@@ -289,7 +289,7 @@ export const PatientInActive: React.FC<WidgetComponentProps> = ({ chartType, cha
         {
           name: "Patient In-active",
           data: [1, 1, 1, 1, 1, 0, 0],
-          color: getColorValue("3"),
+          color: (getColorValue("3") as any) || undefined,
         },
       ]}
     />
@@ -314,7 +314,7 @@ export const ProviderMissed: React.FC<WidgetComponentProps> = ({ chartType, char
         {
           name: "Provider Missed",
           data: [1, 1, 2, 0, 1, 2, 1],
-          color: getColorValue("7"),
+          color: (getColorValue("7") as any) || undefined,
         },
       ]}
     />
@@ -339,7 +339,7 @@ export const ProviderSignMissed: React.FC<WidgetComponentProps> = ({ chartType, 
         {
           name: "Provider Sign Missed",
           data: [10, 7, 12, 9, 8, 11, 11],
-          color: getColorValue("7"),
+          color: (getColorValue("7") as any) || undefined,
         },
       ]}
     />
@@ -364,7 +364,7 @@ export const NoHccFound: React.FC<WidgetComponentProps> = ({ chartType, chartCha
         {
           name: "No HCC Found",
           data: [1, 1, 1, 1, 1, 0, 0],
-          color: getColorValue("3"),
+          color: (getColorValue("3") as any) || undefined,
         },
       ]}
     />
@@ -389,7 +389,7 @@ export const OutOfScope: React.FC<WidgetComponentProps> = ({ chartType, chartCha
         {
           name: "Out Of Scope",
           data: [45, 38, 41, 36, 47, 43, 47],
-          color: getColorValue("1"),
+          color: (getColorValue("1") as any) || undefined,
         },
       ]}
     />
@@ -414,7 +414,7 @@ export const ProviderUnauthorized: React.FC<WidgetComponentProps> = ({ chartType
         {
           name: "Provider Unauthorized",
           data: [9, 14, 7, 10, 11, 13, 12],
-          color: getColorValue("3"),
+          color: (getColorValue("3") as any) || undefined,
         },
       ]}
     />

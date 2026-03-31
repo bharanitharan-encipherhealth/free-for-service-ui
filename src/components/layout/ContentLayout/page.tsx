@@ -56,6 +56,7 @@ function ContentLayout({
     secondaryActiveTab?: string;
     onClick: ({ item }: { item: { label: string; value: string } }) => void;
     loading?: boolean;
+    onSecondaryClick?: ({ item }: { item: { label: string; value: string } }) => void;
   };
 }) {
   const handleTabelCustomizationRest = useCallback(() => {
@@ -240,53 +241,11 @@ function ContentLayout({
   }, [activeFilters, handleFilterStatusChange, handleReset]);
   return (
     <>
-      <div
-        className={`${style?.contentLayout} h-13.25 px-2 flex items-center justify-between font-semibold`}
-      >
-        <div className="flex items-center gap-3">
-          <div className={`${style?.pageTitle} text-lg`}>{pageTitle}</div>
-
-          {tabList?.isTab && (
-            <div className="flex gap-4 contentTab text-xs items-center">
-              {tabList?.tabList?.map((item, index) => (
-                <div
-                  key={index}
-                  onClick={() => tabList?.onClick({ item: item })}
-                  className={`
-                    ${
-                      tabList?.activeTab == item?.value
-                        ? "activeContentTab cursor-pointer"
-                        : "cursor-pointer"
-                    }
-                    capitalize `}
-                >
-                  {item?.label}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="flex gap-4 items-center">
-          {tabList?.secondaryTabList && (
-            <div className="flex gap-4 contentTab text-xs items-center mr-4">
-              {tabList?.secondaryTabList?.map((item, index) => (
-                <div
-                  key={index}
-                  onClick={() => tabList?.onClick({ item: item })}
-                  className={`
-                    ${
-                      tabList?.secondaryActiveTab == item?.value
-                        ? "activeContentTab cursor-pointer"
-                        : "cursor-pointer"
-                    }
-                    capitalize `}
-                >
-                  {item?.label}
-                </div>
-              ))}
-            </div>
-          )}
+      <div className={`${style?.contentLayout} px-2 flex flex-col`}>
+        <div className="flex items-center justify-between w-full h-13.25">
+          <div className="flex items-center gap-3">
+            <div className={`${style?.pageTitle} text-lg font-bold`}>{pageTitle}</div>
+          </div>
           <div className="flex gap-2">
             {layoutList &&
               layoutList.map((item, index) => {
@@ -341,6 +300,7 @@ function ContentLayout({
               })}
           </div>
         </div>
+
       </div>
 
       <Drawer
@@ -361,5 +321,66 @@ const connector = connect(
   }),
   {},
 );
+
+export function NavigationTabs({
+  tabList,
+}: {
+  tabList?: {
+    isTab: boolean;
+    tabList: { label: string; value: string }[];
+    secondaryTabList?: { label: string; value: string }[];
+    activeTab?: string;
+    secondaryActiveTab?: string;
+    onClick: ({ item }: { item: { label: string; value: string } }) => void;
+    loading?: boolean;
+    onSecondaryClick?: ({ item }: { item: { label: string; value: string } }) => void;
+  };
+}) {
+  return (
+    <div className={`px-2`}>
+      <div className="flex items-center justify-between border-b border-[#e8e8e8]">
+        {tabList?.isTab && (
+          <div className="flex gap-4 items-center">
+            {tabList?.tabList?.map((item, index) => (
+              <div
+                key={index}
+                onClick={() => tabList?.onClick({ item })}
+                className={`${tabList?.activeTab === item?.value
+                  ? style.underlinedTabActive
+                  : style.underlinedTab
+                  }`}
+              >
+                {item?.label}
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="flex items-center">
+          {tabList?.secondaryTabList && (
+            <div className="flex gap-6 items-center">
+              {tabList?.secondaryTabList?.map((item, index) => (
+                <div
+                  key={index}
+                  onClick={() =>
+                    tabList?.onSecondaryClick
+                      ? tabList.onSecondaryClick({ item })
+                      : tabList?.onClick({ item })
+                  }
+                  className={`${tabList?.secondaryActiveTab === item?.value
+                    ? style.underlinedTabActive
+                    : style.underlinedTab
+                    } text-xs`}
+                >
+                  {item?.label}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default connector(ContentLayout);

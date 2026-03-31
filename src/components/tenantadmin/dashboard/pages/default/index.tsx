@@ -1,5 +1,7 @@
+import React, { useEffect } from "react";
 import { Card, Empty, Tooltip } from "antd";
 import dynamic from "next/dynamic";
+import { RootState, Widget } from "../../types";
 const ReusableTable = dynamic(() => import("../../component/table"), {
   ssr: false,
 });
@@ -27,10 +29,9 @@ import { getRowSpan } from "../../component/function";
 import AppChart from "../../component/appchart";
 import EmptyComponent from "../../component/empty/EmptyComponent";
 import { getDashboardItems } from "../../component/function/resubaleGetStorage";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import CardSkeleton from "@/components/skeleton/card";
 import dashboardActions from "@/state/tenantadmin/dashboard/actions";
-import { useEffect } from "react";
 const pages = "/images/dashboard/pages.webp";
 const patientCount = "/images/dashboard/patientCount.webp";
 const dosCount = "/images/dashboard/dosCount.webp";
@@ -47,6 +48,7 @@ import {
   getRoleIdByRole,
   statusFormate,
   getChartTimeLine,
+  getStatusColor,
 } from "@/util/reusableFunction";
 import moment from "moment";
 import { WorkFlow } from "../../component/layout/workQueue/mockData";
@@ -62,6 +64,43 @@ const statCardsData = [
     bgColor: getColorValue("6"),
   },
 ];
+
+interface GetChartsProps {
+  type: string;
+  chartType: string;
+  pagesLoader: boolean;
+  top10Codes: any;
+  top10CodesLoading: boolean;
+  top10OIG: any;
+  top10OIGLoading: boolean;
+  tinTableData: any;
+  tinTableDataLoading: boolean;
+  fileDosCount: any;
+  fileDosCountLoading: boolean;
+  rafTotal: any;
+  rafTotalLoading: boolean;
+  rafHcc: any;
+  rafHccLoading: boolean;
+  rafCareGap: any;
+  rafCareGapLoading: boolean;
+  rafPotential: any;
+  rafPotentialLoading: boolean;
+  filesCountData: any;
+  filesCountDataLoading: boolean;
+  allocatedStatusCountData: any;
+  allocatedStatusCountDataLoading: boolean;
+  dates: string[];
+  selectedValue: string;
+  customDate: any;
+  windowWidth: number;
+  overallCountChartData: any;
+  inPatientDetailsChartData: any;
+  outPatientDetailsChartData: any;
+  outPatientDetailsChartLoader: boolean;
+  inPatientDetailsChartLoader: boolean;
+  overallCountChartLoader: boolean;
+  selectedRole?: string;
+}
 
 const getCharts = ({
   type,
@@ -97,7 +136,8 @@ const getCharts = ({
   outPatientDetailsChartLoader,
   inPatientDetailsChartLoader,
   overallCountChartLoader,
-}) => {
+  selectedRole,
+}: GetChartsProps) => {
   switch (type) {
     case "filecount":
       const fileCountData = [
@@ -106,7 +146,6 @@ const getCharts = ({
           title: "Patients Count",
           value: formatKValue(fileDosCount?.fileCount) || 0,
           bgColor: patientCount,
-          color: getColorValue("1"),
           color: getColorValue("1"),
         },
         {
@@ -132,7 +171,6 @@ const getCharts = ({
             style={{
               display: "flex",
               width: "100%",
-              gap: "10px",
               justifyContent: "flex-start",
               gap: "20px",
             }}
@@ -169,10 +207,10 @@ const getCharts = ({
           </div>
         );
       }
-      const formattedChartData = fileCountData.map((item) => ({
+      const formattedChartData = fileCountData.map((item: any) => ({
         name: item.title,
         value: parseKValue(item.value),
-        color: item.color,
+        color: item.color || undefined,
       }));
       const {
         categories: fileChartCategories,
@@ -195,7 +233,7 @@ const getCharts = ({
       );
     case "RafAndRevenue":
       const rafAndRevenueCategories = rafHcc?.codesAndRafSummaryDTOList?.map(
-        (item) => moment(item.date).format("MMM D"),
+        (item: any) => moment(item.date).format("MMM D"),
       );
       return rafHccLoading || pagesLoader ? (
         <CardSkeleton count={1} height={300} />
@@ -210,7 +248,6 @@ const getCharts = ({
               title: "HCC Raf",
               value: toFixedNum(rafHcc?.overallRaf, 3) || 0,
               bgColor: patientCount,
-              backgroundColor: getColorValue("7"),
             },
             {
               type: chartType,
@@ -239,11 +276,11 @@ const getCharts = ({
       );
     case "TotalCodes":
       const totalCodesCategories = rafTotal?.codesAndRafSummaryDTOList?.map(
-        (item) => moment(item.date).format("MMM D"),
+        (item: any) => moment(item.date).format("MMM D"),
       );
       const totalCodesChartData = (
         rafTotal?.codesAndRafSummaryDTOList || []
-      ).map((item) => ({
+      ).map((item: any) => ({
         totalCount: toFixedNum(item?.totalCount, 2),
         hccCount: toFixedNum(item?.hccCount, 2),
         suggestedCount: toFixedNum(item?.suggestedCount, 2),
@@ -434,10 +471,10 @@ const getCharts = ({
       );
     case "HccCodes":
       const hccCodesCategories = rafHcc?.codesAndRafSummaryDTOList?.map(
-        (item) => moment(item.date).format("MMM D"),
+        (item: any) => moment(item.date).format("MMM D"),
       );
       const hccChartData = (rafHcc?.codesAndRafSummaryDTOList || []).map(
-        (item) => ({
+        (item: any) => ({
           hccCount: toFixedNum(item?.hccCount, 2),
           hccRafScore: toFixedNum(item?.hccRafScore, 2),
           hccPremium: toFixedNum(item?.hccPremium, 2),
@@ -522,13 +559,13 @@ const getCharts = ({
     case "CareGapCodes":
       const careGapChartData = (
         rafCareGap?.codesAndRafSummaryDTOList || []
-      ).map((item) => ({
+      ).map((item: any) => ({
         suggestedCount: toFixedNum(item?.suggestedCount, 2),
         suggestedRafScore: toFixedNum(item?.suggestedRafScore, 2),
         suggestedPremium: toFixedNum(item?.suggestedPremium, 2),
       }));
       const careGapCodesCategories = rafCareGap?.codesAndRafSummaryDTOList?.map(
-        (item) => moment(item.date).format("MMM D"),
+        (item: any) => moment(item.date).format("MMM D"),
       );
       return rafCareGapLoading || pagesLoader ? (
         <CardSkeleton count={1} height={300} />
@@ -614,13 +651,13 @@ const getCharts = ({
     case "PotientialCodes":
       const potentialChartData = (
         rafPotential?.codesAndRafSummaryDTOList || []
-      ).map((item) => ({
+      ).map((item: any) => ({
         potentialCount: toFixedNum(item?.potentialCount, 2),
         potentialRafScore: toFixedNum(item?.potentialRafScore, 2),
         potentialPremium: toFixedNum(item?.potentialPremium, 2),
       }));
       const potentialCodesCategories =
-        rafPotential?.codesAndRafSummaryDTOList?.map((item) =>
+        rafPotential?.codesAndRafSummaryDTOList?.map((item: any) =>
           moment(item.date).format("MMM D"),
         );
       return rafPotentialLoading || pagesLoader ? (
@@ -714,10 +751,9 @@ const getCharts = ({
             {statCardsData.map((card) => (
               <StatCard
                 key={card.title}
-                icon={card.icon}
                 title={card.title}
                 value={card.value}
-                bgColor={card.bgColor}
+                bgColor={card.bgColor || ""}
                 padding="16px"
                 minWidth="140px"
                 gap="12px"
@@ -754,14 +790,12 @@ const getCharts = ({
                 {
                   name: "Lab",
                   data: [0, 0, 12.34, 0, 3, 0],
-                  color: getColorValue("5"),
-                  area: chartType === "area",
+                  color: getColorValue("5") || undefined,
                 },
                 {
                   name: "Radiology",
                   data: [20, 56, 34, 67, 12],
-                  color: getColorValue("6"),
-                  area: chartType === "area",
+                  color: getColorValue("6") || undefined,
                 },
               ]}
             />
@@ -791,37 +825,31 @@ const getCharts = ({
           icon: processing,
           title: "AI Processing",
           value: processingFiles || 0,
-          bgColor: processingContainer,
+          bgColor: "linear-gradient(129.12deg, #03512E -5.66%, rgba(3, 81, 46, 0.5) 102.29%)",
           iconColor: "#d0ccff",
         },
         {
           icon: completed,
           title: "AI Completed",
           value: computedFiles || 0,
-          bgColor: completedContainer,
+          bgColor: "linear-gradient(126.88deg, #87C282 -2.24%, rgba(135, 194, 130, 0.5) 104.92%)",
           iconColor: "#adffb5",
         },
         {
           icon: failed,
           title: "AI Failed",
           value: failedFiles || 0,
-          bgColor: failedContainer,
+          bgColor: "linear-gradient(128.05deg, #5ABA8A -8.93%, rgba(90, 186, 138, 0.5) 97.89%)",
           iconColor: "#ffdbcc",
-        },
-        {
-          icon: failed,
-          title: "AI Codes Captured",
-          value: capturedCodesCount || 0,
-          bgColor: codeCaptureContainer,
-          iconColor: "#ffdbcc",
-        },
+        }
       ];
+      const currentChartType = chartType || "line";
       const categories = dates;
       const series = [
         {
           name: "Completed",
           data: computedStats || [],
-          color: getColorValue("5"),
+          color: getColorValue("3") || undefined,
           plotConfig: {
             key: "date",
             value: "count",
@@ -830,21 +858,31 @@ const getCharts = ({
         },
         {
           name: "Processing",
-          data: processingStats.map((item) => item.count) || [],
-          color: getColorValue("7"),
+          data: processingStats || [],
+          color: getColorValue("1") || undefined,
+          plotConfig: {
+            key: "date",
+            value: "count",
+            dates: dates,
+          },
         },
         {
           name: "Failed",
-          data: failedStats.map((item) => item.count) || [],
-          color: getColorValue("1"),
+          data: failedStats || [],
+          color: getColorValue("2") || undefined,
+          plotConfig: {
+            key: "date",
+            value: "count",
+            dates: dates,
+          },
         },
       ];
       return (
         <div className="flex flex-wrap -mx-2">
           <div className="flex justify-between w-full flex-wrap gap-2">
-            {fileCardsData.map((card) =>
+            {fileCardsData.map((card, index) =>
               filesCountDataLoading || pagesLoader ? (
-                <CardSkeleton count={1} height={70} />
+                <CardSkeleton count={1} height={70} key={index} />
               ) : (
                 <StatCard
                   key={card.title}
@@ -869,18 +907,21 @@ const getCharts = ({
               ),
             )}
           </div>
-          {filesCountDataLoading || pagesLoader ? (
-            <div className="py-2">
-              <CardSkeleton count={1} height={250} />
-            </div>
-          ) : (
-            <AppChart
-              type={chartType}
-              categories={categories}
-              series={series}
-              xAxisInterval={1}
-            />
-          )}
+          <div className="w-full mt-4">
+            {filesCountDataLoading || pagesLoader ? (
+              <div className="py-2">
+                <CardSkeleton count={1} height={180} />
+              </div>
+            ) : (
+              <AppChart
+                type={chartType}
+                categories={categories}
+                series={series}
+                xAxisInterval={1}
+                height={180}
+              />
+            )}
+          </div>
         </div>
       );
     case "Top10Diseases":
@@ -1163,7 +1204,8 @@ const getCharts = ({
       ) : (
         <WorkFlow
           chartType={chartType}
-          windowWidth={windowWidth}
+          chartChange={false}
+          selectedRole={selectedRole || ""}
           chartData={patientOverllCountFormatData}
         />
       );
@@ -1202,7 +1244,6 @@ const getCharts = ({
             style={{
               display: "flex",
               width: "100%",
-              gap: "10px",
               justifyContent: "flex-start",
               gap: "20px",
               height: "100%",
@@ -1241,10 +1282,10 @@ const getCharts = ({
         );
       }
       const formatInPatientDetailsData = inPatientDetailsDataFormat.map(
-        (item) => ({
+        (item: any) => ({
           name: item.title,
           value: parseKValue(item.value),
-          color: item.color,
+          color: item.color || undefined,
         }),
       );
       const {
@@ -1292,7 +1333,6 @@ const getCharts = ({
             style={{
               display: "flex",
               width: "100%",
-              gap: "10px",
               justifyContent: "flex-start",
               gap: "20px",
               height: "100%",
@@ -1331,10 +1371,10 @@ const getCharts = ({
         );
       }
       const formatOutPatientDetailsData = outPatientDetailsDataFormat.map(
-        (item) => ({
+        (item: any) => ({
           name: item.title,
           value: parseKValue(item.value),
-          color: item.color,
+          color: item.color || undefined,
         }),
       );
       const {
@@ -1360,7 +1400,54 @@ const getCharts = ({
   }
 };
 
-function Default({
+const connector = connect(
+  (state: RootState) => ({
+    getSelectedWidgets: state.dashboardReducer.getWidgetsList?.data?.response as Widget[] | undefined,
+    getSelectedWidgetsLoader: state.dashboardReducer.getWidgetsListLoader,
+    data: state.dashboardReducer,
+    top10Codes: state.dashboardReducer?.defaultTop10Codes?.data?.response,
+    top10CodesLoading: state.dashboardReducer?.defaultTop10CodesLoader,
+    top10OIG: state.dashboardReducer?.defaultTop10OIG?.data?.response,
+    top10OIGLoading: state.dashboardReducer?.defaultTop10OIGLoader,
+    fileDosCount: state.dashboardReducer?.defaultFileDosCount?.data?.response,
+    fileDosCountLoading: state.dashboardReducer?.defaultFileDosCountLoader,
+    rafTotal: state.dashboardReducer?.defaultRafTotal?.data?.response,
+    rafTotalLoading: state.dashboardReducer?.defaultRafTotalLoader,
+    rafHcc: state.dashboardReducer?.defaultRafHcc?.data?.response,
+    rafHccLoading: state.dashboardReducer?.defaultRafHccLoader,
+    rafCareGap: state.dashboardReducer?.defaultRafCareGap?.data?.response,
+    rafCareGapLoading: state.dashboardReducer?.defaultRafCareGapLoader,
+    rafPotential: state.dashboardReducer?.defaultRafPotential?.data?.response,
+    rafPotentialLoading: state.dashboardReducer?.defaultRafPotentialLoader,
+    filesCountData: state.dashboardReducer?.workFlowFilesCount?.data?.response,
+    filesCountDataLoading: state.dashboardReducer?.workFlowFilesCountLoader,
+    tinTableData: state.dashboardReducer?.defaultTinTable?.data?.response,
+    tinTableDataLoading: state.dashboardReducer?.defaultTinTableLoader,
+    allocatedStatusCountData: state.dashboardReducer?.workFlowAllocatedStatusCount?.data?.response,
+    allocatedStatusCountDataLoading: state.dashboardReducer?.workFlowAllocatedStatusCountLoader,
+    overallCountChartData: state.dashboardReducer?.overallCountChart?.data?.response,
+    overallCountChartLoader: state.dashboardReducer?.overallCountChartLoader,
+    inPatientDetailsChartData: state.dashboardReducer?.inPatientDetailsChart?.data?.response,
+    outPatientDetailsChartData: state.dashboardReducer?.outPatientDetailsChart?.data?.response,
+    inPatientDetailsChartLoader: state.dashboardReducer?.inPatientDetailsChartLoader,
+    outPatientDetailsChartLoader: state.dashboardReducer?.outPatientDetailsChartLoader,
+  }),
+  (dispatch: any) => ({
+    dispatch,
+  })
+);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+interface DefaultProps extends PropsFromRedux {
+  selectedRole?: string;
+  dateRange?: { startDate: string; endDate: string };
+  selectedValue?: string;
+  customDate?: any;
+  pagesLoader?: boolean;
+}
+
+const Default: React.FC<DefaultProps> = ({
   dispatch,
   data,
   getSelectedWidgets = [],
@@ -1394,7 +1481,9 @@ function Default({
   outPatientDetailsChartLoader,
   inPatientDetailsChartLoader,
   overallCountChartLoader,
-}) {
+  pagesLoader,
+  selectedRole,
+}) => {
   const dates =
     selectedValue === "custom"
       ? customDate
@@ -1402,8 +1491,8 @@ function Default({
         ? getLast30Days()
         : getLast7Days();
   const showDashboard = getSelectedWidgets
-    .filter((item) => item?.active)
-    .sort((a, b) => a?.orderValue - b?.orderValue);
+    .filter((item: any) => item?.active)
+    .sort((a, b) => Number(a?.orderValue || 0) - Number(b?.orderValue || 0));
   const api = [
     {
       key: "defaultTop10Codes",
@@ -1472,17 +1561,17 @@ function Default({
     },
   ];
 
-  const apiKeys = api.filter((item) =>
-    item.widgetId?.some((id) =>
-      showDashboard.some((widget) => widget.widgetId === id),
+  const apiKeys = api.filter((item: any) =>
+    item.widgetId?.some((id: string) =>
+      showDashboard.some((widget: Widget) => widget.widgetId === id),
     ),
   );
 
   const getInitialApiCall = async () => {
     try {
       const params = {
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate,
+        startDate: dateRange?.startDate || "",
+        endDate: dateRange?.endDate || "",
       };
 
       // const apiKeys = [
@@ -1497,9 +1586,10 @@ function Default({
       // ];
 
       for (const item of apiKeys) {
-        const actionKey = `${item.key}Action`;
-        if (typeof dashboardActions[actionKey] === "function") {
-          dispatch(dashboardActions[actionKey](params));
+        const actionKey = `${item.key}Action` as keyof typeof dashboardActions;
+        const actionFunc = (dashboardActions as any)[actionKey];
+        if (typeof actionFunc === "function") {
+          dispatch(actionFunc(params));
         } else {
           console.warn(`Action not found for key: ${actionKey}`);
         }
@@ -1580,16 +1670,17 @@ function Default({
                     filesCountDataLoading,
                     allocatedStatusCountData,
                     allocatedStatusCountDataLoading,
-                    dates,
-                    selectedValue,
+                     dates,
+                    selectedValue: selectedValue || "",
                     customDate,
-                    windowWidth,
+                    windowWidth: windowWidth || 0,
                     overallCountChartData,
                     inPatientDetailsChartData,
                     outPatientDetailsChartData,
                     outPatientDetailsChartLoader,
                     inPatientDetailsChartLoader,
                     overallCountChartLoader,
+                    selectedRole,
                   })}
                 </Card>
               </div>
@@ -1602,77 +1693,4 @@ function Default({
     </>
   );
 }
-const enhancer = connect(
-  (state) => ({
-    getSelectedWidgets: state.dashboardReducer.getWidgetsList?.data?.response,
-    getSelectedWidgetsLoader: state.dashboardReducer.getWidgetsListLoader,
-    data: state.dashboardReducer,
-    top10DiseasesData:
-      state.dashboardReducer?.defaultTop10Codes?.data?.response,
-    top10DiseasesLoading: state.dashboardReducer?.defaultTop10CodesLoader,
-    top10OIGCodesData: state.dashboardReducer?.defaultTop10OIG?.data?.response,
-    top10OIGCodesLoading: state.dashboardReducer?.defaultTop10OIGLoader,
-    fileDosCount: state.dashboardReducer?.defaultFileDosCount?.data?.response,
-    fileDosCountLoading: state.dashboardReducer?.defaultFileDosCountLoader,
-    rafTotal: state.dashboardReducer?.defaultRafTotal?.data?.response,
-    rafTotalLoading: state.dashboardReducer?.defaultRafTotalLoader,
-    rafHcc: state.dashboardReducer?.defaultRafHcc?.data?.response,
-    rafHccLoading: state.dashboardReducer?.defaultRafHccLoader,
-    rafCareGap: state.dashboardReducer?.defaultRafCareGap?.data?.response,
-    rafCareGapLoading: state.dashboardReducer?.defaultRafCareGapLoader,
-    rafPotential: state.dashboardReducer?.defaultRafPotential?.data?.response,
-    rafPotentialLoading: state.dashboardReducer?.defaultRafPotentialLoader,
-    filesCountData: state.dashboardReducer?.workFlowFilesCount?.data?.response,
-    filesCountDataLoading: state.dashboardReducer?.workFlowFilesCountLoader,
-    tinTableData: state.dashboardReducer?.defaultTinTable?.data?.response,
-    tinTableDataLoading: state.dashboardReducer?.defaultTinTableLoader,
-    allocatedStatusCountData:
-      state.dashboardReducer?.workFlowAllocatedStatusCount?.data?.response,
-    allocatedStatusCountDataLoading:
-      state.dashboardReducer?.workFlowAllocatedStatusCountLoader,
-    overallCountChartData:
-      state.dashboardReducer?.overallCountChart?.data?.response,
-    overallCountChartLoader: state.dashboardReducer?.overallCountChartLoader,
-    inPatientDetailsChartData:
-      state.dashboardReducer?.inPatientDetailsChart?.data?.response,
-    outPatientDetailsChartData:
-      state.dashboardReducer?.outPatientDetailsChart?.data?.response,
-    inPatientDetailsChartLoader:
-      state.dashboardReducer?.inPatientDetailsChartLoader,
-    outPatientDetailsChartLoader:
-      state.dashboardReducer?.outPatientDetailsChartLoader,
-  }),
-  (dispatch) => ({
-    dispatch,
-    getWidgetsList: (params) =>
-      dispatch(dashboardActions.getWidgetsListAction(params)),
-    defaultTop10Codes: (params) =>
-      dispatch(dashboardActions.defaultTop10CodesAction(params)),
-    defaultTop10OIG: (params) =>
-      dispatch(dashboardActions.defaultTop10OIGAction(params)),
-    defaultFileDosCount: (params) =>
-      dispatch(dashboardActions.defaultFileDosCountAction(params)),
-    defaultRafTotal: (params) =>
-      dispatch(dashboardActions.defaultRafTotalAction(params)),
-    defaultRafHcc: (params) =>
-      dispatch(dashboardActions.defaultRafHccAction(params)),
-    defaultRafCareGap: (params) =>
-      dispatch(dashboardActions.defaultRafCareGapAction(params)),
-    defaultRafPotential: (params) =>
-      dispatch(dashboardActions.defaultRafPotentialAction(params)),
-    workFlowFilesCount: (params) =>
-      dispatch(dashboardActions.workFlowFilesCountAction(params)),
-    defaultTinTable: (params) =>
-      dispatch(dashboardActions.defaultTinTableAction(params)),
-    workFlowAllocatedStatusCount: (params) =>
-      dispatch(dashboardActions.workFlowAllocatedStatusCountAction(params)),
-    overallCountChart: (params) =>
-      dispatch(dashboardActions.overallCountChartAction(params)),
-    inPatientDetailsChart: (params) =>
-      dispatch(dashboardActions.inPatientDetailsChartAction(params)),
-    outPatientDetailsChart: (params) =>
-      dispatch(dashboardActions.outPatientDetailsChartAction(params)),
-  }),
-)(Default);
-
-export default enhancer;
+export default connector(Default);
