@@ -114,7 +114,11 @@ export const ProviderMenuList = (
 
       case "TIN":
         items.push(
-          createMenuItem("Tenant", "/tenantadmin/tin/tindetails", <MdOutlineAnalytics />),
+          createMenuItem(
+            "Tenant",
+            "/tenantadmin/tin/tindetails",
+            <MdOutlineAnalytics />,
+          ),
         );
         break;
 

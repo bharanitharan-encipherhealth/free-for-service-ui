@@ -113,12 +113,12 @@
 }
 
 .restLength {
-  background-color: var(--processed-bg-color);
+  background-color: var(--application-base-color);
   color: var(--defaultColor);
 }
 
 .dateOfServiceColor {
-  color: var(--processed-bg-color);
+  color: var(--application-base-color);
 }
 
 .captureSectionColor {

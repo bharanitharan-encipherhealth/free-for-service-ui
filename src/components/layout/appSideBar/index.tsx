@@ -86,7 +86,17 @@ function AppSideBar({ selectedUserRole }: appSideBarType) {
               menuList
                 ?.filter((item) => {
                   const cleanKey = (item?.key as string)?.replace(/\/$/, "");
-                  return cleanPath.startsWith(cleanKey);
+                  if (cleanPath.startsWith(cleanKey)) return true;
+
+                  // Handle peer sub-routes for TIN module (e.g., /details vs /tindetails)
+                  if (
+                    cleanPath.startsWith("/tenantadmin/tin/") &&
+                    cleanKey.startsWith("/tenantadmin/tin/")
+                  ) {
+                    return true;
+                  }
+
+                  return false;
                 })
                 ?.map((item) => item?.key as string) || [];
             return matchedKeys.length > 0 ? matchedKeys : [pathName];

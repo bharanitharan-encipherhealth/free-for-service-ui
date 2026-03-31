@@ -46,7 +46,7 @@ const FileLayout = React.memo(
                     item.id === 1
                       ? setDiagnosisDropRef
                       : item.id === 2
-                        ? setCareGapDropRef
+                        ? setDeleteDropRef
                         : undefined
                   }
                   onClick={() => {

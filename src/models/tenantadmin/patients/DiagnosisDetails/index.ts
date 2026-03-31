@@ -151,6 +151,7 @@ export interface notesType {
 export interface MeatRowType {
   meatCreteriaList: MeatCriteriaItem[];
   meatCreteria: "meat" | "delete";
+  isHeight?: boolean;
 }
 
 export interface meatHyperLinkType {

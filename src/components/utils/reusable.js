@@ -1,8 +1,10 @@
-import { notification } from "antd";
+import { notification as staticNotification } from "antd";
+import { getNotificationApi } from "@/util/notificationHolder";
 import moment from "moment";
 import dayjs from "dayjs";
 
 export const getResponePopup = (res) => {
+  const notification = getNotificationApi() || staticNotification;
   const description = res?.data?.message ? res?.data?.message : res?.message;
   switch (res?.data?.status ? res?.data?.status : res?.status) {
     case "USER_DEFINED_ERROR":

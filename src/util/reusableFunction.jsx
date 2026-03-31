@@ -143,9 +143,13 @@ export const convertToCustomParams = (obj) => {
   if (keys.length === 0) return "";
   const restParams = keys
     .filter(
-      (key) => obj[key] !== undefined && obj[key] !== null && key != "clientId",
+      (key) =>
+        obj[key] !== undefined &&
+        obj[key] !== null &&
+        obj[key] !== "" &&
+        key != "clientId",
     )
-    .map((key) => `&${key}=${obj[key]}`)
+    .map((key) => `&${key}=${obj[key] || ""}`)
     .join("");
   return restParams;
 };

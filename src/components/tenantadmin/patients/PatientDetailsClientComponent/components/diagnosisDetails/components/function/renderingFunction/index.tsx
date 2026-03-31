@@ -69,6 +69,8 @@ export const getPopOverContent = ({
         <span
           key={index}
           className={`cursor-pointer ${style?.hyperLinkPopover}`}
+          onPointerDown={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
           onClick={() =>
             handlePdfSearch({ setPdfSearch, hyperlink: item, pdfSearchValue })
           }
@@ -119,6 +121,8 @@ export const getPopoverContentMeat = ({
           <div>{`Page No - (${item?.pageNumber})`}</div>
           <div
             className={`${style?.dateOfServiceColor} cursor-pointer`}
+            onPointerDown={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
             onClick={() =>
               handlePdfSearch({ setPdfSearch, pdfSearchValue, hyperlink: item })
             }
@@ -130,17 +134,23 @@ export const getPopoverContentMeat = ({
     </div>
   );
 };
-export const renderProviderSection = ({
-  setPdfSearch,
-  capture,
-  hyperLinks,
-  pdfSearchValue,
-  hyperlinkKey,
-  isDateShow,
-  sectionName,
-}: renderProviderSectionType) => {
-  const captureSlice = capture?.slice(0, 2);
-  const restLength = capture?.slice(2)?.length;
+import { IoClose } from "react-icons/io5";
+import React, { useState } from "react";
+
+export const ProviderSection = (props: renderProviderSectionType) => {
+  const {
+    setPdfSearch,
+    capture,
+    hyperLinks,
+    pdfSearchValue,
+    hyperlinkKey,
+    isDateShow,
+    sectionName,
+  } = props;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const captureSlice = isOpen ? capture : capture?.slice(0, 2);
+  const restLength = capture?.length - 2;
 
   const renderSection = captureSlice?.map((item, index) => {
     const hyperLink =
@@ -152,6 +162,8 @@ export const renderProviderSection = ({
       return (
         <div
           key={index}
+          onPointerDown={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
           className={`cursor-pointer ${sectionName === "providerSection" ? style?.providerColor : sectionName === "dateSection" ? style?.dateOfServiceColor : sectionName === "captureSection" && style?.captureSectionColor} text-sm`}
           onClick={() =>
             handlePdfSearch({
@@ -164,13 +176,13 @@ export const renderProviderSection = ({
           {isDateShow
             ? getDateFormat(item?.split("_")[0])
             : reusableEllipses({
-                str: item
-                  .toLowerCase()
-                  .split(" ")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" "),
-                count: capture?.length > 1 ? 12 : 30,
-              })}
+              str: item
+                .toLowerCase()
+                .split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" "),
+              count: capture?.length > 1 ? 12 : 30,
+            })}
         </div>
       );
     if (hyperLink?.length > 1)
@@ -194,13 +206,13 @@ export const renderProviderSection = ({
           {isDateShow
             ? getDateFormat(item?.split("_")[0])
             : reusableEllipses({
-                str: item
-                  .toLowerCase()
-                  .split(" ")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" "),
-                count: capture?.length > 1 ? 12 : 30,
-              })}
+              str: item
+                .toLowerCase()
+                .split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" "),
+              count: capture?.length > 1 ? 12 : 30,
+            })}
         </Popover>
       );
     if (!hyperLink.length)
@@ -212,31 +224,42 @@ export const renderProviderSection = ({
           {isDateShow
             ? getDateFormat(item?.split("_")[0])
             : reusableEllipses({
-                str: item
-                  .toLowerCase()
-                  .split(" ")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" "),
-                count: capture?.length > 1 ? 12 : 30,
-              })}
+              str: item
+                .toLowerCase()
+                .split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" "),
+              count: capture?.length > 1 ? 12 : 30,
+            })}
         </div>
       );
+    return null;
   });
 
   return (
-    <>
+    <div className="flex gap-2 items-center flex-wrap">
       {renderSection}
-      {restLength > 0 && (
+      {capture?.length > 2 && (
         <div
-          className={`${style?.restLength} rounded-full text-xs text-center p-1 cursor-pointer`}
-          onClick={() => {}}
+          className={`${style?.restLength} rounded-full text-xs text-center flex items-center justify-center p-1 cursor-pointer`}
+          style={{ minWidth: "20px", height: "18px" }}
+          onPointerDown={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsOpen(!isOpen);
+          }}
         >
-          {"+" + restLength}
+          {isOpen ? <IoClose size={14} /> : "+" + restLength}
         </div>
       )}
-    </>
+    </div>
   );
 };
+
+// Map legacy function name to component for backwards compatibility if needed, 
+// but it's better to update callers. I'll provide both for now or just the component.
+export const renderProviderSection = (props: renderProviderSectionType) => <ProviderSection {...props} />;
 
 export const renderMeatFound = ({
   meatList,
@@ -282,15 +305,13 @@ export const renderMeatFound = ({
   );
 };
 
-export const meatHyperLink = ({
-  hyperlinks,
-  setPdfSearch,
-  pdfSearchValue,
-  title,
-  aspectValue,
-}: meatHyperLinkType) => {
-  const hyperlinkSlice = hyperlinks?.slice(0, 2);
-  const resetHyprLink = hyperlinks?.slice(2)?.length;
+export const MeatHyperLink = (props: meatHyperLinkType) => {
+  const { hyperlinks, setPdfSearch, pdfSearchValue, title, aspectValue } = props;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const hyperlinkSlice = isOpen ? hyperlinks : hyperlinks?.slice(0, 2);
+  const restLength = hyperlinks?.length - 2;
+
   const renderSection = hyperlinkSlice?.map((item, index) => (
     <Popover
       key={index}
@@ -315,18 +336,24 @@ export const meatHyperLink = ({
     </Popover>
   ));
   return (
-    <div className="flex gap-3 flex-wrap">
+    <div className="flex gap-3 flex-wrap items-center">
       {renderSection}
-      {resetHyprLink > 0 && (
+      {hyperlinks?.length > 2 && (
         <div
-          className={`${style?.restLength} rounded-full text-xs text-center p-1 cursor-pointer w-20`}
+          className={`${style?.restLength} rounded-full text-xs text-center flex items-center justify-center p-1 cursor-pointer`}
+          style={{ minWidth: "20px", height: "18px" }}
+          onPointerDown={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
           onClick={(e) => {
             e.stopPropagation();
+            setIsOpen(!isOpen);
           }}
         >
-          {"+" + resetHyprLink}
+          {isOpen ? <IoClose size={14} /> : "+" + restLength}
         </div>
       )}
     </div>
   );
 };
+
+export const meatHyperLink = (props: meatHyperLinkType) => <MeatHyperLink {...props} />;

@@ -27,7 +27,7 @@ export const DefaultWidget: Widget[] = [
   //   rolesAccessList: ["CLIENT"],
   // },
   {
-    orderValue: "4",
+    orderValue: "5",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c008",
     size: "row-1 col-sm-12 col-md-12 col-lg-12 col-xl-12",
     widgetName: "fileChart",
@@ -46,7 +46,7 @@ export const DefaultWidget: Widget[] = [
     title: "File",
   },
   {
-    orderValue: "5",
+    orderValue: "6",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c009",
     size: "col-sm-6 col-md-6 col-lg-6 col-xl-6",
     widgetName: "Top10Diseases",
@@ -56,7 +56,7 @@ export const DefaultWidget: Widget[] = [
     rolesAccessList: ["ADMIN", "OWNER", "QA_LEAD", "PROJECT_LEAD"],
   },
   {
-    orderValue: "6",
+    orderValue: "7",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c058",
     size: "col-sm-6 col-md-6 col-lg-6 col-xl-6",
     widgetName: "Top10AachiiCode",
@@ -76,9 +76,9 @@ export const DefaultWidget: Widget[] = [
   //   rolesAccessList: ["CLIENT"],
   // },
   {
-    orderValue: "13",
+    orderValue: "4",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c049",
-    size: "col-6 row-1",
+    size: "col-sm-12 col-md-12 col-lg-6 col-xl-6 row-1",
     widgetName: "OverallPerformance",
     widgetTypes: ["area", "line", "stepline", "bar"],
     selectedChart: "line",
@@ -122,7 +122,7 @@ export const DefaultWidget: Widget[] = [
   {
     orderValue: "1",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c053",
-    size: "col-sm-3 col-md-3 col-lg-3 col-xl-3",
+    size: "col-sm-3 col-md-3 col-lg-5 col-xl-4",
     widgetName: "patientOverllCount",
     widgetTypes: ["card", "line", "bar", "count"],
     role: "2",
@@ -133,7 +133,7 @@ export const DefaultWidget: Widget[] = [
   {
     orderValue: "2",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c054",
-    size: "col-sm-5 col-md-5 col-lg-5 col-xl-5",
+    size: "col-sm-5 col-md-5 col-lg-7 col-xl-8",
     widgetName: "inPatientDetails",
     widgetTypes: ["card", "line", "bar", "count"],
     role: "2",
@@ -145,7 +145,7 @@ export const DefaultWidget: Widget[] = [
   {
     orderValue: "3",
     widgetId: "acd1b072-3ca4-4bf2-8d32-973ab8c7c055",
-    size: "col-sm-4 col-md-4 col-lg-4 col-xl-4",
+    size: "col-sm-4 col-md-4 col-lg-6 col-xl-6",
     widgetName: "outPatientDetails",
     widgetTypes: ["card", "line", "bar", "count"],
     role: "2",
@@ -511,16 +511,16 @@ export const getFormattedChartData = (
   const formattedSeries =
     chartType === "bar" || chartType === "line"
       ? [
-        {
-          name: "Status",
-          data: values,
-          colorBy: "data",
-          itemStyle: {
-            color: (params: { dataIndex: number }) =>
-              colors[params.dataIndex] || "",
+          {
+            name: "Status",
+            data: values,
+            colorBy: "data",
+            itemStyle: {
+              color: (params: { dataIndex: number }) =>
+                colors[params.dataIndex] || "",
+            },
           },
-        },
-      ]
+        ]
       : rawSeries.map((item: any) => ({
           ...item,
           name: item.name || item.status,

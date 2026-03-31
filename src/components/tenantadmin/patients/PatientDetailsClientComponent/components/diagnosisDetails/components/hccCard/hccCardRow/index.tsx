@@ -99,8 +99,8 @@ const HccCardRow = React.memo(
               <MovementIcon
                 showMoveIcon={{
                   diagnosisIcon: cardTitle !== "Diagnosis",
-                  careGapIcon: cardTitle !== "CargeGap",
-                  potientialIcon: cardTitle !== "Suggested",
+                  careGapIcon: false,
+                  potientialIcon: false,
                   deleteIcon: cardTitle !== "Delete",
                 }}
                 data={item}

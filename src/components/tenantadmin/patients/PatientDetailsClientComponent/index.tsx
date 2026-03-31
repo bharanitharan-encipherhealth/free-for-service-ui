@@ -179,7 +179,7 @@ function PatientDetailsClientComponent({
   const getPatientDiseaseDetails = useCallback(
     async ({ dos }: { dos: string }) => {
       // console.log(admissionNumber, "admissionNumber");
-
+      setPageLoading(true);
       try {
         const diseaseDetails = await getPatientDiseaseDetials({
           patientId,
@@ -232,6 +232,7 @@ function PatientDetailsClientComponent({
   );
 
   const getPatientDosCall = useCallback(async () => {
+    setPageLoading(true);
     try {
       const dosDetails = await getPatientDosDetails({
         year: selectedPatientYear,

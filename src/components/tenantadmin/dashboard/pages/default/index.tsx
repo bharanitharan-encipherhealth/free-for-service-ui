@@ -187,20 +187,17 @@ const getCharts = ({
                 lcpPriority={card.title === "DOS Count"}
                 borderRadius="28px"
                 padding="16px"
-                // minWidth="150px"
                 fontWeight="bold"
                 flexDirection="column"
                 alignItems="center"
-                // justifyContent="center"
                 display="flex"
                 textAlign="center"
                 height="283px"
                 textColor={"white"}
                 border="4px solid #B3B3B3"
                 style={{
-                  flex: "1 1 clamp(150px, 30%, 206px)",
-                  minWidth: "150px",
-                  maxWidth: "100%",
+                  flex: "1 1 calc(33.33% - 20px)",
+                  maxWidth: "206px",
                 }}
               />
             ))}
@@ -1259,11 +1256,9 @@ const getCharts = ({
                 bgColor={card.bgColor}
                 borderRadius="28px"
                 padding="16px"
-                // minWidth="150px"
                 fontWeight="bold"
                 flexDirection="column"
                 alignItems="center"
-                // justifyContent="center"
                 display="flex"
                 textAlign="center"
                 paddingTop="20px"
@@ -1271,9 +1266,8 @@ const getCharts = ({
                 textColor={"white"}
                 border="4px solid #B3B3B3"
                 style={{
-                  flex: "1 1 clamp(150px, 30%, 206px)",
-                  minWidth: "150px",
-                  maxWidth: "100%",
+                  flex: "1 1 calc(33.33% - 20px)",
+                  maxWidth: "206px",
                 }}
                 fontSize={"20px"}
               />
@@ -1348,11 +1342,9 @@ const getCharts = ({
                 bgColor={card.bgColor}
                 borderRadius="28px"
                 padding="16px"
-                // minWidth="150px"
                 fontWeight="bold"
                 flexDirection="column"
                 alignItems="center"
-                // justifyContent="center"
                 display="flex"
                 textAlign="center"
                 paddingTop="20px"
@@ -1360,9 +1352,8 @@ const getCharts = ({
                 textColor={"white"}
                 border="4px solid #B3B3B3"
                 style={{
-                  flex: "1 1 clamp(150px, 30%, 206px)",
-                  minWidth: "150px",
-                  maxWidth: "100%",
+                  flex: "1 1 calc(50% - 20px)",
+                  maxWidth: "250px",
                 }}
                 fontSize={"20px"}
               />

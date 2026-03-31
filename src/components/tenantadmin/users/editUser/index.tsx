@@ -49,12 +49,12 @@ const EditUser = React.memo(
           patientName:
             editingUser.name ||
             `${editingUser.firstName} ${editingUser.lastName}`,
-          role: editingUser.roleNames || [],
+          role: selectedRole || [],
         });
       } else {
         form.resetFields();
       }
-    }, [editingUser, form]);
+    }, [editingUser, form, selectedRole]);
 
     return (
       <Drawer
@@ -121,10 +121,11 @@ const EditUser = React.memo(
             <Button
               className="btnColor"
               onClick={() => form.submit()}
+              loading={editUsersLoader}
               disabled={editUsersLoader}
               data-testid={CreateIdGens("submitBtn")}
             >
-              {editUsersLoader ? "Loading..." : "Submit"}
+              Submit
             </Button>
           </Form.Item>
         </Form>

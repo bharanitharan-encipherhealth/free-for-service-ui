@@ -287,19 +287,19 @@ const DashboardPages: React.FC<DashboardPagesProps> = ({
       /> */}
       <div className={styles.maincontainer}>
         <div style={{ width: "75%" }} className="mx-7">
-          <div className="flex gap-2 ">
+          <div className="flex gap-1 ">
             <section className="flex justify-between" style={{ width: "100%" }}>
               <section
-                className={`flex justify-between gap-2 customDateSize ${
+                className={`flex justify-between customDateSize items-center gap-2 ${
                   !isCustom ? styles.customFilter3 : styles.customFilter1
                 }`}
               >
                 <div
                   className="flex flex-col items-start"
-                  style={{
-                    width: isCustom ? "200px" : undefined,
-                    minWidth: isCustom ? "150px" : undefined,
-                  }}
+                  // style={{
+                  //   width: isCustom ? "200px" : undefined,
+                  //   minWidth: isCustom ? "150px" : undefined,
+                  // }}
                 >
                   <div className={`${styles.flterContainer} mx-1`}>Date</div>
                   <div
@@ -322,7 +322,9 @@ const DashboardPages: React.FC<DashboardPagesProps> = ({
                 </div>
 
                 {isCustom && (
-                  <div className={`flex ${styles.customFilter2}`}>
+                  <div
+                    className={`flex ${styles.customFilter2} flex-col items-start`}
+                  >
                     <div className={`${styles.flterContainer}`}>
                       Custom Date
                     </div>
@@ -330,7 +332,7 @@ const DashboardPages: React.FC<DashboardPagesProps> = ({
                       <RangePicker
                         ref={pickerRef}
                         data-testid="select-customDate"
-                        size="large"
+                        size="middle"
                         disabledDate={disabled1YearDate}
                         onCalendarChange={(val) => setSelectedDates(val as any)}
                         onChange={(e) => handleRange(e)}

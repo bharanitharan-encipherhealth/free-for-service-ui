@@ -127,7 +127,8 @@ const SectionListForm = React.memo(
                   <Button onClick={onCloseCaptureSection}>Close</Button>
                 )}
                 <Button
-                  type="primary"
+                  className="text-white! border-none"
+                  style={{ backgroundColor: "var(--application-base-color)" }}
                   onClick={async () => {
                     try {
                       const sectionCount =

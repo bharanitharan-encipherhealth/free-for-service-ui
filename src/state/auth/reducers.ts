@@ -44,7 +44,7 @@ const createReducer = (actionType: any) =>
 const getUsersDetailsLoading = (type: any) =>
   handleActions(
     {
-      [type.START]: () => true,
+      [type.STARTED]: () => true,
       [type.SUCCEEDED]: () => false,
       [type.FAILED]: () => false,
     },

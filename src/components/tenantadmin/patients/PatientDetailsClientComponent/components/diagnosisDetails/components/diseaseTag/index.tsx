@@ -1,10 +1,12 @@
 import { DiseaseTagType } from "@/models/tenantadmin/patients/DiagnosisDetails";
-import { Tooltip } from "antd";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import style from "../../style.module.css";
 import { FaRegCircleDot } from "react-icons/fa6";
+import { IoClose } from "react-icons/io5";
 
 export default function DiseaseTag({ data }: DiseaseTagType) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const tagConfig = useMemo(
     () => [
       {
@@ -46,28 +48,37 @@ export default function DiseaseTag({ data }: DiseaseTagType) {
   if (!data) return;
 
   const activeTags = tagConfig.filter((tag) => tag.condition);
-  const activeTagSlice = activeTags?.slice(0, 1);
-  const restLength = activeTags?.slice(1)?.length;
+  const displayTags = isOpen ? activeTags : activeTags?.slice(0, 1);
+  const restLength = activeTags?.length - 1;
+
   if (activeTags.length === 0) return null;
+
   return (
     <div className={`flex items-center flex-wrap gap-2`}>
       <div className="iconBagColor">
         <FaRegCircleDot />
       </div>
       <div className={`flex items-center ${style?.borderLast} gap-1`}>
-        {activeTagSlice.map((tag, index) => (
+        {displayTags.map((tag, index) => (
           <div key={index} className="">
             <span className={`hccCardOverallFont cr-pointer `}>
               {tag?.label}
             </span>
           </div>
         ))}
-        {restLength > 0 && (
+        {activeTags.length > 1 && (
           <div
-            className={`${style?.restLength} rounded-full text-xs text-center p-1 cursor-pointer`}
-            onClick={() => {}}
+            className={`${style?.restLength} rounded-full text-xs text-center flex items-center justify-center p-1 cursor-pointer`}
+            style={{ minWidth: "20px", height: "18px" }}
+            onPointerDown={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setIsOpen(!isOpen);
+            }}
           >
-            {"+" + restLength}
+            {isOpen ? <IoClose size={14} /> : "+" + restLength}
           </div>
         )}
       </div>

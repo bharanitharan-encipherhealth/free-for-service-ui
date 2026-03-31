@@ -44,10 +44,11 @@ const MeatCreteria = React.memo(
             ))}
           </div>
         ) : (
-          <div>
+          <>
             <MeatRow
               meatCreteriaList={MeatCreteriaList}
               meatCreteria={"meat"}
+              isHeight={Boolean(deletedMeatCreteriaList?.length)}
             />
 
             {deletedMeatCreteriaList?.length ? (
@@ -55,15 +56,16 @@ const MeatCreteria = React.memo(
                 {/* <div className="font-bold px-2 my-2 text-red-500 uppercase">
                   Deleted Meat
                 </div> */}
-                <div>
+                <>
                   <MeatRow
                     meatCreteriaList={deletedMeatCreteriaList}
                     meatCreteria={"delete"}
+                    isHeight={Boolean(deletedMeatCreteriaList?.length)}
                   />
-                </div>
+                </>
               </div>
             ) : null}
-          </div>
+          </>
         )}
       </div>
     );

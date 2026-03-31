@@ -30,6 +30,7 @@ const MeatRow = React.memo(
     setAddModalOpen,
     setEditDiseaseList,
     isDisable,
+    isHeight,
   }: MeatRowPropsType) => {
     const tableHeader = useMemo(
       () => [
@@ -61,24 +62,22 @@ const MeatRow = React.memo(
     }, [tableHeader]);
 
     return (
-      <div>
+      <>
         {meatCreteria === "meat" && renderHeader()}
-        {!meatCreteriaList?.length && meatCreteria != "delete" ? (
-          <div>
-            <div className="flex items-center justify-center h-full">
-              <Image
-                width={150}
-                height={150}
-                src={noData}
-                priority
-                fetchPriority="high"
-                loading="eager"
-                alt="No Data Available"
-              />
-            </div>
+        {!meatCreteriaList?.length ? (
+          <div className="flex items-center justify-center h-full">
+            <Image
+              width={150}
+              height={150}
+              src={noData}
+              priority
+              fetchPriority="high"
+              loading="eager"
+              alt="No Data Available"
+            />
           </div>
         ) : (
-          <div className={`my-2 h-90 overflow-scroll `}>
+          <div className={`my-2 ${isHeight ? "h-90 overflow-scroll" : ""} `}>
             {meatCreteriaList?.map((item, index) => {
               return (
                 <div
@@ -87,12 +86,12 @@ const MeatRow = React.memo(
                   onClick={() => setPdfView(true)}
                 >
                   <div className="pe-3">
-                    <div>
+                    <>
                       <span className="font-bold">
                         {item?.diagnosisCode + " - "}
                       </span>
                       {reusableEllipses({ str: item?.diseaseName, count: 40 })}
-                    </div>
+                    </>
 
                     <div className="flex gap-2 items-center mt-2">
                       <div className="iconBagColor">
@@ -227,7 +226,7 @@ const MeatRow = React.memo(
             })}
           </div>
         )}
-      </div>
+      </>
     );
   },
 );

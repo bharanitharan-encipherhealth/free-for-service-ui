@@ -127,7 +127,7 @@ function Users({
       assignUserModal,
       tableLoader,
       addUser,
-      setAddUserModal
+      setAddUserModal,
     ],
   );
 
@@ -176,7 +176,7 @@ function Users({
       selectedDateRanges,
       searchText: searchText,
       pageId: assignUserPageId,
-      cilentBased: true,
+      cilentBased: false,
       qaLead: true,
       projectLead: true,
     });
@@ -214,7 +214,7 @@ function Users({
   };
 
   const roles = allRoles?.map((item) => ({
-    value: item?.roleName,
+    value: item?.roleId,
     label: item?.roleName?.split("_")?.join(" "),
   }));
 
@@ -222,6 +222,7 @@ function Users({
     const payload = {
       userName: selectedItem,
       roles: selectedRole,
+      isEdit: true,
     };
     const response = await setUserEditRoles(payload);
     if (response?.status === "SUCCESS") {
@@ -243,8 +244,6 @@ function Users({
   const onCloseIconClick = () => {
     handleEditUserClose();
   };
-
-
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -283,7 +282,7 @@ function Users({
 
   const handleCloseUser = useCallback(() => {
     setAddUserModal(false);
-  }, [setAddUserModal, addUser])
+  }, [setAddUserModal, addUser]);
 
   useEffect(() => {
     getUserRole();
@@ -291,13 +290,17 @@ function Users({
 
   useEffect(() => {
     const setRole = () => {
-      if (editingUser) {
-        setSelectedRole(editingUser.roleNames ?? null);
-        setSelectedRoleList(editingUser.roleNames ?? null);
+      if (editingUser && allRoles) {
+        const selectedRoleIds = allRoles
+          ?.filter((role) => editingUser.roleNames?.includes(role.roleName))
+          ?.map((role) => role.roleId) || [];
+
+        setSelectedRole(selectedRoleIds);
+        setSelectedRoleList(selectedRoleIds);
       }
     };
     setRole();
-  }, [editingUser]);
+  }, [editingUser, allRoles]);
 
   return (
     <>
@@ -370,25 +373,24 @@ function Users({
       />
 
       <AddUser
-         openAddUser={addUser}
-         handleCloseModal={handleCloseUser}
-         roles={roles}
-         createUser={createUser}
-         addUserLoading={addUserLoading}
-         getUsersAPi={getUsersAPi}
-       />
-       
-       <EditUser
-         editingUser={editingUser}
-         handleEditUserClose={handleEditUserClose}
-         roles={roles || []}
-         aliasName={aliasName || ""}
-         selectedRole={selectedRole}
-         setSelectedRole={setSelectedRole}
-         handleRoleSubmit={handleRoleSubmit}
-         editUsersLoader={editUsersLoader}
-       />
+        openAddUser={addUser}
+        handleCloseModal={handleCloseUser}
+        roles={roles}
+        createUser={createUser}
+        addUserLoading={addUserLoading}
+        getUsersAPi={getUsersAPi}
+      />
 
+      <EditUser
+        editingUser={editingUser}
+        handleEditUserClose={handleEditUserClose}
+        roles={roles || []}
+        aliasName={aliasName || ""}
+        selectedRole={selectedRole}
+        setSelectedRole={setSelectedRole}
+        handleRoleSubmit={handleRoleSubmit}
+        editUsersLoader={editUsersLoader}
+      />
     </>
   );
 }

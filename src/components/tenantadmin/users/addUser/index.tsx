@@ -38,8 +38,10 @@ const AddUser = React.memo(
         const payload = {
           firstName: values.firstName,
           lastName: values.lastName,
-          email: values.email,
-          roleNames: values.role,
+          emailId: values.email,
+          roles: values.role,
+          isEdit: false,
+          userName: values.email,
         };
 
         const res = await createUser({ data: payload });
